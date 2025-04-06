@@ -1,4 +1,4 @@
-// SquareHero Dashboard Creator v1.0
+// SquareHero Dashboard Creator v0.1.2
 // Hosted version - For use with Squarespace
 // Creates a password-protected dashboard page and removes itself from code injection
 
