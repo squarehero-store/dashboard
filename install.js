@@ -2,31 +2,31 @@
 // Hosted version - For use with Squarespace
 // Creates a password-protected dashboard page and removes itself from code injection
 
-(function() {
+(function () {
     // Configuration - fixed values
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
     const headerCodeToInject = `<div><p>SquareHero Dashboard - Created automatically</p></div>`;
-    
+
     // Main function to initialize dashboard
     async function initSquareHeroDashboard() {
         console.log("SquareHero Dashboard initializing...");
-        
+
         // Get the crumb cookie for CSRF protection
         const crumb = document.cookie.split(';')
             .find(c => c.trim().startsWith('crumb='))
             ?.split('=')[1];
-        
+
         if (!crumb) {
             console.error("Could not find crumb cookie. Are you logged into Squarespace?");
             showNotification("Error: Authentication token not found. Please login to Squarespace.", "#F44336");
             return null;
         }
-        
+
         try {
             // First check if the dashboard page already exists
             const dashboardExists = await checkIfPageExists(crumb);
-            
+
             if (dashboardExists) {
                 console.log("SquareHero Dashboard already exists");
                 showNotification("SquareHero Dashboard already exists", "#2196F3");
@@ -36,17 +36,17 @@
                 await createDashboardPage(crumb);
                 showNotification("SquareHero Dashboard created successfully!", "#4CAF50");
             }
-            
+
             // Now, remove the script tag from code injection
             console.log("Removing script from code injection...");
             await removeScriptTagFromInjection(crumb);
-            
+
         } catch (error) {
             console.error("Error in dashboard creation process:", error);
             showNotification("Error: " + error.message, "#F44336");
         }
     }
-    
+
     // Check if the dashboard page already exists
     async function checkIfPageExists(crumb) {
         // Fetch the site layout to see if our dashboard already exists
@@ -58,13 +58,13 @@
             },
             credentials: "include"
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to get site layout: ${response.status}`);
         }
-        
+
         const siteLayout = await response.json();
-        
+
         // Check collections directly if they exist
         if (siteLayout.collections && Array.isArray(siteLayout.collections)) {
             for (const collection of siteLayout.collections) {
@@ -74,7 +74,7 @@
                 }
             }
         }
-        
+
         // Check in navigation sections
         if (siteLayout.layout && Array.isArray(siteLayout.layout)) {
             for (const nav of siteLayout.layout) {
@@ -88,11 +88,11 @@
                 }
             }
         }
-        
+
         console.log("Dashboard page not found in existing pages");
         return false;
     }
-    
+
     // Function to create the dashboard page
     async function createDashboardPage(crumb) {
         // Generate a random password (20 characters)
@@ -105,13 +105,13 @@
             }
             return password;
         };
-        
+
         const randomPassword = generateRandomPassword();
-        
+
         // Basic page data with header injection code and automatic password protection
         const pageData = {
             "collectionData": {
-                "description": {"html": "", "raw": false},
+                "description": { "html": "", "raw": false },
                 "enabled": true,
                 "deleted": false,
                 "folder": false,
@@ -135,7 +135,7 @@
                 "memberAreaIds": []
             }
         };
-        
+
         const response = await fetch(`${window.location.origin}/api/commondata/SaveCollectionSettings`, {
             method: "POST",
             headers: {
@@ -145,16 +145,16 @@
             body: JSON.stringify(pageData),
             credentials: "include"
         });
-        
+
         if (!response.ok) {
             throw new Error(`Failed to create page: ${response.status}`);
         }
-        
+
         const result = await response.json();
         console.log("Page created successfully:", result);
         return result;
     }
-    
+
     // Function to remove the script tag from code injection
     async function removeScriptTagFromInjection(crumb) {
         // First, retrieve current injection settings
@@ -173,49 +173,18 @@
 
         const currentSettings = await settingsResponse.json();
         console.log("Current code injection retrieved");
-        
-        // The script URL we need to find
-        const scriptSrc = document.currentScript.src;
-        const scriptTag = `<script src="${scriptSrc}"></script>`;
-        
-        // Alternate versions to check if the first one isn't found
-        const altScriptTags = [
-            `<script src='${scriptSrc}'></script>`,
-            `<script src=${scriptSrc}></script>`
-        ];
-        
+
+        // The exact script tag we need to remove
+        const scriptTag = `<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/install.min.js"></script>`;
+
         // Find our script tag in the header injection
         if (currentSettings.header) {
-            let newHeader = currentSettings.header;
-            let scriptFound = false;
-            
-            // Check for exact script tag
-            if (newHeader.includes(scriptTag)) {
-                newHeader = newHeader.replace(scriptTag, '');
-                scriptFound = true;
-            } else {
-                // Try alternate formats
-                for (const altTag of altScriptTags) {
-                    if (newHeader.includes(altTag)) {
-                        newHeader = newHeader.replace(altTag, '');
-                        scriptFound = true;
-                        break;
-                    }
-                }
-                
-                // If still not found, look for any script with our source
-                if (!scriptFound) {
-                    const regex = new RegExp(`<script[^>]*src=["']?${escapeRegExp(scriptSrc)}["']?[^>]*></script>`, 'i');
-                    if (regex.test(newHeader)) {
-                        newHeader = newHeader.replace(regex, '');
-                        scriptFound = true;
-                    }
-                }
-            }
-            
-            if (scriptFound) {
+            if (currentSettings.header.includes(scriptTag)) {
                 console.log("Script tag found in header injection, removing it...");
-                
+
+                // Create new header content without this script
+                const newHeader = currentSettings.header.replace(scriptTag, '');
+
                 // Prepare form-urlencoded body
                 const formBody = new URLSearchParams({
                     header: newHeader.trim(),
@@ -238,7 +207,7 @@
                 if (!saveResponse.ok) {
                     throw new Error(`Failed to save updated injection settings: ${saveResponse.status}`);
                 }
-                
+
                 console.log("Script tag removed successfully");
                 showNotification("Installation complete! Script removed successfully", "#4CAF50");
             } else {
@@ -247,12 +216,12 @@
             }
         }
     }
-    
+
     // Helper function to escape special characters in strings for RegExp
     function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
-    
+
     // Helper function to show notifications
     function showNotification(message, bgColor) {
         const notification = document.createElement('div');
@@ -266,7 +235,7 @@
         notification.style.zIndex = '9999';
         notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
         notification.textContent = message;
-        
+
         // Add to DOM, then remove after 5 seconds
         document.body.appendChild(notification);
         setTimeout(() => {
@@ -275,14 +244,14 @@
             setTimeout(() => notification.remove(), 1000);
         }, 5000);
     }
-    
+
     // Check if we're in the Squarespace admin interface
-    if (window.location.href.includes('/config') || 
-        window.location.href.includes('/home') || 
+    if (window.location.href.includes('/config') ||
+        window.location.href.includes('/home') ||
         window.location.hostname.includes('.squarespace.com') ||
         document.querySelector('.sqs-editing-overlay')) {
         // Wait for page to fully load before executing
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Add a slight delay to ensure everything is loaded
             setTimeout(initSquareHeroDashboard, 2000);
         });
