@@ -174,16 +174,16 @@
         const currentSettings = await settingsResponse.json();
         console.log("Current code injection retrieved");
 
-        // The exact script tag we need to remove
-        const scriptTag = `<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/install.min.js"></script>`;
-
-        // Find our script tag in the header injection
+        // Look for script tag with our custom attribute
         if (currentSettings.header) {
-            if (currentSettings.header.includes(scriptTag)) {
+            // Use regex to find the script tag with our attribute
+            const regex = /<script[^>]*squarehero-function=["']?dashboard-install["']?[^>]*>[\s\S]*?<\/script>/i;
+
+            if (regex.test(currentSettings.header)) {
                 console.log("Script tag found in header injection, removing it...");
 
                 // Create new header content without this script
-                const newHeader = currentSettings.header.replace(scriptTag, '');
+                const newHeader = currentSettings.header.replace(regex, '');
 
                 // Prepare form-urlencoded body
                 const formBody = new URLSearchParams({
