@@ -1,0 +1,656 @@
+{
+    "website": {
+"id": "674e47b559c5d57a0310ed9e"
+    },
+    "collection": {
+        "id": "674e482a120a9915ad79ef7c",
+        "websiteId": "674e47b559c5d57a0310ed9e",
+        "backgroundSource": 1,
+        "enabled": true,
+        "starred": false,
+        "type": 1,
+        "ordering": 2,
+        "title": "Find Your Home",
+        "navigationTitle": "Find Your Home",
+        "urlId": "find-your-home",
+        "itemCount": 8,
+        "updatedOn": 1742217375740,
+        "description": "",
+        "pageSize": 20,
+        "features": {
+            "relatedItems": {
+                "isEnabled": false
+            },
+            "productQuickView": {
+                "isEnabled": false
+            }
+        },
+        "eventView": 1,
+        "folder": false,
+        "dropdown": false,
+        "tags": [
+            "Raleigh, NC",
+            "Wilmington, NC",
+            "Asheville, NC",
+            "Charlotte, NC"
+        ],
+        "categories": [
+            "Ready to Buy",
+            "Under Construction"
+        ],
+        "homepage": true,
+        "typeName": "blog-basic-grid",
+        "regionName": "default",
+        "synchronizing": false,
+        "seoData": {
+            "seoHidden": false
+        },
+        "categoryPagesSeoHidden": false,
+        "tagPagesSeoHidden": false,
+        "qrCodeEnabled": false,
+        "pagePermissionType": 1,
+        "typeLabel": "blog-basic-grid",
+        "fullUrl": "/",
+        "passwordProtected": false,
+        "draft": false
+    },
+    "items": [
+        {
+            "id": "674e482ec6aa4452ca5fa008",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841225736,
+            "updatedOn": 1733267889855,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Charlotte, NC"
+            ],
+            "categories": [
+                "Under Construction"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841225736,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183555270-Y8EHHS6W83C6801EU34E",
+            "systemDataVariants": "2000x1320,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_395665390_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "909dbb",
+                "topRightAverage": "557097",
+                "bottomLeftAverage": "908c88",
+                "bottomRightAverage": "7b7877",
+                "centerAverage": "7f7a6e",
+                "suggestedBgColor": "717878"
+            },
+            "urlId": "forest-hills-1xbv96tk9jp7zp8v",
+            "title": "Forest Hills",
+            "body": "",
+            "excerpt": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/forest-hills-1xbv96tk9jp7zp8v",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183555270-Y8EHHS6W83C6801EU34E/Depositphotos_395665390_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1320",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e4846c8b8fe13c270294e",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841217125,
+            "updatedOn": 1733192041936,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Asheville, NC"
+            ],
+            "categories": [
+                "Ready to Buy"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841217125,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183578565-76M5ULYPNMSPTVYGHC1D",
+            "systemDataVariants": "2000x1333,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_7589448_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "596a3b",
+                "topRightAverage": "b6cde5",
+                "bottomLeftAverage": "85a32d",
+                "bottomRightAverage": "769c30",
+                "centerAverage": "52572c",
+                "suggestedBgColor": "7f935f"
+            },
+            "urlId": "riverbend-acres",
+            "title": "Riverbend Acres",
+            "body": "",
+            "excerpt": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/riverbend-acres",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183578565-76M5ULYPNMSPTVYGHC1D/Depositphotos_7589448_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1333",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e485d8d7c0436bbefa265",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841207857,
+            "updatedOn": 1733268375401,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Wilmington, NC"
+            ],
+            "categories": [
+                "Under Construction"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841207857,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183602194-MZWVJLYSBNTS2MIOPNOC",
+            "systemDataVariants": "2000x1333,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_100139216_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "62a1fe",
+                "topRightAverage": "6ca8fe",
+                "bottomLeftAverage": "a49a90",
+                "bottomRightAverage": "666b49",
+                "centerAverage": "aeaeb1",
+                "suggestedBgColor": "909ba7"
+            },
+            "urlId": "willow-creek",
+            "title": "Willow Creek",
+            "body": "",
+            "excerpt": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/willow-creek",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183602194-MZWVJLYSBNTS2MIOPNOC/Depositphotos_100139216_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1333",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e4876a8a35617029d5706",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841198854,
+            "updatedOn": 1733271434384,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Charlotte, NC"
+            ],
+            "categories": [
+                "Ready to Buy"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841198854,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183628910-DRH6CXLEP813NJGZD0D7",
+            "systemDataVariants": "2000x1814,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_210864272_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "0179d8",
+                "topRightAverage": "4599e3",
+                "bottomLeftAverage": "708b16",
+                "bottomRightAverage": "d4c1b5",
+                "centerAverage": "334412",
+                "suggestedBgColor": "53817d"
+            },
+            "urlId": "cedar-ridge",
+            "title": "Cedar Ridge",
+            "body": "",
+            "excerpt": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/cedar-ridge",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183628910-DRH6CXLEP813NJGZD0D7/Depositphotos_210864272_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1814",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e48919a090574e26b2978",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841189314,
+            "updatedOn": 1733269383856,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Asheville, NC"
+            ],
+            "categories": [
+                "Under Construction"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841189314,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183653833-SP4YXTAF0C43VEY5268A",
+            "systemDataVariants": "2000x1333,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_118749284_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "5674d4",
+                "topRightAverage": "5978cc",
+                "bottomLeftAverage": "9da95c",
+                "bottomRightAverage": "afb67e",
+                "centerAverage": "636176",
+                "suggestedBgColor": "848fa1"
+            },
+            "urlId": "maple-grove",
+            "title": "Maple Grove",
+            "body": "",
+            "excerpt": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/maple-grove",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183653833-SP4YXTAF0C43VEY5268A/Depositphotos_118749284_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1333",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e48aaf2ff6e1b09cbfc85",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841178595,
+            "updatedOn": 1733269402069,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Raleigh, NC"
+            ],
+            "categories": [
+                "Ready to Buy"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841178595,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183675977-YNI6XX02SVWFOSPWBZM2",
+            "systemDataVariants": "2000x1333,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_77665926_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "64ace1",
+                "topRightAverage": "79b3e3",
+                "bottomLeftAverage": "808b2c",
+                "bottomRightAverage": "848b35",
+                "centerAverage": "a5946a",
+                "suggestedBgColor": "87977d"
+            },
+            "urlId": "pinehurst-meadows",
+            "title": "Pinehurst Meadows",
+            "body": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/pinehurst-meadows",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183675977-YNI6XX02SVWFOSPWBZM2/Depositphotos_77665926_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1333",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e48c19a090574e26b3537",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841167619,
+            "updatedOn": 1733269426890,
+            "starred": false,
+            "passthrough": false,
+            "tags": [
+                "Wilmington, NC"
+            ],
+            "categories": [
+                "Under Construction"
+            ],
+            "workflowState": 1,
+            "publishOn": 1723841167619,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183701231-K7234AAQMCVWD3HC9Q6W",
+            "systemDataVariants": "2000x1333,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_8943684_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "c1d6ea",
+                "topRightAverage": "34282b",
+                "bottomLeftAverage": "8c9153",
+                "bottomRightAverage": "535b1c",
+                "centerAverage": "43472f",
+                "suggestedBgColor": "848676"
+            },
+            "urlId": "oakwood-heights",
+            "title": "Oakwood Heights",
+            "body": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/oakwood-heights",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183701231-K7234AAQMCVWD3HC9Q6W/Depositphotos_8943684_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1333",
+            "recordTypeLabel": "text"
+        },
+        {
+            "id": "674e48d93d94900e35d87a72",
+            "collectionId": "674e482a120a9915ad79ef7c",
+            "recordType": 1,
+            "addedOn": 1723841156179,
+            "updatedOn": 1733195870770,
+            "starred": false,
+            "passthrough": false,
+            "tags": [],
+            "categories": [],
+            "workflowState": 1,
+            "publishOn": 1723841156179,
+            "authorId": "52e83bdbe4b047367adeef5b",
+            "systemDataId": "1733183726948-5841YB4A5XY8AMXU1MSF",
+            "systemDataVariants": "2000x1332,100w,300w,500w,750w,1000w,1500w",
+            "systemDataSourceType": "JPG",
+            "filename": "Depositphotos_139829880_XL-Exteriors-2000px.jpg",
+            "mediaFocalPoint": {
+                "x": 0.5,
+                "y": 0.5,
+                "source": 3
+            },
+            "colorData": {
+                "topLeftAverage": "708ec5",
+                "topRightAverage": "98b5e6",
+                "bottomLeftAverage": "798551",
+                "bottomRightAverage": "8591aa",
+                "centerAverage": "e0e4e4",
+                "suggestedBgColor": "9ba2a5"
+            },
+            "urlId": "blue-ridge-estates",
+            "title": "Blue Ridge Estates",
+            "body": "",
+            "location": {
+                "mapZoom": 12,
+                "mapLat": 40.7207559,
+                "mapLng": -74.0007613,
+                "markerLat": 40.7207559,
+                "markerLng": -74.0007613,
+                "addressTitle": "",
+                "addressLine1": "",
+                "addressLine2": "",
+                "addressCountry": ""
+            },
+            "customContent": null,
+            "likeCount": 0,
+            "commentCount": 0,
+            "publicCommentCount": 0,
+            "commentState": 2,
+            "unsaved": false,
+            "author": {
+                "id": "52e83bdbe4b047367adeef5b",
+                "displayName": "Phil Houghton",
+                "firstName": "Phil",
+                "lastName": "Houghton",
+                "avatarUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w",
+                "websiteUrl": "http://www.houghtoncreative.co.nz",
+                "bio": "",
+                "avatarAssetUrl": "https://images.squarespace-cdn.com/content/v2/namespaces/memberAccountAvatars/libraries/52e83bdbe4b047367adeef5b/4e303128ab934367a3daa5ee8c66a383/4e303128ab934367a3daa5ee8c66a383.jpeg?format=300w"
+            },
+            "fullUrl": "/find-your-home/blue-ridge-estates",
+            "assetUrl": "https://images.squarespace-cdn.com/content/v1/674e47b559c5d57a0310ed9e/1733183726948-5841YB4A5XY8AMXU1MSF/Depositphotos_139829880_XL-Exteriors-2000px.jpg",
+            "postItemInjectCode": "<!-- 🛑 CRITICAL: SquareHero Core Files - DO NOT REMOVE 🛑 -->\n<!-- Without them, we lose our superpowers! -->\n<meta squarehero-plugin-settings=\"property-listings\" related-properties=\"true\" tag=\"true\">\n<script>\n    (function () {\n    // Load CSS file\n    var link = document.createElement('link');\n    link.rel = 'stylesheet';\n    link.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listings.min.css?v=' + new Date().getTime();\n    link.onerror = function () {\n        console.error('Failed to load Property Listings CSS');\n    };\n    document.head.appendChild(link);\n})();\n</script>\n<script>\n(function(){\n  const script = document.createElement('script');\n  script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/property-listings@1/property-listing.min.js?v=' + new Date().getTime();\n  document.head.appendChild(script);\n})();\n</script>",
+            "contentType": "image/jpeg",
+            "items": [],
+            "pushedServices": {},
+            "pendingPushedServices": {},
+            "originalSize": "2000x1332",
+            "recordTypeLabel": "text"
+        }
+    ],
+    "pagePreviewContext": {
+        "isPreviewMode": false,
+        "memberAccessUrl": "/?format=json&requestAccess=true"
+    }
+}

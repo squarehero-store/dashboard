@@ -1,0 +1,378 @@
+/* Wizard Component - Core Styles */
+
+/* Wizard Container */
+.wizard-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  overflow: hidden;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  min-height: 650px; /* Minimum height to ensure consistent appearance */
+  position: relative; /* For absolute positioning of footer elements */
+}
+
+/* Wizard Content */
+.wizard-content {
+  flex: 1;
+  padding-bottom: 60px; /* Reserve space for fixed progress dots */
+}
+
+/* Wizard Step */
+.wizard-step {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 30px 0;
+}
+
+/* Wizard Step Image */
+.wizard-step-image {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0 30px;
+}
+
+.wizard-step-image img {
+  max-width: 100px;
+  height: auto;
+}
+
+/* Wizard Step Header */
+.wizard-step-header {
+  padding: 0 0 15px;
+  text-align: center;
+}
+
+.wizard-step-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Wizard Step Body */
+.wizard-step-body {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  margin: auto;
+}
+
+.wizard-step-content {
+  margin: 0 0 25px;
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Wizard Step Components */
+.wizard-step-components {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+/* Only progress dots are fixed at bottom */
+.wizard-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 15px 0;
+  z-index: 10;
+}
+
+/* Wizard Progress */
+.wizard-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wizard-progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.wizard-progress-dot.active {
+  background-color: #0cc2ed;
+  transform: scale(1.2);
+}
+
+.wizard-progress-dot.completed {
+  background-color: #4CAF50;
+}
+
+/* Wizard Navigation - stays with content */
+.wizard-navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px 25px;
+  margin-top: 10px;
+}
+
+.wizard-back-button,
+.wizard-next-button {
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.wizard-back-button {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.wizard-back-button:hover {
+  background-color: #e9e9e9;
+}
+
+.wizard-back-button.hidden {
+  visibility: hidden;
+}
+
+.wizard-next-button {
+  background-color: #0cc2ed;
+  color: white;
+}
+
+.wizard-next-button:hover {
+  background-color: #0aa9cf;
+}
+
+/* Continue button for QR scan example - full width style */
+.wizard-step .continue-button {
+  width: 100%;
+  padding: 15px;
+  background-color: #26a555; /* Green button like in your example */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.2s;
+}
+
+.wizard-step .continue-button:hover {
+  background-color: #218a47;
+}
+
+/* Button Group Component */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.button-option {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-option:hover {
+  border-color: #0cc2ed;
+  background-color: #f9fdff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.button-option.selected {
+  border-color: #0cc2ed;
+  background-color: #f0f9ff;
+}
+
+.button-option-icon {
+  font-size: 24px;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.button-option-content {
+  flex-grow: 1;
+}
+
+.button-option-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.button-option-description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Form elements */
+.setting-input, input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.setting-help {
+  color: #666;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* QR code style additions */
+.qr-code-display {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.qr-code-display img {
+  max-width: 180px;
+  height: auto;
+}
+
+.code-input-container {
+  margin: 15px 0;
+  position: relative;
+}
+
+.code-input-container input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 45px; /* Space for copy button */
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.copy-button {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* Helper text */
+.helper-text {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wizard-container {
+    min-height: 500px;
+  }
+  
+  .wizard-step {
+    padding: 20px 20px 0;
+  }
+  
+  .wizard-step-content {
+    font-size: 15px;
+  }
+  
+  .wizard-navigation {
+    padding: 15px 20px 20px;
+  }
+  
+  .wizard-back-button,
+  .wizard-next-button {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wizard-container {
+    min-height: 450px;
+  }
+  
+  .wizard-step-content {
+    font-size: 14px;
+  }
+  
+  .button-option {
+    padding: 12px;
+  }
+  
+  .wizard-back-button,
+  .wizard-next-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Validation error message */
+.wizard-validation-error {
+  background-color: #fff0f0;
+  color: #d32f2f;
+  padding: 12px 16px;
+  margin: 15px 0;
+  border-radius: 4px;
+  border-left: 4px solid #d32f2f;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Animation for validation message */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Highlight button group that needs selection */
+.button-group.validation-highlight {
+  border: 2px dashed #d32f2f;
+  border-radius: 8px;
+  padding: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+/* Selection required visual indicator */
+.button-group.selection-required {
+  border: 1px dashed #ff9800;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* Pulsing animation for validation highlight */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+/* Style for button options when validation is required */
+.button-group.validation-highlight .button-option {
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.button-group.validation-highlight .button-option:hover {
+  transform: translateY(-3px);
+  border-color: #d32f2f;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
