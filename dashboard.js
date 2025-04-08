@@ -127,26 +127,41 @@ const Dashboard = (function () {
         // Get Squarespace website information
         getWebsiteInfo: async function () {
             try {
-                // Use local JSON file for testing
-                const response = await fetch('https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/squarespace.json');
+                // Use the current site's domain to fetch configuration
+                const currentDomain = window.location.hostname;
+                const configUrl = `https://${currentDomain}/?format=json`;
+
+                const response = await fetch(configUrl, {
+                    credentials: 'include', // Important for accessing Squarespace site data
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch website information');
+                    throw new Error('Failed to fetch Squarespace site configuration');
                 }
 
                 const data = await response.json();
-                this.websiteId = data.website.id;
-                this.websiteUrl = data.website.internalUrl || window.location.origin;
 
-                console.log(`Website ID: ${this.websiteId}`);
+                // Extract website ID and URL
+                this.websiteId = data.websiteId || 'unknown-site';
+                this.websiteUrl = `https://${currentDomain}`;
+
+                console.log(`Squarespace Website ID: ${this.websiteId}`);
+                console.log(`Website URL: ${this.websiteUrl}`);
+
                 return {
                     websiteId: this.websiteId,
                     websiteUrl: this.websiteUrl
                 };
             } catch (error) {
-                console.error('Error getting website info:', error);
+                console.error('Error getting Squarespace website info:', error);
+
+                // Fallback to local testing configuration
                 this.websiteId = 'local-test-site';
                 this.websiteUrl = window.location.origin;
+
                 return {
                     websiteId: this.websiteId,
                     websiteUrl: this.websiteUrl
