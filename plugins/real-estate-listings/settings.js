@@ -123,7 +123,7 @@ Dashboard.PluginSettingsRegistry.register('real-estate-listings', [
                 type: 'custom',
                 id: 'property-manager',
                 label: 'Manage Properties',
-                script: 'plugins/real-estate-listings/property-manager.js'
+                script: 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/property-manager.js'
             }
         ]
     },
