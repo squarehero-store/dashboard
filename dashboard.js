@@ -1,6 +1,7 @@
 /**
  * SquareHero Plugin Dashboard - Core Functionality
  * With integrated skeleton loading system and Firebase
+ * Includes active panel ID patch
  */
 
 // Dashboard Module
@@ -25,6 +26,8 @@ const Dashboard = (function () {
         }
     };
 
+
+
     // Default cards
     function createDefaultCard(plugin) {
         const card = document.createElement('div');
@@ -35,13 +38,17 @@ const Dashboard = (function () {
         const status = plugin.status || 'disabled';
 
         card.innerHTML = `
+            <div class="top-wrapper">
             <div class="plugin-icon">
                 <img src="${plugin.icon}" alt="${plugin.name} icon">
+            </div>
+            <div class="status-wrapper">
+            <span class="plugin-status status-${status}">${status.toUpperCase()}</span>
+            </div>
             </div>
             <div class="plugin-content">
                 <div class="plugin-header">
                     <h3 class="plugin-title">${plugin.name}</h3>
-                    <span class="plugin-status status-${status}">${status.toUpperCase()}</span>
                 </div>
                 <p class="plugin-description">${plugin.description}</p>
             </div>
@@ -206,8 +213,6 @@ const Dashboard = (function () {
                 if (!dataSnapshot.exists()) {
                     // First-time setup with default settings
                     const initialData = {
-                        // Continuing from the getPluginSettings method...
-
                         settings: defaultSettings,
                         websiteId: this.websiteId,
                         websiteUrl: this.websiteUrl,
@@ -340,8 +345,13 @@ const Dashboard = (function () {
         settingsPanel: document.getElementById('settings-panel'),
         panelContent: document.getElementById('panel-content'),
         closeButton: document.getElementById('close-panel'),
-        overlay: document.getElementById('overlay')
+        overlay: document.getElementById('overlay'),
+        dashboardTabs: document.querySelector('.dashboard-tabs'), // New
+        dashboardTabContents: document.querySelectorAll('.dashboard-tab-content') // New
     };
+
+    console.log("dashboardTabs:", elements.dashboardTabs);
+    console.log("dashboardTabContents:", elements.dashboardTabContents);
 
     // Create and get notification bar - updated to avoid recreation
     function getNotificationBar() {
@@ -422,7 +432,7 @@ const Dashboard = (function () {
             updateNotificationState();
         });
 
-        console.log("Notification bar created and shown"); // Debug log
+        console.log("Notification bar created and shown");
     }
 
     // Helper function to apply animation
@@ -476,8 +486,6 @@ const Dashboard = (function () {
             applyAttentionAnimation(bar);
         }
     }
-
-
 
     // Show Firebase sync status
     function showFirebaseStatus(message, status = 'info') {
@@ -579,7 +587,7 @@ const Dashboard = (function () {
 
     // Update notification state based on changes
     function updateNotificationState() {
-        console.log('updateNotificationState called, hasUnsavedChanges =', hasUnsavedChanges); // Debug log
+        console.log('updateNotificationState called, hasUnsavedChanges =', hasUnsavedChanges);
 
         if (hasUnsavedChanges) {
             showUnsavedChangesNotification();
@@ -805,6 +813,16 @@ const Dashboard = (function () {
             // Set active panel
             activePanel = pluginId;
 
+            // Explicitly set and expose the active panel ID globally (PATCH)
+            window.activePanel = pluginId;
+            console.log('Active panel ID globally exposed:', window.activePanel);
+
+            // Also set data attribute on the panel for easier detection (PATCH)
+            if (elements.settingsPanel) {
+                elements.settingsPanel.setAttribute('data-plugin-id', pluginId);
+                console.log('Added data-plugin-id attribute to settings panel');
+            }
+
             // Simulate loading delay (remove in production)
             setTimeout(() => {
                 // Check if this plugin has a wizard and should show it
@@ -865,36 +883,36 @@ const Dashboard = (function () {
                         let tabsHTML = '';
                         if (categories.length > 0) {
                             tabsHTML = `
-                            <div class="settings-tabs">
-                                ${categories.map(category =>
+                        <div class="settings-tabs">
+                            ${categories.map(category =>
                                 `<button type="button" class="tab-button ${category.id === defaultCategory.id ? 'active' : ''}" 
-                                           data-tab="${category.id}">${category.label}</button>`
+                                       data-tab="${category.id}">${category.label}</button>`
                             ).join('')}
-                            </div>
-                        `;
+                        </div>
+                    `;
                         }
 
                         // Create a wrapper for the settings - tabs and content are siblings
                         panelHTML = `
-                        <div class="plugin-settings">
-                            ${tabsHTML}
-                            ${SettingsComponents.generateForm(schema, plugin.settings || {})}
-                        </div>
-                    `;
+                    <div class="plugin-settings">
+                        ${tabsHTML}
+                        ${SettingsComponents.generateForm(schema, plugin.settings || {})}
+                    </div>
+                `;
                     } else if (customModule) {
                         // Use the custom module
                         panelHTML = customModule.createSettingsPanel(plugin);
                     } else {
                         // No settings available
                         panelHTML = `
-                        <div class="plugin-settings">
-                            <h3>${plugin.name} Settings</h3>
-                            <p>Settings for this plugin are not available.</p>
-                            <div class="form-actions">
-                                <button class="button cancel-button">Close</button>
-                            </div>
+                    <div class="plugin-settings">
+                        <h3>${plugin.name} Settings</h3>
+                        <p>Settings for this plugin are not available.</p>
+                        <div class="form-actions">
+                            <button class="button cancel-button">Close</button>
                         </div>
-                    `;
+                    </div>
+                `;
                     }
 
                     // Hide skeleton loading and update panel content
@@ -1059,22 +1077,17 @@ const Dashboard = (function () {
             }
 
             elements.panelContent.innerHTML = `
-                <div class="error-message">
-                    <p>Error loading settings for this plugin.</p>
-                    <button class="button cancel-button">Close</button>
-                </div>
-            `;
+            <div class="error-message">
+                <p>Error loading settings for this plugin.</p>
+                <button class="button cancel-button">Close</button>
+            </div>
+        `;
 
             const cancelButton = elements.panelContent.querySelector('.cancel-button');
             if (cancelButton) {
                 cancelButton.addEventListener('click', handleClosePanel);
             }
         }
-            // Set active panel
-activePanel = pluginId;
-
-// IMPORTANT: Add this line to expose activePanel globally
-window.activePanel = pluginId;
     }
 
     // Handle close panel event with attention animation
@@ -1103,6 +1116,16 @@ window.activePanel = pluginId;
 
         // Clear active panel
         activePanel = null;
+
+        // Clear the window.activePanel global variable (PATCH)
+        window.activePanel = null;
+        console.log('Active panel ID cleared on panel close');
+
+        // Remove the data attribute (PATCH)
+        if (elements.settingsPanel) {
+            elements.settingsPanel.removeAttribute('data-plugin-id');
+        }
+
         hasUnsavedChanges = false;
         hideNotification();
 
@@ -1293,18 +1316,82 @@ window.activePanel = pluginId;
 
         // Create HTML for news items
         const newsHTML = newsItems.map(item => `
-        <div class="news-item">
-            <p class="news-date">${item.date}</p>
-            <h3 class="news-title">${item.title}</h3>
-            <p class="news-content">${item.content || ''}</p>
-        </div>
-    `).join('');
+    <div class="news-item">
+        <p class="news-date">${item.date}</p>
+        <h3 class="news-title">${item.title}</h3>
+        <p class="news-content">${item.content || ''}</p>
+    </div>
+`).join('');
 
         // Update container
         elements.newsItemsContainer.innerHTML = newsHTML;
     }
 
+    // Render all available plugins for discovery
+    function renderDiscoverPluginCards() {
+        const discoverPluginsContainer = document.getElementById('discover-plugins-content');
 
+        if (!availablePlugins || !availablePlugins.length) {
+            discoverPluginsContainer.innerHTML = '<p>No plugins available to discover.</p>';
+            return;
+        }
+
+        // Create a grid for discover plugins
+        const pluginGrid = document.createElement('div');
+        pluginGrid.id = 'discover-plugins-grid';
+        pluginGrid.className = 'discover-plugins-grid';
+
+        // Process each available plugin
+        availablePlugins.forEach(plugin => {
+            const card = document.createElement('div');
+            card.className = 'discover-plugin-card';
+
+            card.innerHTML = `
+            <div class="discover-plugin-icon">
+                <img src="${plugin.icon}" alt="${plugin.name} icon">
+            </div>
+            <div class="discover-plugin-content">
+                <h3 class="discover-plugin-title">${plugin.name}</h3>
+                <p class="discover-plugin-description">${plugin.description}</p>
+                <div class="discover-plugin-actions">
+                    <button class="sh-button free-trial">Start Free Trial</button>
+                    <p class="fine-print">14 day free trial. No credit card required.</p>
+                </div>
+            </div>
+        `;
+
+            pluginGrid.appendChild(card);
+        });
+
+        discoverPluginsContainer.innerHTML = '';
+        discoverPluginsContainer.appendChild(pluginGrid);
+    }
+
+    // Function to switch tabs
+    function switchTab(tabId) {
+        // Remove 'active' class from all tabs and tab contents
+        elements.dashboardTabs.querySelectorAll('.dashboard-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        elements.dashboardTabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // Add 'active' class to the clicked tab and corresponding content
+        document.querySelector(`.dashboard-tab[data-tab="${tabId}"]`).classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+    }
+
+    // Initialize tab event listeners
+    function initTabEventListeners() {
+        console.log("initTabEventListeners called");
+        elements.dashboardTabs.addEventListener('click', (event) => {
+            if (event.target.classList.contains('dashboard-tab')) {
+                const tabId = event.target.getAttribute('data-tab');
+                switchTab(tabId);
+            }
+        });
+    }
 
     // Initialize the dashboard
     async function init() {
@@ -1314,6 +1401,9 @@ window.activePanel = pluginId;
 
             // Set up event listeners
             initEventListeners();
+
+            // Initialize tab event listeners <--- HERE'S THE FIX
+            initTabEventListeners();
 
             // Show skeleton loaders BEFORE loading any data
             if (window.SkeletonLoader) {
@@ -1329,9 +1419,15 @@ window.activePanel = pluginId;
             availablePlugins = await loadPlugins();
             console.log('Available plugins:', availablePlugins);
 
+            // Render discover plugins grid
+            renderDiscoverPluginCards();
+
             // Detect which plugins are actually installed on this site
             installedPlugins = detectInstalledPlugins(availablePlugins);
             console.log('Installed plugins:', installedPlugins);
+
+            // Make installedPlugins globally available (PATCH)
+            window.installedPlugins = installedPlugins;
 
             // If no plugins are installed, hide skeletons and show message
             if (installedPlugins.length === 0) {
@@ -1340,7 +1436,7 @@ window.activePanel = pluginId;
                     loadingStates.plugins.hide();
                 }
 
-                elements.pluginCardsContainer.innerHTML = '<p>No plugins are installed on this site. Visit the SquareHero plugin store to browse available plugins.</p>';
+                elements.pluginCardsContainer.innerHTML = '<p>No plugins installed on this site. Visit the SquareHero plugin store to browse available plugins.</p>';
 
                 // Still load news items
                 await loadNewsItems();
@@ -1399,10 +1495,10 @@ window.activePanel = pluginId;
             }
 
             elements.pluginCardsContainer.innerHTML = `
-                <div class="error-message">
-                    <p>Error initializing dashboard: ${error.message}</p>
-                </div>
-            `;
+            <div class="error-message">
+                <p>Error initializing dashboard: ${error.message}</p>
+            </div>
+        `;
         }
     }
 
@@ -1433,8 +1529,6 @@ window.activePanel = pluginId;
         const plugin = availablePlugins.find(p => p.id === pluginId);
         return plugin && plugin.hasWizard === true;
     }
-
-
 
     /**
      * Load a plugin's wizard script
@@ -1574,7 +1668,36 @@ window.activePanel = pluginId;
         }, 500);
     }
 
+    // Helper function to get the current active plugin ID using various methods (PATCH)
+    function getActivePluginId() {
+        // First check direct global variable
+        if (window.activePanel) {
+            return window.activePanel;
+        }
 
+        // Then check Dashboard property
+        if (activePanel) {
+            return activePanel;
+        }
+
+        // Then check DOM for data attribute
+        const settingsPanel = document.querySelector('.settings-panel.visible');
+        if (settingsPanel && settingsPanel.hasAttribute('data-plugin-id')) {
+            return settingsPanel.getAttribute('data-plugin-id');
+        }
+
+        // Then try to determine from panel title
+        const panelTitle = document.getElementById('plugin-settings-title')?.textContent.trim();
+        if (panelTitle && window.installedPlugins) {
+            const matchingPlugin = window.installedPlugins.find(p => p.name === panelTitle);
+            if (matchingPlugin) {
+                return matchingPlugin.id;
+            }
+        }
+
+        // No plugin ID could be determined
+        return null;
+    }
 
     // Debug utility
     window.testNotificationBar = function () {
@@ -1585,6 +1708,46 @@ window.activePanel = pluginId;
         }, 100);
         console.log("Test notification triggered");
     };
+
+    // Create a MutationObserver to detect when the settings panel becomes visible (PATCH)
+    function initPanelObserver() {
+        const panelObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.type === 'attributes' &&
+                    mutation.attributeName === 'class' &&
+                    mutation.target.classList.contains('visible')) {
+
+                    // Panel has become visible, check if we need to update activePanel
+                    if (!window.activePanel) {
+                        const pluginId = getActivePluginId();
+                        if (pluginId) {
+                            window.activePanel = pluginId;
+                            console.log('Active panel ID updated via observer:', pluginId);
+
+                            // Update the data attribute if needed
+                            if (!mutation.target.hasAttribute('data-plugin-id')) {
+                                mutation.target.setAttribute('data-plugin-id', pluginId);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Start observing the settings panel
+        if (elements.settingsPanel) {
+            panelObserver.observe(elements.settingsPanel, { attributes: true });
+            console.log('Panel observer initialized');
+        }
+    }
+
+    // Add a global accessor for the active panel (PATCH)
+    Object.defineProperty(window, 'dashboardActivePanel', {
+        get: function () {
+            return getActivePluginId();
+        },
+        enumerable: true
+    });
 
     // Public API
     return {
@@ -1606,16 +1769,80 @@ window.activePanel = pluginId;
         hasWizard,
         loadWizardScript,
         showWizard,
-        refreshCurrentPanel
+        refreshCurrentPanel,
+        getActivePluginId // PATCH: Expose the helper function
     };
 })();
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
     Dashboard.init();
+
+    // Initialize panel observer after DOM is loaded (PATCH)
+    const settingsPanel = document.getElementById('settings-panel');
+    if (settingsPanel) {
+        const panelObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.type === 'attributes' &&
+                    mutation.attributeName === 'class' &&
+                    mutation.target.classList.contains('visible')) {
+
+                    // Panel has become visible, check if we need to update activePanel
+                    if (!window.activePanel) {
+                        const pluginId = Dashboard.getActivePluginId();
+                        if (pluginId) {
+                            window.activePanel = pluginId;
+                            console.log('Active panel ID updated via observer:', pluginId);
+
+                            // Update the data attribute if needed
+                            if (!mutation.target.hasAttribute('data-plugin-id')) {
+                                mutation.target.setAttribute('data-plugin-id', pluginId);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        panelObserver.observe(settingsPanel, { attributes: true });
+        console.log('Panel observer initialized');
+    }
 });
 
+// Helper function to get the current active plugin ID - global version (PATCH)
+window.getActivePluginId = function () {
+    if (Dashboard && Dashboard.getActivePluginId) {
+        return Dashboard.getActivePluginId();
+    }
 
+    // Fallbacks in case Dashboard function isn't available
+
+    // First check direct global variable
+    if (window.activePanel) {
+        return window.activePanel;
+    }
+
+    // Then check DOM for data attribute
+    const settingsPanel = document.querySelector('.settings-panel.visible');
+    if (settingsPanel && settingsPanel.hasAttribute('data-plugin-id')) {
+        return settingsPanel.getAttribute('data-plugin-id');
+    }
+
+    // Then try to determine from panel title
+    const panelTitle = document.getElementById('plugin-settings-title')?.textContent.trim();
+    if (panelTitle && window.installedPlugins) {
+        const matchingPlugin = window.installedPlugins.find(p => p.name === panelTitle);
+        if (matchingPlugin) {
+            return matchingPlugin.id;
+        }
+    }
+
+    // No plugin ID could be determined
+    return null;
+};
+
+// Mark that the dashboard patch has been applied (PATCH)
+window.dashboardPatchApplied = true;
 
 // For testing in console
 window.Dashboard = Dashboard;

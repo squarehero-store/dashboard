@@ -121,7 +121,7 @@ h4 {
     z-index:3;
 }
 
-.support-button {
+.support-button,.sh-button {
     background: none !important;
   z-index: 1;
   display: inline-block;
@@ -144,7 +144,7 @@ h4 {
   text-decoration: none !important;
 }
 
-.support-button:before {
+.support-button:before,.sh-button:before {
         content: "";
         position: absolute;
         inset: 0;
@@ -165,10 +165,26 @@ h4 {
 
 /* Main Container */
 .dashboard-container {
-    display: flex;
+    display: block;
     gap: 0;
-    background-color: var(--column-bg-right);
     min-height:700px;
+    background:var(--lightblue);
+    position:relative;
+}
+
+.dashboard-container:before {
+  content: '';
+  background: linear-gradient(180deg, rgba(0, 209, 255, 0.06) 0%, rgba(255, 0, 230, 0.06) 31%, rgba(255, 0, 61, 0.00) 80%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 250px;
+  z-index:1;
+}
+
+.dashboard-tab-content {
+  z-index:2;
 }
 
 /* Column Headers */
@@ -191,15 +207,37 @@ h4 {
 
 /* Columns */
 .plugins-column {
-    background-color: var(--column-bg-left);
     padding: 30px;
     flex:1 0 55%;
 }
 
+.top-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .whats-new-column {
-    background-color: var(--column-bg-right);
     padding: 30px;
     flex:1 0 35%;
+}
+
+#plugin-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+
+/* Status Badge Styles */
+.status-unlicensed {
+  background-color: var(--red);
+  color: white;
+}
+
+.status-connect {
+  background-color: var(--blue);
+  color: white;
 }
 
 /* Plugin Cards */
@@ -207,13 +245,14 @@ h4 {
     background-color: var(--white);
     border-radius: var(--border-radius);
     box-shadow: var(--card-shadow);
-    margin-bottom: 20px;
     overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
     display: flex;
-    align-items: center;
+    gap: 30px;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    padding:20px;
+    padding:30px;
 }
 
 .plugin-card:hover {
@@ -236,7 +275,7 @@ h4 {
 
 .plugin-content {
     flex-grow: 1;
-    padding: 0 0 0 15px;
+    padding: 0;
 }
 
 .plugin-header {
@@ -270,7 +309,7 @@ h4 {
 
 .plugin-description {
     color: var(--text-light);
-    font-size: 14px;
+    font-size: 16px;
 }
 
 /* News Feed */
@@ -1625,5 +1664,190 @@ background:#f3fcfe;
   .help-doc-modal-content {
     width: 95%;
     max-height: 90vh;
+  }
+}
+
+/*DISCOVE*/
+/* Discover Plugins Grid Styles */
+.discover-plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.discover-plugin-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.discover-plugin-card:hover {
+  transform: translateY(-5px);
+}
+
+.discover-plugin-icon {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.discover-plugin-icon img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+.discover-plugin-content {
+  padding: 20px;
+}
+
+.discover-plugin-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--darkblue);
+}
+
+.discover-plugin-description {
+  color: var(--text-light);
+  margin-bottom: 30px;
+}
+
+.discover-plugin-actions {
+  display: block;
+}
+
+.free-trial {
+  padding:15px 30px;
+  color: var(--darkblue)!important;
+}
+
+.fine-print {
+  font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 130%;
+margin-top:10px;
+color:var(--text-light);
+}
+
+/*/////// CONNECTION STUFF */
+/* Connection and Licensing UI Styles */
+
+/* Connection steps */
+.connection-steps {
+  margin: 20px 0;
+  padding-left: 30px;
+}
+
+.connection-steps li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+/* Code snippet container */
+.code-snippet-container {
+  position: relative;
+  margin: 20px 0;
+}
+
+.code-snippet {
+  background-color: #f5f5f5;
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  font-family: monospace;
+  font-size: 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  margin: 0 0 10px 0;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.copy-code-button:hover {
+  background-color: #0aaded;
+}
+
+/* License options */
+.license-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.license-option {
+  background-color: var(--light-gray);
+  border-radius: var(--border-radius);
+  padding: 20px;
+}
+
+.license-option h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.license-option p {
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.license-form {
+  margin-top: 20px;
+}
+
+.license-form .form-group {
+  margin-bottom: 15px;
+}
+
+.license-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.license-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+}
+
+.purchase-button, .activate-button {
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.purchase-button:hover, .activate-button:hover {
+  background-color: #0aaded;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .license-options {
+      grid-template-columns: 1fr;
   }
 }

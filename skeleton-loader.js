@@ -11,13 +11,13 @@ const SkeletonLoader = (function() {
         pluginCard: function() {
             return `
                 <div class="plugin-card skeleton-wrapper">
-                    <div class="plugin-  skeleton-wrapper">
+                    <div class="plugin-top-wrapper  skeleton-wrapper">
                         <div class="skeleton-hexagon"></div>
+                        <div class="skeleton status-badge-skeleton"></div>
                     </div>
                     <div class="plugin-content skeleton-wrapper">
                         <div class="plugin-header">
                             <div class="skeleton skeleton-title"></div>
-                            <div class="skeleton status-badge-skeleton"></div>
                         </div>
                         <div class="skeleton skeleton-text"></div>
                         <div class="skeleton skeleton-text"></div>

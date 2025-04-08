@@ -103,10 +103,21 @@
     margin-bottom: 20px;
     overflow: hidden;
     display: flex;
+    flex-direction:row;
     align-items: center;
     padding: 20px;
     pointer-events: none;
   }
+
+  .plugin-top-wrapper.skeleton-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.plugin-card.skeleton-wrapper {
+    flex-wrap: wrap;
+}
   
   .plugin-icon.skeleton-wrapper {
     width: 80px;

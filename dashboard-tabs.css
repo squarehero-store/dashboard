@@ -1,0 +1,141 @@
+/* SquareHero Dashboard Tabs - CSS Styles
+ * Styles for the tabbed interface on the dashboard home screen
+ */
+
+/* Dashboard Tabs Container */
+.dashboard-tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #e9e9ec;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+}
+
+/* Individual Tab Buttons */
+.dashboard-tab {
+    padding: 15px 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 400;
+    position: relative;
+    color: #555;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.dashboard-tab:hover:not(.active) {
+    color: var(--blue);
+}
+
+.dashboard-tab.active {
+    color: var(--blue);
+    font-weight: 500;
+}
+
+.dashboard-tab.active:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00D1FF 20.4%, #E600FF 55.91%, #FF003D 80.09%);
+}
+
+/* Tab Content Container */
+.dashboard-tabs-content {
+    width: 100%;
+    background-color: var(--light-gray);
+    min-height: 600px;
+}
+
+/* Individual Tab Content Panels */
+.dashboard-tab-content {
+    display: none;
+    padding: 30px;
+    animation: fadeIn 0.3s ease;
+}
+
+.dashboard-tab-content.active {
+    display: block;
+    height:100%;
+}
+
+
+/* Registration Form Styles */
+.registration-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--card-shadow);
+}
+
+.form-description {
+    margin-bottom: 20px;
+}
+
+.registration-help {
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.registration-help a {
+    color: var(--blue);
+    text-decoration: none;
+}
+
+.registration-help a:hover {
+    text-decoration: underline;
+}
+
+/* Registered Plugins Section */
+.registered-plugins-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--card-shadow);
+}
+
+.registered-plugins-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.registered-plugin-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.registered-plugin-item:last-child {
+    border-bottom: none;
+}
+
+.plugin-info h4 {
+    margin: 0 0 5px 0;
+}
+
+.license-info {
+    font-size: 14px;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.activate-button {
+    background-color: var(--green);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
