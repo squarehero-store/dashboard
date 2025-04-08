@@ -1,4 +1,4 @@
-// SquareHero Dashboard Creator v0.1.11
+// SquareHero Dashboard Creator v0.1.12
 // Hosted version - For use with Squarespace
 // Creates a password-protected dashboard page and removes itself from code injection
 
@@ -7,14 +7,14 @@
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
     const headerCodeToInject = `<!-- SquareHero Dashboard Embed -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard-tabs.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/help-docs.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/dashboard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/dashboard-tabs.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/wizard-component.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/help-docs.min.css">
 
 <div class="dashboard-wrapper" data-wizard-enabled="false">
     <header class="dashboard-header">
-        <img src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-logo.png" alt="SquareHero Logo" class="logo">
+        <img src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/sh-logo.png" alt="SquareHero Logo" class="logo">
         <h1 class="dashboard-title">SquareHero Dashboard</h1>
         <button class="support-button">SquareHero Support</button>
     </header>
@@ -143,6 +143,12 @@
             // Now, remove the script tag from code injection
             console.log("Removing script from code injection...");
             await removeScriptTagFromInjection(crumb);
+
+            // Add a delay before refreshing the page
+            console.log("Installation complete. Page will refresh in 3 seconds...");
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
 
         } catch (error) {
             console.error("Error in dashboard creation process:", error);
@@ -312,12 +318,15 @@
                 }
 
                 console.log("Script tag removed successfully");
-                showNotification("Installation complete! Script removed successfully", "#4CAF50");
+                showNotification("Installation complete! Script removed successfully. Page will refresh shortly...", "#4CAF50");
+                return true;
             } else {
                 console.log("Script tag not found in header injection");
-                showNotification("Installation complete! (Script tag not found for removal)", "#FF9800");
+                showNotification("Installation complete! (Script tag not found for removal). Page will refresh shortly...", "#FF9800");
+                return false;
             }
         }
+        return false;
     }
 
     // Helper function to escape special characters in strings for RegExp
