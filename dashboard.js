@@ -624,7 +624,7 @@ const Dashboard = (function () {
         try {
             // Don't show any text loading indicators at all
             // Just return the data and let the caller handle the loading UI
-            const response = await fetch('https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.5/plugins.json');
+            const response = await fetch('https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins.json');
             if (!response.ok) {
                 throw new Error('Failed to load plugins.json');
             }
