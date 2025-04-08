@@ -117,8 +117,8 @@ h4 {
 
 .dashboard-title {
     font-size: 24px;
-    font-weight: 500;
     z-index:3;
+    color:white!important;
 }
 
 .support-button,.sh-button {
@@ -288,6 +288,7 @@ h4 {
 .plugin-title {
     font-size: 18px;
     font-weight: 600;
+    margin:0!important;
 }
 
 .plugin-status {
