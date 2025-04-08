@@ -1,4 +1,4 @@
-// SquareHero Dashboard Creator v0.1.2
+// SquareHero Dashboard Creator v0.1.11
 // Hosted version - For use with Squarespace
 // Creates a password-protected dashboard page and removes itself from code injection
 
@@ -6,7 +6,110 @@
     // Configuration - fixed values
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
-    const headerCodeToInject = `<div><p>SquareHero Dashboard - Created automatically</p></div>`;
+    const headerCodeToInject = `<!-- SquareHero Dashboard Embed -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard-tabs.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/help-docs.min.css">
+
+<div class="dashboard-wrapper" data-wizard-enabled="false">
+    <header class="dashboard-header">
+        <img src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-logo.png" alt="SquareHero Logo" class="logo">
+        <h1 class="dashboard-title">SquareHero Dashboard</h1>
+        <button class="support-button">SquareHero Support</button>
+    </header>
+
+    <div class="dashboard-tabs">
+        <button class="dashboard-tab active" data-tab="plugins">Your Plugins</button>
+        <button class="dashboard-tab" data-tab="discover-plugins">Discover Plugins</button>
+        <button class="dashboard-tab" data-tab="register">Register Plugins</button>
+        <button class="dashboard-tab" data-tab="news">Notifications</button>
+    </div>
+
+    <main class="dashboard-container">
+        <section class="plugins-column dashboard-tab-content active" id="plugins-tab">
+            <div class="column-header">
+                <h2 class="column-title">Manage your plugins</h2>
+                <p class="column-description">Your plugins are shown below. Click any plugin to adjust settings or view documentation.</p>
+            </div>
+
+            <div id="plugin-cards-container">
+                <div class="loading-indicator">
+                </div>
+            </div>
+        </section>
+
+        <section class="whats-new-column dashboard-tab-content" id="news-tab">
+            <div class="column-header">
+                <h2 class="column-title">What's new</h2>
+                <p class="column-description">Stay updated on the latest announcements, feature releases, and
+                    important plugin updates from the SquareHero team.</p>
+            </div>
+
+            <div id="news-items-container">
+                <div class="loading-indicator">
+                    <p>Loading updates...</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="discover-plugins-column dashboard-tab-content" id="discover-plugins-tab">
+            <div class="column-header">
+                <h2 class="column-title">Explore plugins with our no-risk trial</h2>
+                <p class="column-description">Simple setup, instant results - just one click. No code, no downloads, no emails, no commitment.</p>
+            </div>
+            <div id="discover-plugins-content">
+                <p>Dashboard settings content will go here.</p>
+            </div>
+        </section>
+
+        <section class="help-column dashboard-tab-content" id="register-tab">
+            <div class="column-header">
+                <h2 class="column-title">Register</h2>
+                <p class="column-description">Find documentation and support resources.</p>
+            </div>
+            <div id="help-content">
+                <div class="registration-form">
+                    <div class="form-description">
+                        <p>Enter your license key below to register a purchased plugin. License keys are sent to the email address associated with your purchase.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="license-key">License Key</label>
+                        <input type="text" id="license-key" class="setting-input" placeholder="Enter your license key (xxxx-xxxx-xxxx-xxxx)">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button id="register-plugin-button" class="button save-button">Register Plugin</button>
+                    </div>
+                    
+                    <div class="registration-help">
+                        <p>Need help finding your license key? <a href="#" class="help-link">Contact Support</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="settings-panel" id="settings-panel">
+        <div class="panel-header">
+            <h2 class="panel-title" id="plugin-settings-title">Plugin Settings</h2>
+            <button class="close-button" id="close-panel">&times;</button>
+        </div>
+        <div class="panel-content" id="panel-content">
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+</div>
+
+<!-- Script Imports -->
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/settings-components.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/component-system.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/wizard-component.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/dashboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/firebase-docs-integration.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/help-docs-loader.min.js"></script>`;
 
     // Main function to initialize dashboard
     async function initSquareHeroDashboard() {
