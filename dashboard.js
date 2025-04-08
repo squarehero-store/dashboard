@@ -128,7 +128,7 @@ const Dashboard = (function () {
         getWebsiteInfo: async function () {
             try {
                 // Use local JSON file for testing
-                const response = await fetch('squarespace.json');
+                const response = await fetch('https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/squarespace.json');
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch website information');
@@ -606,13 +606,13 @@ const Dashboard = (function () {
         // Load the skeleton styles
         const style = document.createElement('link');
         style.rel = 'stylesheet';
-        style.href = 'skeleton-loader.css';
+        style.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.css';
         document.head.appendChild(style);
 
         // Load the skeleton script
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = 'skeleton-loader.js';
+            script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.js';
             script.onload = resolve;
             script.onerror = reject;
             document.body.appendChild(script);
