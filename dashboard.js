@@ -606,13 +606,13 @@ const Dashboard = (function () {
         // Load the skeleton styles
         const style = document.createElement('link');
         style.rel = 'stylesheet';
-        style.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.css';
+        style.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.min.css';
         document.head.appendChild(style);
 
         // Load the skeleton script
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.js';
+            script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.min.js';
             script.onload = resolve;
             script.onerror = reject;
             document.body.appendChild(script);
@@ -624,7 +624,7 @@ const Dashboard = (function () {
         try {
             // Don't show any text loading indicators at all
             // Just return the data and let the caller handle the loading UI
-            const response = await fetch('plugins.json');
+            const response = await fetch('https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.5/plugins.json');
             if (!response.ok) {
                 throw new Error('Failed to load plugins.json');
             }
@@ -1605,7 +1605,7 @@ const Dashboard = (function () {
 
         // Load wizard styles first if needed
         if (!wizardStylesLoaded) {
-            const styleLink = document.createElement('link');
+            styleLink.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.css';
             styleLink.rel = 'stylesheet';
             styleLink.href = 'wizard-component.css';
             document.head.appendChild(styleLink);
