@@ -1,3 +1,8 @@
+/*Hide squarespace header and footer*/
+#header,#footer-sections {
+  display:none!important;
+}
+
 /* SquareHero Plugin Dashboard Styles */
 
 /* Base Styles */
