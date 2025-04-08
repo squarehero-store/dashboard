@@ -145,7 +145,7 @@ const Dashboard = (function () {
                 const data = await response.json();
 
                 // Extract website ID and URL
-                this.websiteId = data.websiteId || 'unknown-site';
+                this.websiteId = data.website.id || 'unknown-site';
                 this.websiteUrl = `https://${currentDomain}`;
 
                 console.log(`Squarespace Website ID: ${this.websiteId}`);
