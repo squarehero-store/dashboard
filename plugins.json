@@ -5,9 +5,9 @@
       "name": "Scroll to Top Button",
       "description": "This plugin features a dynamic ring that indicates your scroll progress and provides a smooth scroll to the top when clicked.",
       "version": "1.2.2",
-      "icon": "plugins/scroll-to-top/icon.svg",
+      "icon": "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/scroll-to-top/icon.svg",
       "moduleScripts": [
-        "plugins/scroll-to-top/settings.js"
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/scroll-to-top/settings.js"
       ],
       "panelWidth": "half"
     },
@@ -16,9 +16,9 @@
       "name": "Food & Drink Menu Manager",
       "description": "Effortlessly display your food / drinks menu with categorized tabs. Fully responsive and simple to update and control.",
       "version": "1.3.3",
-      "icon": "plugins/food-menu/icon.svg",
+      "icon": "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/icon.svg",
       "moduleScripts": [
-        "plugins/food-menu/settings.js"
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/settings.js"
       ],
       "panelWidth": "half"
     },
@@ -27,9 +27,9 @@
       "name": "Portfolio Plus",
       "description": "All the missing features you wish Portfolio collections could do, now at your finger tips",
       "version": "1.2.0",
-      "icon": "plugins/food-menu/icon.svg",
+      "icon": "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/icon.svg",
       "moduleScripts": [
-        "plugins/food-menu/settings.js"
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/settings.js"
       ],
       "panelWidth": "half"
     },
@@ -38,11 +38,11 @@
       "name": "Real Estate Listings",
       "description": "Showcase your real estate listings with ease, displaying key details like room count, bedrooms, and more. Easily managed through a Google Sheet for quick updates.",
       "version": "1.1.0",
-      "icon": "plugins/real-estate-listings/icon.svg",
+      "icon": "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/icon.svg",
       "moduleScripts": [
-        "plugins/real-estate-listings/property-manager.js",
-        "plugins/real-estate-listings/settings.js",
-        "plugins/real-estate-listings/wizard.js"
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/property-manager.js",
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/settings.js",
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/wizard.js"
       ],
       "hasWizard": true,
       "panelWidth": "full"
@@ -52,9 +52,9 @@
       "name": "Video Thumbnail Previews",
       "description": "Add auto-playing video previews to your Portfolio collections, blog posts, and summary blocks.",
       "version": "0.3.5",
-      "icon": "plugins/food-menu/icon.svg",
+      "icon": "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/icon.svg",
       "moduleScripts": [
-        "plugins/food-menu/settings.js"
+        "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/food-menu/settings.js"
       ],
       "panelWidth": "half"
     }
