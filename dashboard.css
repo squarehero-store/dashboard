@@ -294,6 +294,7 @@ h4 {
     font-size: 18px;
     font-weight: 600;
     margin:0!important;
+    color:var(--darkblue)!important;
 }
 
 .plugin-status {
@@ -438,6 +439,7 @@ background:#f3fcfe;
 .panel-title {
     font-size: 20px;
     font-weight: 500;
+    color:white!important;
 }
 
 .close-button {

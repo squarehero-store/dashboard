@@ -74,265 +74,71 @@ const Dashboard = (function () {
 
     // Firebase service for settings storage
     const FirebaseService = {
-        app: null,
-        auth: null,
-        db: null,
         isInitialized: false,
-        websiteId: null,
-        websiteUrl: null,
-
-        // Initialize Firebase
-        initialize: async function () {
-            if (this.isInitialized) return;
-
-            try {
-                // Import Firebase modules
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js");
-                const { getAnalytics } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js");
-                const { getAuth } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js");
-                const { getDatabase } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
-
-                // Firebase configuration
-                const firebaseConfig = {
-                    apiKey: "AIzaSyBHbWQTlPsy46Q3aOznNI9By5G-2QU3jX8",
-                    authDomain: "portfolio-summary-block.firebaseapp.com",
-                    databaseURL: "https://portfolio-summary-block-default-rtdb.firebaseio.com",
-                    projectId: "portfolio-summary-block",
-                    storageBucket: "portfolio-summary-block.appspot.com",
-                    messagingSenderId: "654906694260",
-                    appId: "1:654906694260:web:a235c68efd984ea390cf21",
-                    measurementId: "G-SYM66R1G98"
-                };
-
-                // Initialize Firebase
-                this.app = initializeApp(firebaseConfig);
-                const analytics = getAnalytics(this.app);
-                this.auth = getAuth(this.app);
-                this.db = getDatabase(this.app);
-
-                // Get website info
-                await this.getWebsiteInfo();
-
-                this.isInitialized = true;
-                console.log('Firebase initialized successfully');
-            } catch (error) {
-                console.error('Error initializing Firebase:', error);
+        
+        // Initialize by delegating to the secure service
+        initialize: async function() {
+            if (this.isInitialized) return true;
+            
+            if (!window.SecureFirebaseAuth) {
+                console.error('Secure Firebase Authentication service not found');
                 return false;
             }
-
-            return true;
+            
+            const result = await window.SecureFirebaseAuth.initialize();
+            this.isInitialized = result;
+            return result;
         },
-
-
-        // Get Squarespace website information
-        getWebsiteInfo: async function () {
-            try {
-                // Use the current site's domain to fetch configuration
-                const currentDomain = window.location.hostname;
-                const configUrl = `https://${currentDomain}/?format=json`;
-
-                const response = await fetch(configUrl, {
-                    credentials: 'include', // Important for accessing Squarespace site data
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch Squarespace site configuration');
-                }
-
-                const data = await response.json();
-
-                // Extract website ID and URL
-                this.websiteId = data.website.id || 'unknown-site';
-                this.websiteUrl = `https://${currentDomain}`;
-
-                console.log(`Squarespace Website ID: ${this.websiteId}`);
-                console.log(`Website URL: ${this.websiteUrl}`);
-
-                return {
-                    websiteId: this.websiteId,
-                    websiteUrl: this.websiteUrl
-                };
-            } catch (error) {
-                console.error('Error getting Squarespace website info:', error);
-
-                // Fallback to local testing configuration
-                this.websiteId = 'local-test-site';
-                this.websiteUrl = window.location.origin;
-
-                return {
-                    websiteId: this.websiteId,
-                    websiteUrl: this.websiteUrl
-                };
+        
+        // Get website info by delegating to the secure service
+        getWebsiteInfo: async function() {
+            if (!window.SecureFirebaseAuth) {
+                console.error('Secure Firebase Authentication service not found');
+                throw new Error('Secure Firebase Authentication service not available');
             }
+            
+            return await window.SecureFirebaseAuth.getWebsiteInfo();
         },
-
-        // Authenticate anonymously with Firebase
-        authenticate: async function () {
-            if (!this.isInitialized) await this.initialize();
-
-            try {
-                const { signInAnonymously } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js");
-                const userCredential = await signInAnonymously(this.auth);
-                console.log('Authenticated anonymously with Firebase', userCredential.user.uid);
-                return userCredential.user;
-            } catch (error) {
-                console.error('Error authenticating with Firebase:', error);
+        
+        // Authenticate by delegating to the secure service
+        authenticate: async function() {
+            if (!window.SecureFirebaseAuth) {
+                console.error('Secure Firebase Authentication service not found');
                 return null;
             }
+            
+            return await window.SecureFirebaseAuth.authenticate();
         },
-
-        // Get plugin settings from Firebase
-        getPluginSettings: async function (pluginId, defaultSettings = {}) {
-            if (!this.isInitialized) await this.initialize();
-
+        
+        // Get plugin settings by delegating to the secure service
+        getPluginSettings: async function(pluginId, defaultSettings = {}) {
+            if (!window.SecureFirebaseAuth) {
+                console.error('Secure Firebase Authentication service not found');
+                return defaultSettings;
+            }
+            
             try {
-                // Authenticate if needed
-                await this.authenticate();
-
-                // Import functions
-                const { ref, get, set, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
-
-                // Create a unique installation key for this site
-                const installationKey = this.websiteUrl
-                    .replace(/^https?:\/\//, '')
-                    .replace(/^www\./, '')
-                    .replace(/\/$/, '')
-                    .replace(/\./g, '-');
-
-                // Check for existing mapping
-                const mappingRef = ref(this.db, `plugins/${pluginId}/websiteIdMapping/${this.websiteId}`);
-                const mappingSnapshot = await get(mappingRef);
-
-                let activeKey = installationKey;
-
-                if (mappingSnapshot.exists()) {
-                    // Use existing mapping
-                    activeKey = mappingSnapshot.val();
-                    console.log(`Found existing mapping for website ID ${this.websiteId}`);
-                } else {
-                    // Create new mapping
-                    await set(mappingRef, installationKey);
-                    console.log(`Created new mapping for website ID ${this.websiteId}`);
-                }
-
-                // Set up data references
-                const pluginDataRef = ref(this.db, `plugins/${pluginId}/installations/${activeKey}`);
-                const settingsRef = ref(this.db, `plugins/${pluginId}/installations/${activeKey}/settings`);
-
-                // Check if installation exists
-                const dataSnapshot = await get(pluginDataRef);
-
-                if (!dataSnapshot.exists()) {
-                    // First-time setup with default settings
-                    const initialData = {
-                        settings: defaultSettings,
-                        websiteId: this.websiteId,
-                        websiteUrl: this.websiteUrl,
-                        createdAt: serverTimestamp(),
-                        lastUpdated: serverTimestamp()
-                    };
-
-                    // Save to Firebase
-                    await set(pluginDataRef, initialData);
-
-                    console.log(`Created default settings for plugin: ${pluginId}`);
-                    return defaultSettings;
-                } else {
-                    // Get settings
-                    const settingsSnapshot = await get(settingsRef);
-                    let settings = defaultSettings;
-
-                    if (settingsSnapshot.exists()) {
-                        settings = settingsSnapshot.val();
-                        // Ensure settings has the enabled property
-                        if (!settings.hasOwnProperty('enabled') && defaultSettings.hasOwnProperty('enabled')) {
-                            settings.enabled = defaultSettings.enabled;
-                        }
-                    }
-
-                    // Update URL reference and lastSeen timestamp
-                    await set(ref(this.db, `plugins/${pluginId}/installations/${activeKey}/websiteUrl`), this.websiteUrl);
-                    await set(ref(this.db, `plugins/${pluginId}/installations/${activeKey}/lastSeen`), serverTimestamp());
-
-                    console.log(`Retrieved settings for plugin: ${pluginId}`, settings);
-                    return settings;
-                }
+                return await window.SecureFirebaseAuth.getPluginSettings(pluginId, defaultSettings);
             } catch (error) {
                 console.error(`Error getting settings for plugin ${pluginId}:`, error);
                 return defaultSettings;
             }
         },
-
-        // Update plugin settings in Firebase
-        updatePluginSettings: async function (pluginId, settings) {
-            if (!this.isInitialized) await this.initialize();
-
+        
+        // Update plugin settings by delegating to the secure service
+        updatePluginSettings: async function(pluginId, settings) {
+            if (!window.SecureFirebaseAuth) {
+                console.error('Secure Firebase Authentication service not found');
+                return false;
+            }
+            
             try {
-                // Authenticate if needed
-                await this.authenticate();
-
-                // Import functions
-                const { ref, get, set, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
-
-                // Get installation key
-                const mappingRef = ref(this.db, `plugins/${pluginId}/websiteIdMapping/${this.websiteId}`);
-                const mappingSnapshot = await get(mappingRef);
-
-                if (!mappingSnapshot.exists()) {
-                    console.error(`No installation found for website ID ${this.websiteId}`);
-
-                    // If no mapping exists, create one
-                    const installationKey = this.websiteUrl
-                        .replace(/^https?:\/\//, '')
-                        .replace(/^www\./, '')
-                        .replace(/\/$/, '')
-                        .replace(/\./g, '-');
-
-                    await set(mappingRef, installationKey);
-                    console.log(`Created new mapping: ${this.websiteId} -> ${installationKey}`);
-
-                    // Also create the base installation record
-                    const installationRef = ref(this.db, `plugins/${pluginId}/installations/${installationKey}`);
-                    await set(installationRef, {
-                        websiteId: this.websiteId,
-                        websiteUrl: this.websiteUrl,
-                        createdAt: serverTimestamp(),
-                        lastUpdated: serverTimestamp(),
-                        settings: settings
-                    });
-
-                    return true;
-                }
-
-                const installationKey = mappingSnapshot.val();
-
-                // Clean settings object to remove undefined values
-                const cleanSettings = JSON.parse(JSON.stringify(settings));
-
-                // Update settings
-                const settingsRef = ref(this.db, `plugins/${pluginId}/installations/${installationKey}/settings`);
-                await set(settingsRef, cleanSettings);
-
-                // Update last updated timestamp
-                const lastUpdatedRef = ref(this.db, `plugins/${pluginId}/installations/${installationKey}/lastUpdated`);
-                await set(lastUpdatedRef, serverTimestamp());
-
-                // Verify the write worked by reading it back
-                const verifySnapshot = await get(settingsRef);
-                if (!verifySnapshot.exists()) {
-                    console.error("Failed to verify settings write to Firebase");
-                    return false;
-                }
-
-                return true;
+                return await window.SecureFirebaseAuth.updatePluginSettings(pluginId, settings);
             } catch (error) {
                 console.error(`Error updating settings for plugin ${pluginId}:`, error);
                 return false;
             }
-        },
+        }
     };
 
     // Plugin Registry for module system
@@ -838,8 +644,6 @@ const Dashboard = (function () {
                 console.log('Added data-plugin-id attribute to settings panel');
             }
 
-            // Simulate loading delay (remove in production)
-            setTimeout(() => {
                 // Check if this plugin has a wizard and should show it
                 const hasWizard = plugin.hasWizard === true;
 
@@ -1082,7 +886,6 @@ const Dashboard = (function () {
                         customModule.loadSettings(elements.panelContent, plugin.settings);
                     }
                 }
-            }, 300);
         } catch (error) {
             console.error(`Error loading settings for plugin ${pluginId}:`, error);
 
