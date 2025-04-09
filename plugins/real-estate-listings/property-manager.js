@@ -246,7 +246,7 @@
                         }
                         
                         // First load the base property data from Squarespace JSON
-                        const jsonPath = '/plugins/real-estate-listings/properties-data.json';
+                        const jsonPath = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/real-estate-listings/properties-data.json';
                         const response = await fetch(jsonPath);
                         
                         if (!response.ok) {
