@@ -1,6 +1,7 @@
 /**
  * SquareHero Secure Firebase Authentication
  * Uses website ID and dashboard page ID to provide secure plugin settings storage
+ * Structured by site with human-readable URLs
  */
 
 // Core Firebase Authentication Service
@@ -15,6 +16,7 @@ window.SecureFirebaseAuth = (function() {
         dashboardPageId: null,
         securityKey: null,
         websiteUrl: null,
+        normalizedUrl: null,
 
         // Initialize Firebase
         initialize: async function() {
@@ -112,22 +114,30 @@ window.SecureFirebaseAuth = (function() {
                 
                 // Create a combined security key using both IDs - this is our primary identifier
                 const securityKey = `${websiteId}-${dashboardPageId}`;
+                
+                // Get and normalize the website URL for human-readable path
+                this.websiteUrl = window.location.origin;
+                this.normalizedUrl = this.websiteUrl
+                    .replace(/^https?:\/\//, '')     // Remove protocol
+                    .replace(/\/$/, '')              // Remove trailing slash
+                    .replace(/\./g, '-');            // Replace dots with dashes for Firebase path safety
                     
                 console.log('🔐 [SecureAuth] Security authentication established:');
                 console.log('- Website ID:', websiteId);
                 console.log('- Dashboard Page ID:', dashboardPageId);
                 console.log('- Security Key:', securityKey);
+                console.log('- Normalized URL:', this.normalizedUrl);
                 
                 this.websiteId = websiteId;
                 this.dashboardPageId = dashboardPageId;
                 this.securityKey = securityKey;
-                this.websiteUrl = window.location.origin;
                 
                 return {
                     websiteId: this.websiteId,
                     dashboardPageId: this.dashboardPageId,
                     securityKey: this.securityKey,
-                    websiteUrl: this.websiteUrl
+                    websiteUrl: this.websiteUrl,
+                    normalizedUrl: this.normalizedUrl
                 };
             } catch (error) {
                 console.error('🔐 [SecureAuth] Error getting Squarespace website info:', error);
@@ -160,12 +170,13 @@ window.SecureFirebaseAuth = (function() {
 
             try {
                 console.log('🔐 [SecureAuth] Getting settings for plugin:', pluginId);
+                console.log('🔐 [SecureAuth] Using normalized URL:', this.normalizedUrl);
                 console.log('🔐 [SecureAuth] Using security key:', this.securityKey);
                 
-                // Verify we have a security key
-                if (!this.securityKey) {
-                    console.error('🔐 [SecureAuth] No security key available! Cannot get settings.');
-                    throw new Error('No security key available for Firebase authentication');
+                // Verify we have a security key and normalized URL
+                if (!this.securityKey || !this.normalizedUrl) {
+                    console.error('🔐 [SecureAuth] Missing security key or URL! Cannot get settings.');
+                    throw new Error('Missing required authentication data for Firebase');
                 }
 
                 // Authenticate if needed
@@ -174,66 +185,78 @@ window.SecureFirebaseAuth = (function() {
                 // Import functions
                 const { ref, get, set, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
 
-                // We now use the security key directly as the installation key for Firebase
-                // This simplifies our approach and provides better security
-                const installationPath = `plugins/${pluginId}/installations/${this.securityKey}`;
-                console.log('🔐 [SecureAuth] Firebase path:', installationPath);
+                // The new site-centric path structure
+                // /sites/{normalizedUrl}/plugins/{pluginId}/settings
+                const siteRef = ref(this.db, `sites/${this.normalizedUrl}`);
+                const pluginPath = `sites/${this.normalizedUrl}/plugins/${pluginId}`;
+                const settingsPath = `${pluginPath}/settings`;
                 
-                // Set up data references
-                const pluginDataRef = ref(this.db, installationPath);
-                const settingsRef = ref(this.db, `${installationPath}/settings`);
-
-                // Check if installation exists
-                console.log('🔐 [SecureAuth] Checking if installation exists');
-                const dataSnapshot = await get(pluginDataRef);
-                console.log('🔐 [SecureAuth] Installation exists:', dataSnapshot.exists());
-
-                if (!dataSnapshot.exists()) {
-                    // First-time setup with default settings
-                    console.log('🔐 [SecureAuth] First-time setup - creating default settings');
-                    
-                    const initialData = {
-                        settings: defaultSettings,
+                console.log('🔐 [SecureAuth] Plugin path:', pluginPath);
+                
+                // First check if the site entry exists
+                const siteSnapshot = await get(siteRef);
+                
+                if (!siteSnapshot.exists()) {
+                    // Create the site entry with security key
+                    console.log('🔐 [SecureAuth] Site not found, creating new site entry');
+                    await set(siteRef, {
+                        key: this.securityKey,
                         websiteId: this.websiteId,
                         dashboardPageId: this.dashboardPageId,
                         websiteUrl: this.websiteUrl,
                         createdAt: serverTimestamp(),
-                        lastUpdated: serverTimestamp(),
-                        lastSeen: serverTimestamp()
-                    };
+                        lastUpdated: serverTimestamp()
+                    });
+                } else {
+                    // Verify the security key matches
+                    const siteData = siteSnapshot.val();
                     
-                    console.log('🔐 [SecureAuth] Initial data:', initialData);
-
-                    // Save to Firebase
-                    console.log('🔐 [SecureAuth] Writing initial data to Firebase');
-                    await set(pluginDataRef, initialData);
-
+                    if (siteData.key !== this.securityKey) {
+                        console.error('🔐 [SecureAuth] Security key mismatch! Possible security issue.');
+                        
+                        // Log details about the mismatch
+                        console.error('Stored key:', siteData.key);
+                        console.error('Current key:', this.securityKey);
+                        
+                        throw new Error('Security key verification failed');
+                    }
+                    
+                    // Update the lastSeen timestamp
+                    await set(ref(this.db, `sites/${this.normalizedUrl}/lastSeen`), serverTimestamp());
+                }
+                
+                // Now check if plugin settings exist
+                const settingsRef = ref(this.db, settingsPath);
+                const settingsSnapshot = await get(settingsRef);
+                
+                if (!settingsSnapshot.exists()) {
+                    // First-time setup with default settings
+                    console.log('🔐 [SecureAuth] First-time setup for plugin - creating default settings');
+                    
+                    // Create plugin directory if it doesn't exist
+                    await set(ref(this.db, pluginPath), {
+                        createdAt: serverTimestamp(),
+                        lastUpdated: serverTimestamp()
+                    });
+                    
+                    // Save default settings
+                    await set(settingsRef, defaultSettings);
                     console.log(`🔐 [SecureAuth] Created default settings for plugin: ${pluginId}`);
                     return defaultSettings;
                 } else {
-                    // Get settings
-                    console.log('🔐 [SecureAuth] Installation found, retrieving settings');
-                    const settingsSnapshot = await get(settingsRef);
-                    let settings = defaultSettings;
-
-                    if (settingsSnapshot.exists()) {
-                        settings = settingsSnapshot.val();
-                        console.log('🔐 [SecureAuth] Retrieved settings:', settings);
-                        
-                        // Ensure settings has the enabled property
-                        if (!settings.hasOwnProperty('enabled') && defaultSettings.hasOwnProperty('enabled')) {
-                            settings.enabled = defaultSettings.enabled;
-                        }
-                    } else {
-                        console.log('🔐 [SecureAuth] No settings found, using defaults:', defaultSettings);
+                    // Get existing settings
+                    console.log('🔐 [SecureAuth] Plugin settings found, retrieving');
+                    let settings = settingsSnapshot.val();
+                    
+                    // Ensure settings has the enabled property
+                    if (!settings.hasOwnProperty('enabled') && defaultSettings.hasOwnProperty('enabled')) {
+                        settings.enabled = defaultSettings.enabled;
                     }
+                    
+                    // Update last accessed timestamp
+                    await set(ref(this.db, `${pluginPath}/lastAccessed`), serverTimestamp());
 
-                    // Update URL reference and lastSeen timestamp
-                    console.log('🔐 [SecureAuth] Updating lastSeen timestamp');
-                    await set(ref(this.db, `${installationPath}/websiteUrl`), this.websiteUrl);
-                    await set(ref(this.db, `${installationPath}/lastSeen`), serverTimestamp());
-
-                    console.log(`🔐 [SecureAuth] Retrieved settings for plugin: ${pluginId}`);
+                    console.log(`🔐 [SecureAuth] Retrieved settings for plugin: ${pluginId}`, settings);
                     return settings;
                 }
             } catch (error) {
@@ -252,12 +275,12 @@ window.SecureFirebaseAuth = (function() {
             try {
                 console.log('🔐 [SecureAuth] Updating settings for plugin:', pluginId);
                 console.log('🔐 [SecureAuth] Settings to update:', settings);
-                console.log('🔐 [SecureAuth] Using security key:', this.securityKey);
+                console.log('🔐 [SecureAuth] Using normalized URL:', this.normalizedUrl);
                 
-                // Verify we have a security key
-                if (!this.securityKey) {
-                    console.error('🔐 [SecureAuth] No security key available! Cannot update settings.');
-                    throw new Error('No security key available for Firebase authentication');
+                // Verify we have a normalized URL
+                if (!this.normalizedUrl) {
+                    console.error('🔐 [SecureAuth] No normalized URL available! Cannot update settings.');
+                    throw new Error('Missing normalized URL for Firebase path');
                 }
 
                 // Authenticate if needed
@@ -266,22 +289,24 @@ window.SecureFirebaseAuth = (function() {
                 // Import functions
                 const { ref, get, set, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
 
-                // We use the security key directly as the installation path
-                const installationPath = `plugins/${pluginId}/installations/${this.securityKey}`;
-                console.log('🔐 [SecureAuth] Firebase path:', installationPath);
+                // The site-centric path for this plugin's settings
+                const pluginPath = `sites/${this.normalizedUrl}/plugins/${pluginId}`;
+                const settingsPath = `${pluginPath}/settings`;
+                
+                console.log('🔐 [SecureAuth] Plugin settings path:', settingsPath);
                 
                 // Clean settings object to remove undefined values
                 const cleanSettings = JSON.parse(JSON.stringify(settings));
 
                 // Update settings
                 console.log('🔐 [SecureAuth] Writing settings to Firebase');
-                const settingsRef = ref(this.db, `${installationPath}/settings`);
+                const settingsRef = ref(this.db, settingsPath);
                 await set(settingsRef, cleanSettings);
 
                 // Update last updated timestamp
                 console.log('🔐 [SecureAuth] Updating lastUpdated timestamp');
-                const lastUpdatedRef = ref(this.db, `${installationPath}/lastUpdated`);
-                await set(lastUpdatedRef, serverTimestamp());
+                await set(ref(this.db, `${pluginPath}/lastUpdated`), serverTimestamp());
+                await set(ref(this.db, `sites/${this.normalizedUrl}/lastUpdated`), serverTimestamp());
 
                 // Verify the write worked by reading it back
                 console.log('🔐 [SecureAuth] Verifying write operation');
@@ -296,6 +321,57 @@ window.SecureFirebaseAuth = (function() {
             } catch (error) {
                 console.error(`🔐 [SecureAuth] Error updating settings for plugin ${pluginId}:`, error);
                 throw error; // No fallbacks - propagate the error
+            }
+        },
+        
+        // List all plugins for the current site
+        listSitePlugins: async function() {
+            if (!this.isInitialized) {
+                console.log('🔐 [SecureAuth] Service not initialized, initializing now');
+                await this.initialize();
+            }
+            
+            try {
+                console.log('🔐 [SecureAuth] Listing all plugins for site:', this.normalizedUrl);
+                
+                // Verify we have a normalized URL
+                if (!this.normalizedUrl) {
+                    console.error('🔐 [SecureAuth] No normalized URL available! Cannot list plugins.');
+                    throw new Error('Missing normalized URL for Firebase path');
+                }
+                
+                // Authenticate if needed
+                await this.authenticate();
+                
+                // Import functions
+                const { ref, get } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
+                
+                // Get all plugins for this site
+                const pluginsRef = ref(this.db, `sites/${this.normalizedUrl}/plugins`);
+                const pluginsSnapshot = await get(pluginsRef);
+                
+                if (!pluginsSnapshot.exists()) {
+                    console.log('🔐 [SecureAuth] No plugins found for this site');
+                    return [];
+                }
+                
+                // Process the plugins data
+                const pluginsData = pluginsSnapshot.val();
+                const pluginsList = Object.keys(pluginsData).map(pluginId => {
+                    const pluginData = pluginsData[pluginId];
+                    return {
+                        id: pluginId,
+                        settings: pluginData.settings || {},
+                        lastUpdated: pluginData.lastUpdated || null,
+                        createdAt: pluginData.createdAt || null
+                    };
+                });
+                
+                console.log('🔐 [SecureAuth] Found plugins:', pluginsList);
+                return pluginsList;
+            } catch (error) {
+                console.error('🔐 [SecureAuth] Error listing site plugins:', error);
+                throw error;
             }
         }
     };
@@ -326,7 +402,8 @@ window.inspectSecureAuth = function() {
         websiteId: window.SecureFirebaseAuth.websiteId,
         dashboardPageId: window.SecureFirebaseAuth.dashboardPageId,
         securityKey: window.SecureFirebaseAuth.securityKey,
-        websiteUrl: window.SecureFirebaseAuth.websiteUrl
+        websiteUrl: window.SecureFirebaseAuth.websiteUrl,
+        normalizedUrl: window.SecureFirebaseAuth.normalizedUrl
     });
     return window.SecureFirebaseAuth;
 };
