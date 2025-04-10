@@ -7,14 +7,14 @@
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
     const headerCodeToInject = `<!-- SquareHero Dashboard Embed -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/dashboard.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/dashboard-tabs.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/wizard-component.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/help-docs.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/dashboard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard-tabs.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/help-docs.min.css">
 
 <div class="dashboard-wrapper" data-wizard-enabled="false">
     <header class="dashboard-header">
-        <img src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.15/sh-logo.png" alt="SquareHero Logo" class="logo">
+        <img src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-logo.png" alt="SquareHero Logo" class="logo">
         <h1 class="dashboard-title">SquareHero Dashboard</h1>
         <button class="support-button">SquareHero Support</button>
     </header>
@@ -104,12 +104,16 @@
 </div>
 
 <!-- Script Imports -->
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/settings-components.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/component-system.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/wizard-component.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/dashboard.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/firebase-docs-integration.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.1.10/help-docs-loader.min.js"></script>`;
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/settings-components.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/component-system.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/wizard-component.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/auth.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/dashboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/firebase-docs-integration.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/help-docs-loader.min.js"></script>
+<!-- Additional Resources -->
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.css">`;
 
     // Main function to initialize dashboard
     async function initSquareHeroDashboard() {
@@ -143,6 +147,10 @@
             // Now, remove the script tag from code injection
             console.log("Removing script from code injection...");
             await removeScriptTagFromInjection(crumb);
+
+            // Add helper script to site-wide header
+            console.log("Adding helper script to site-wide header...");
+            await addHelperScriptToHeader(crumb);
 
             // Add a delay before refreshing the page
             console.log("Installation complete. Page will refresh in 3 seconds...");
@@ -318,15 +326,79 @@
                 }
 
                 console.log("Script tag removed successfully");
-                showNotification("Installation complete! Script removed successfully. Page will refresh shortly...", "#4CAF50");
                 return true;
             } else {
                 console.log("Script tag not found in header injection");
-                showNotification("Installation complete! (Script tag not found for removal). Page will refresh shortly...", "#FF9800");
                 return false;
             }
         }
         return false;
+    }
+
+    // Function to add helper script to site-wide header
+    async function addHelperScriptToHeader(crumb) {
+        // First, retrieve current injection settings
+        const settingsResponse = await fetch(`${window.location.origin}/api/config/GetInjectionSettings`, {
+            method: "GET",
+            headers: {
+                "x-csrf-token": crumb,
+                "accept": "application/json, text/plain, */*"
+            },
+            credentials: "include"
+        });
+
+        if (!settingsResponse.ok) {
+            throw new Error(`Failed to get injection settings: ${settingsResponse.status}`);
+        }
+
+        const currentSettings = await settingsResponse.json();
+        console.log("Current code injection retrieved for adding helper script");
+
+        // Define the helper script to add
+        const helperScript = `<!-- SquareHero Helper Script -->
+<script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.css">`;
+
+        // Check if the helper script is already in the header
+        if (currentSettings.header && 
+           (currentSettings.header.includes('sh-helper.min.js') || 
+            currentSettings.header.includes('sh-helper.min.css'))) {
+            console.log("Helper script already exists in header, skipping addition");
+            showNotification("Helper script already exists in header", "#FF9800");
+            return false;
+        }
+
+        // Add the helper script to the current header
+        const newHeader = currentSettings.header ? 
+            (currentSettings.header.trim() + '\n\n' + helperScript) : 
+            helperScript;
+
+        // Prepare form-urlencoded body
+        const formBody = new URLSearchParams({
+            header: newHeader,
+            footer: currentSettings.footer || '',
+            lockPage: currentSettings.lockPage || '',
+            postItem: currentSettings.postItem || ''
+        });
+
+        // Save updated settings
+        const saveResponse = await fetch(`${window.location.origin}/api/config/SaveInjectionSettings`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+                "x-csrf-token": crumb
+            },
+            body: formBody.toString(),
+            credentials: "include"
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error(`Failed to save updated injection settings with helper script: ${saveResponse.status}`);
+        }
+
+        console.log("Helper script added successfully");
+        showNotification("Installation complete! Helper script added successfully. Page will refresh shortly...", "#4CAF50");
+        return true;
     }
 
     // Helper function to escape special characters in strings for RegExp
