@@ -75,6 +75,7 @@ h4 {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    width:100%;
 }
 
 /* Header */
@@ -385,19 +386,6 @@ background:#f3fcfe;
   width: 80%;
   right:0;
   left:unset;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .settings-panel.panel-width-full {
-      width: 90%;
-      right: -90%;
-  }
-  
-  .settings-panel.panel-width-full .notification-bar {
-      width: 90%;
-      left: 10%;
-  }
 }
 
 @media (max-width: 768px) {
