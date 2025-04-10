@@ -7,7 +7,7 @@
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
     const headerCodeToInject = `<!-- SquareHero Dashboard Embed -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0.2.3/dashboard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/dashboard-tabs.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/help-docs.min.css">
