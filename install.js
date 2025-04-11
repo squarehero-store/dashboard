@@ -130,15 +130,19 @@
 
     // Create and manage the full-screen overlay
     function createInstallOverlay() {
+        console.log("Creating installation overlay...");
         // Create the overlay
         const overlay = document.createElement('div');
         overlay.id = 'squarehero-install-overlay';
 
         // Add the helper CSS for installation styling
+        console.log("Adding helper CSS for styling...");
         const helperCSS = document.createElement('link');
         helperCSS.rel = 'stylesheet';
         helperCSS.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.css';
         document.head.appendChild(helperCSS);
+
+        console.log("Current body children count:", document.body.children.length);
 
         // Add gradient circles for background effect
         const gradientCircle1 = document.createElement('div');
@@ -205,6 +209,15 @@
         const statusText = document.createElement('div');
         statusText.id = 'squarehero-status-text';
         statusText.textContent = 'Installing SquareHero Dashboard';
+
+        console.log("Overlay element created with ID:", overlay.id);
+        console.log("Appending overlay to document body...");
+        document.body.appendChild(overlay);
+        console.log("Overlay appended. Is overlay in DOM?", document.getElementById('squarehero-install-overlay') !== null);
+        console.log("Overlay z-index:", getComputedStyle(overlay).zIndex);
+        console.log("Overlay visibility:", getComputedStyle(overlay).visibility);
+        console.log("Overlay display:", getComputedStyle(overlay).display);
+        console.log("Overlay opacity:", getComputedStyle(overlay).opacity);
 
         // Funny message container
         const funnyMessageContainer = document.createElement('div');
