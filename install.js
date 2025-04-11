@@ -154,46 +154,46 @@
     // Create and manage the full-screen overlay
     function createInstallOverlay() {
         console.log("Creating installation overlay...");
-
+    
         // Get the iframe element
         const iframe = document.getElementById('sqs-site-frame');
         if (!iframe || !iframe.contentDocument) {
             console.error("Could not find #sqs-site-frame or access its contentDocument");
             return null;
         }
-
+    
         const iframeDocument = iframe.contentDocument;
-
+    
         // Create the overlay
         const overlay = iframeDocument.createElement('div');
         overlay.id = 'squarehero-install-overlay';
-
+    
         // Add the helper CSS for installation styling
         const helperCSS = iframeDocument.createElement('link');
         helperCSS.rel = 'stylesheet';
         helperCSS.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.css';
-
+    
         try {
             // Add CSS to iframe document head
             iframeDocument.head.appendChild(helperCSS);
-
+    
             // Force styles on the overlay element to ensure visibility
             overlay.style.cssText = `
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background-color: rgba(0, 9, 25, 0.95) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            z-index: 9999999 !important;
-            color: white !important;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-        `;
-
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background-color: rgba(0, 9, 25, 0.95) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                z-index: 9999999 !important;
+                color: white !important;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+            `;
+    
             // Add the overlay to the iframe document body
             iframeDocument.body.appendChild(overlay);
             console.log("Overlay added to iframe document");
@@ -201,80 +201,80 @@
             console.error("Error adding overlay to iframe document:", e);
             return null;
         }
-
+    
         // Add gradient circles for background effect
         const gradientCircle1 = iframeDocument.createElement('div');
         gradientCircle1.className = 'gradient-circle-1';
         gradientCircle1.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 639 701" fill="none">
-            <g filter="url(#a)" opacity=".4">
-                <circle cx="288.5" cy="350.5" r="256.5" fill="url(#b)" fill-opacity=".7"></circle>
-            </g>
-            <defs>
-                <linearGradient id="b" x1="288.5" x2="288.5" y1="94" y2="607" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#00D1FF"></stop>
-                    <stop offset=".45" stop-color="#A603F3"></stop>
-                    <stop offset=".975" stop-color="#FF00E6"></stop>
-                </linearGradient>
-                <filter id="a" width="701" height="701" x="-62" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-                    <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
-                    <feGaussianBlur result="effect1_foregroundBlur_200_26237" stdDeviation="47"></feGaussianBlur>
-                </filter>
-            </defs>
-        </svg>
-    `;
-
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 639 701" fill="none">
+                <g filter="url(#a)" opacity=".4">
+                    <circle cx="288.5" cy="350.5" r="256.5" fill="url(#b)" fill-opacity=".7"></circle>
+                </g>
+                <defs>
+                    <linearGradient id="b" x1="288.5" x2="288.5" y1="94" y2="607" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00D1FF"></stop>
+                        <stop offset=".45" stop-color="#A603F3"></stop>
+                        <stop offset=".975" stop-color="#FF00E6"></stop>
+                    </linearGradient>
+                    <filter id="a" width="701" height="701" x="-62" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+                        <feGaussianBlur result="effect1_foregroundBlur_200_26237" stdDeviation="47"></feGaussianBlur>
+                    </filter>
+                </defs>
+            </svg>
+        `;
+    
         const gradientCircle2 = iframeDocument.createElement('div');
         gradientCircle2.className = 'gradient-circle-2';
         gradientCircle2.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 542 542" fill="none">
-            <g filter="url(#a)" opacity=".4">
-                <circle cx="271" cy="271" r="177" fill="url(#b)"></circle>
-            </g>
-            <defs>
-                <linearGradient id="b" x1="271" x2="271" y1="94" y2="448" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#00D1FF"></stop>
-                    <stop offset=".45" stop-color="#A603F3"></stop>
-                    <stop offset=".975" stop-color="#FF00E6"></stop>
-                </linearGradient>
-                <filter id="a" width="542" height="542" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-                    <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
-                    <feGaussianBlur result="effect1_foregroundBlur_206_91770" stdDeviation="47"></feGaussianBlur>
-                </filter>
-            </defs>
-        </svg>
-    `;
-
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 542 542" fill="none">
+                <g filter="url(#a)" opacity=".4">
+                    <circle cx="271" cy="271" r="177" fill="url(#b)"></circle>
+                </g>
+                <defs>
+                    <linearGradient id="b" x1="271" x2="271" y1="94" y2="448" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00D1FF"></stop>
+                        <stop offset=".45" stop-color="#A603F3"></stop>
+                        <stop offset=".975" stop-color="#FF00E6"></stop>
+                    </linearGradient>
+                    <filter id="a" width="542" height="542" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+                        <feGaussianBlur result="effect1_foregroundBlur_206_91770" stdDeviation="47"></feGaussianBlur>
+                    </filter>
+                </defs>
+            </svg>
+        `;
+    
         // SquareHero Logo
         const logoContainer = iframeDocument.createElement('div');
         logoContainer.id = 'squarehero-logo-container';
         logoContainer.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="240" height="60" fill="none" viewBox="0 0 240 118">
-            <!-- SVG content here -->
-        </svg>
-    `;
-
+            <svg xmlns="http://www.w3.org/2000/svg" width="240" height="60" fill="none" viewBox="0 0 240 118">
+                <!-- SVG content here -->
+            </svg>
+        `;
+    
         // Progress container
         const progressContainer = iframeDocument.createElement('div');
         progressContainer.id = 'squarehero-progress-container';
-
+    
         // Progress bar
         const progressBar = iframeDocument.createElement('div');
         progressBar.id = 'squarehero-progress-bar';
         progressContainer.appendChild(progressBar);
-
+    
         // Status text
         const statusText = iframeDocument.createElement('div');
         statusText.id = 'squarehero-status-text';
         statusText.textContent = 'Installing SquareHero Dashboard';
-
+    
         // Funny message container
         const funnyMessageContainer = iframeDocument.createElement('div');
         funnyMessageContainer.id = 'squarehero-funny-message';
         funnyMessageContainer.textContent = getRandomFunnyMessage();
-
+    
         // Build overlay
         overlay.appendChild(gradientCircle1);
         overlay.appendChild(gradientCircle2);
@@ -282,17 +282,17 @@
         overlay.appendChild(statusText);
         overlay.appendChild(progressContainer);
         overlay.appendChild(funnyMessageContainer);
-
+    
         // Start funny message rotation
         startMessageRotation(iframeDocument);
-
+    
         return {
             updateProgress: function (percent, message) {
                 const progressBar = iframeDocument.getElementById('squarehero-progress-bar');
                 if (progressBar) {
                     progressBar.style.width = percent + '%';
                 }
-
+    
                 if (message) {
                     const statusText = iframeDocument.getElementById('squarehero-status-text');
                     if (statusText) {
@@ -328,9 +328,9 @@
     }
 
     // Start rotating funny messages
-    function startMessageRotation(iframeDocument) {
+    function startMessageRotation() {
         let messageInterval = setInterval(() => {
-            const messageElement = iframeDocument.getElementById('squarehero-funny-message');
+            const messageElement = document.getElementById('squarehero-funny-message');
             if (messageElement) {
                 messageElement.style.opacity = '0';
 
