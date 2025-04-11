@@ -162,38 +162,14 @@ function createInstallOverlay() {
     // Add the helper CSS for installation styling
     const helperCSS = document.createElement('link');
     helperCSS.rel = 'stylesheet';
-    helperCSS.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-helper.min.css';
+    helperCSS.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/sh-install.min.css';
     
-    try {
         // Add CSS to top document
         window.top.document.head.appendChild(helperCSS);
         
-        // Force styles on the overlay element to ensure visibility
-        overlay.style.cssText = `
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background-color: rgba(0, 9, 25, 0.95) !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            z-index: 9999999 !important;
-            color: white !important;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-        `;
-        
         // Add the overlay to the top document instead of the iframe
         window.top.document.body.appendChild(overlay);
-        console.log("Overlay added to top window document");
-    } catch (e) {
-        console.error("Error adding overlay to top window:", e);
-        // Fallback to current document if we can't access top window
-        document.head.appendChild(helperCSS);
-        document.body.appendChild(overlay);
-    }
+        console.log("Overlay added to top window document"); 
     
     // Add gradient circles for background effect
     const gradientCircle1 = document.createElement('div');
