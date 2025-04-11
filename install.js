@@ -3,6 +3,29 @@
 // Creates a password-protected dashboard page and removes itself from code injection
 
 (function () {
+
+    // At the beginning of your script, add these logs to identify the context
+console.log("Script executing in context:", window.location.href);
+console.log("Is in iframe?", window !== window.top);
+
+if (window !== window.top) {
+    console.log("Parent frame URL (if accessible):", 
+                window.parent.location.href || "Not accessible due to same-origin policy");
+}
+
+console.log("Available frames in window.top:", 
+           window.top.frames.length ? window.top.frames.length : "Not accessible");
+
+// Try to log all iframe sources in the document
+console.log("Checking iframes in current document:");
+const iframes = document.querySelectorAll('iframe');
+console.log(`Found ${iframes.length} iframes in current document`);
+iframes.forEach((iframe, index) => {
+    console.log(`iframe ${index} src:`, iframe.src);
+    console.log(`iframe ${index} id:`, iframe.id);
+});
+
+
     // Configuration - fixed values
     const pageTitle = "SquareHero Dashboard";
     const pageUrlId = "squarehero-dashboard";
@@ -131,9 +154,18 @@
     // Create and manage the full-screen overlay
     function createInstallOverlay() {
         console.log("Creating installation overlay...");
+    console.log("Current document:", document.location.href);
+    console.log("Document readyState:", document.readyState);
+    console.log("Is body available?", !!document.body);
+    if (document.body) {
+        console.log("Body tag name:", document.body.tagName);
+        console.log("Body parent:", document.body.parentElement?.tagName);
+        console.log("Body has classes:", document.body.className);
+    }
         // Create the overlay
         const overlay = document.createElement('div');
         overlay.id = 'squarehero-install-overlay';
+        overlay.style.zIndex = "9999999";
 
         // Add the helper CSS for installation styling
         console.log("Adding helper CSS for styling...");
