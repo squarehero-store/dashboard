@@ -76,7 +76,7 @@ This project uses webpack to bundle all assets (HTML, JS, CSS) into a single Jav
      ```
    - In the "Footer" section, add:
      ```html
-     <script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@latest/squarehero-dashboard-bundle.js"></script>
+     <script src="https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@latest/dist/squarehero-dashboard-bundle.js"></script>
      ```
 
 **Note:** If the target div `squarehero-dashboard-container` doesn't exist, the bundle will create it automatically.
