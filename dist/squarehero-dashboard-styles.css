@@ -205,7 +205,7 @@ h1, h2, h3, h4 {
   margin-bottom: 10px;
 }
 .column-header .column-description {
-  color: #666666;
+  color: #4d627d;
   font-size: 15px;
   margin-bottom: 15px;
 }
@@ -245,7 +245,7 @@ h1, h2, h3, h4 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .news-item .news-date {
-  color: #666666;
+  color: #4d627d;
   font-size: 14px;
 }
 .news-item .news-title {
@@ -258,7 +258,7 @@ h1, h2, h3, h4 {
 .loading-indicator {
   text-align: center;
   padding: 20px;
-  color: #666666;
+  color: #4d627d;
 }
 
 .error-message {
@@ -454,7 +454,7 @@ h1, h2, h3, h4 {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666666;
+  color: #4d627d;
 }
 .help-doc-modal .help-doc-modal-body {
   padding: 20px;
@@ -499,7 +499,7 @@ h1, h2, h3, h4 {
   border-left: 4px solid #0cc2ed;
   padding-left: 15px;
   margin-left: 0;
-  color: #666666;
+  color: #4d627d;
 }
 .help-doc-modal .help-doc-modal-body table {
   width: 100%;
@@ -523,7 +523,7 @@ h1, h2, h3, h4 {
 }
 .help-doc-modal .help-doc-modal-footer .help-doc-modal-category {
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
 }
 
 .confirmation-dialog {
@@ -567,7 +567,7 @@ h1, h2, h3, h4 {
 }
 .confirmation-dialog .confirmation-dialog-message {
   margin-bottom: 20px;
-  color: #666666;
+  color: #4d627d;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -1030,7 +1030,7 @@ h1, h2, h3, h4 {
   color: #011e45 !important;
 }
 .plugin-card .plugin-description {
-  color: #666666;
+  color: #4d627d;
   font-size: 16px;
 }
 .plugin-card .plugin-status {
@@ -1114,24 +1114,27 @@ h1, h2, h3, h4 {
 .discover-plugin-card {
   position: relative;
   perspective: 1000px;
-  height: auto;
+  height: 100%;
+  display: flex;
 }
 .discover-plugin-card .card-inner {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
 }
 .discover-plugin-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
 .discover-plugin-card .card-front,
 .discover-plugin-card .card-back {
-  position: relative;
+  position: absolute;
   width: 100%;
-  height: auto;
+  height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   display: flex;
@@ -1142,12 +1145,7 @@ h1, h2, h3, h4 {
   overflow: hidden;
 }
 .discover-plugin-card .card-back {
-  position: absolute;
-  top: 0;
-  left: 0;
   transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
 }
 .discover-plugin-card .card-front {
   transform: rotateY(0deg);
@@ -1171,24 +1169,27 @@ h1, h2, h3, h4 {
   padding: 30px;
   display: flex;
   flex-direction: column;
+  text-align: left;
   flex: 1;
-  padding: 1rem;
 }
 .discover-plugin-card .discover-plugin-title {
-  font-size: 18px;
+  font-size: 21px;
   margin-bottom: 10px;
+  margin-top: 0px;
   color: #011e45;
 }
 .discover-plugin-card .discover-plugin-description {
-  color: #666666;
-  margin-bottom: 30px;
+  color: #4d627d;
+  font-size: 18px;
+  margin-bottom: 15px;
+  flex: 1;
 }
 .discover-plugin-card .discover-plugin-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  align-self: flex-end;
   margin-top: auto;
+  width: 100%;
 }
 .discover-plugin-card .discover-plugin-actions button {
   flex: 1 0 100%;
@@ -1203,7 +1204,7 @@ h1, h2, h3, h4 {
   font-weight: 400;
   line-height: 130%;
   margin-top: 10px;
-  color: #666666;
+  color: #4d627d;
 }
 
 .help-docs-list {
@@ -1230,7 +1231,7 @@ h1, h2, h3, h4 {
 }
 .help-docs-list .help-doc-item .help-doc-excerpt {
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
   margin-bottom: 15px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -1262,7 +1263,7 @@ h1, h2, h3, h4 {
 }
 .registered-plugin-item .license-info {
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
   margin: 0;
 }
 
@@ -1287,7 +1288,7 @@ h1, h2, h3, h4 {
   margin-bottom: 10px;
 }
 .license-options .license-option p {
-  color: #666666;
+  color: #4d627d;
   margin-bottom: 20px;
 }
 
@@ -1348,13 +1349,13 @@ h1, h2, h3, h4 {
 
 .setting-help {
   font-size: 12px;
-  color: #666666;
+  color: #4d627d;
   margin-top: 5px;
 }
 
 .settings-description {
   margin-bottom: 20px;
-  color: #666666;
+  color: #4d627d;
 }
 
 .settings-form {
@@ -1457,7 +1458,7 @@ h1, h2, h3, h4 {
 }
 .squarespace-palette .palette-label {
   font-size: 12px;
-  color: #666666;
+  color: #4d627d;
   margin-bottom: 5px;
 }
 
@@ -1957,7 +1958,7 @@ h1, h2, h3, h4 {
 .registration-help {
   margin-top: 20px;
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
 }
 .registration-help a {
   color: #0cc2ed;
@@ -2053,7 +2054,7 @@ h1, h2, h3, h4 {
   align-items: center;
   gap: 5px;
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
 }
 .property-card .property-details .property-features .feature svg {
   width: 16px;
@@ -2062,7 +2063,7 @@ h1, h2, h3, h4 {
 }
 .property-card .property-details .property-location {
   font-size: 14px;
-  color: #666666;
+  color: #4d627d;
   margin-bottom: 15px;
 }
 .property-card .property-details .property-actions {
@@ -2109,7 +2110,7 @@ h1, h2, h3, h4 {
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #666666;
+  color: #4d627d;
 }
 .property-manager-toolbar .filter-select {
   padding: 8px 15px;
@@ -2194,7 +2195,7 @@ h1, h2, h3, h4 {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #666666;
+  color: #4d627d;
 }
 .property-detail-modal .modal-body {
   padding: 20px;
