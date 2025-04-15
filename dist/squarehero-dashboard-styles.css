@@ -1127,12 +1127,6 @@ h1, h2, h3, h4 {
 .discover-plugin-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
-.discover-plugin-card:not(.flipped) .card-back {
-  display: none;
-}
-.discover-plugin-card.flipped .card-front {
-  display: none;
-}
 
 .card-front,
 .card-back {
@@ -1148,7 +1142,6 @@ h1, h2, h3, h4 {
   position: relative;
   z-index: 2;
   transform: rotateY(0deg);
-  transition: transform 0.3s ease;
 }
 
 .card-back {
