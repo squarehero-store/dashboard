@@ -171,6 +171,10 @@ h1, h2, h3, h4 {
   width: 100%;
 }
 
+#page, #header, #footer-sections {
+  display: none !important;
+}
+
 .dashboard-wrapper {
   flex: 1;
   display: flex;
