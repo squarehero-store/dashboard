@@ -1,68 +1,15 @@
-# Dependency directories
-node_modules/
+# Ignore everything
+*
 
-# Development files
-*.map
-.DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Editor directories and files
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-.project
-.settings/
-.directory
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Ignore html files
-*.html
-
-# Ignore LESS files
-*.less
-
-# Ignore MD files
-*.md
-
-# Ignore the replace-vars.js script
-replace-variables.js
-
-# SCSS source files
-*.scss
-.sass-cache/
-scss/
-
-# Node.js dependencies
-package-lock.json
-yarn.lock
-
-# Build and distribution files
-/dist
-/build
-/coverage
-
-# Temp files
-.tmp/
-tmp/
-temp/
-
-# Keep plugin README and documentation
+# But not these files...
+!.gitignore
 !README.md
 !LICENSE
 
-# Optional: Uncomment if you want to ONLY include the dist folder
-# Uncommenting these lines would ignore everything EXCEPT the dist folder
-/*
-!/dist/
+# ...and not the dist folder and all its contents
+!dist/
+!dist/**
+
+# But still ignore these files inside the included directories
+.DS_Store
+*.log
