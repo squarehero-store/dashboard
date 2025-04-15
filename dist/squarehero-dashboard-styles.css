@@ -1170,10 +1170,7 @@ h1, h2, h3, h4 {
 }
 
 .discover-plugin-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  padding: 30px;
 }
 .discover-plugin-icon img {
   max-width: 100px;
