@@ -11,11 +11,15 @@
         rel="stylesheet">
     <!-- Load Firebase Authentication scripts -->
     <script src="auth.js"></script>
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js"></script>
+    
+    <script>
+        // Set up debug logging
+        console.log('Dashboard HTML loading...');
+        
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBEmTwE1DWjj4rGEV6UDGIhxVy4oZ5lqNg",
@@ -28,10 +32,75 @@
             measurementId: "G-YEMQV45TPL"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
+        // Initialize Firebase and expose it globally
+        console.log('Initializing Firebase...');
+        window.firebase = window.firebase || {};
+        
+        // Add a script loaded event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM content loaded, checking for Firebase SDK...');
+            
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined') {
+                console.log('Firebase SDK detected, initializing app...');
+                try {
+                    window.firebase.app = firebase.initializeApp(firebaseConfig);
+                    console.log('Firebase app initialized');
+                    
+                    if (typeof firebase.getAuth === 'function') {
+                        window.firebase.auth = firebase.getAuth(window.firebase.app);
+                        console.log('Firebase auth initialized');
+                    } else {
+                        console.error('firebase.getAuth is not a function');
+                    }
+                    
+                    if (typeof firebase.getDatabase === 'function') {
+                        window.firebase.database = firebase.getDatabase(window.firebase.app);
+                        console.log('Firebase database initialized');
+                        
+                        // Expose Firebase database functions globally
+                        if (typeof firebase.ref === 'function') {
+                            window.firebase.database.ref = firebase.ref;
+                            console.log('Firebase ref function exposed globally');
+                        } else {
+                            console.error('firebase.ref is not a function');
+                        }
+                        
+                        if (typeof firebase.get === 'function') {
+                            window.firebase.database.get = firebase.get;
+                            console.log('Firebase get function exposed globally');
+                        } else {
+                            console.error('firebase.get is not a function');
+                        }
+                        
+                        if (typeof firebase.set === 'function') {
+                            window.firebase.database.set = firebase.set;
+                            console.log('Firebase set function exposed globally');
+                        } else {
+                            console.error('firebase.set is not a function');
+                        }
+                    } else {
+                        console.error('firebase.getDatabase is not a function');
+                    }
+                    
+                    // Add event listener for Dashboard loaded
+                    window.addEventListener('DashboardLoaded', function() {
+                        console.log('DashboardLoaded event received, calling Dashboard.init()');
+                        if (window.Dashboard && typeof window.Dashboard.init === 'function') {
+                            window.Dashboard.init();
+                        } else {
+                            console.error('Dashboard not available after load event');
+                        }
+                    });
+                    
+                } catch (e) {
+                    console.error('Error initializing Firebase:', e);
+                }
+            } else {
+                console.error('Firebase SDK not detected!');
+            }
+        });
+        
         // Alert management for login
         function setupAlertSystem() {
             const alertEl = document.getElementById('alert');
@@ -83,7 +152,7 @@
 
                 try {
                     // Sign in with Firebase
-                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const userCredential = await firebase.signInWithEmailAndPassword(window.firebase.auth, email, password);
                     const user = userCredential.user;
                     
                     // Set the user in SecureFirebaseAuth if available
@@ -123,7 +192,7 @@
                 }
 
                 try {
-                    await sendPasswordResetEmail(auth, email);
+                    await firebase.sendPasswordResetEmail(window.firebase.auth, email);
                     alertSystem.showAlert('Password reset email sent! Please check your inbox.', 'success');
                 } catch (error) {
                     let errorMessage = 'Failed to send password reset email.';
@@ -139,7 +208,7 @@
         function setupLogoutButton() {
             const logoutButton = document.getElementById('logout-button');
             logoutButton.addEventListener('click', () => {
-                auth.signOut().then(() => {
+                window.firebase.auth.signOut().then(() => {
                     console.log('User signed out');
                     // Clear any local or session storage items
                     sessionStorage.removeItem('squarehero_user_email');
@@ -157,7 +226,7 @@
             const dashboardWrapper = document.querySelector('.dashboard-wrapper');
             
             // Check authentication state
-            onAuthStateChanged(auth, (user) => {
+            firebase.onAuthStateChanged(window.firebase.auth, (user) => {
                 if (user) {
                     // User is signed in
                     console.log('User authenticated:', user.email);
@@ -187,6 +256,21 @@
             setupLoginForm(alertSystem);
             setupLogoutButton();
             setupUIToggle();
+            
+            // Initialize Dashboard when Firebase is ready
+            if (window.Dashboard && typeof window.Dashboard.init === 'function') {
+                console.log('Initializing Dashboard from DOM content loaded event');
+                window.Dashboard.init();
+            } else {
+                console.warn('Dashboard not available yet, will try to initialize it later');
+                // Add an event listener for when Dashboard becomes available
+                window.addEventListener('DashboardLoaded', function() {
+                    console.log('Dashboard loaded event fired, initializing Dashboard');
+                    if (window.Dashboard && typeof window.Dashboard.init === 'function') {
+                        window.Dashboard.init();
+                    }
+                });
+            }
         });
     </script>
 </head>
