@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SquareHero Hub - Local Test</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="login.css">
+    <!-- Local test scripts - not included in production -->
+    <script src="path/to/scroll-to-top.js" data-squarehero-plugin="scroll-to-top"></script>
+    <script src="path/to/real-estate-listings.js" data-squarehero-plugin="real-estate-listings"></script>
+    <script src="path/to/food-menu.js" data-squarehero-plugin="food-menu"></script>
+    <!-- Load Firebase Authentication scripts -->
+    <script src="auth.js"></script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBEmTwE1DWjj4rGEV6UDGIhxVy4oZ5lqNg",
+            authDomain: "my-squarehero-hub.firebaseapp.com",
+            databaseURL: "https://my-squarehero-hub-default-rtdb.firebaseio.com",
+            projectId: "my-squarehero-hub",
+            storageBucket: "my-squarehero-hub.firebasestorage.app",
+            messagingSenderId: "233555790724",
+            appId: "1:233555790724:web:062d5a4b5d38f7445b2bd1",
+            measurementId: "G-YEMQV45TPL"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginContainer = document.getElementById('login-container');
+            const dashboardWrapper = document.querySelector('.dashboard-wrapper');
+            const loginForm = document.getElementById('loginForm');
+            
+            // Setup login form handler
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = e.target.email.value;
+                    const password = e.target.password.value;
+
+                    try {
+                        // Sign in with Firebase
+                        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                        const user = userCredential.user;
+                        
+                        // Set the user in SecureFirebaseAuth if available
+                        if (window.SecureFirebaseAuth) {
+                            window.SecureFirebaseAuth.setCurrentUser(user);
+                            // Initialize SecureFirebaseAuth
+                            await window.SecureFirebaseAuth.initialize();
+                        }
+                        
+                        showAlert('Login successful!', 'success');
+                        
+                        // Store auth info in session storage to persist across page reloads
+                        sessionStorage.setItem('squarehero_user_email', email);
+                        
+                        // Show dashboard - UPDATED: Added visible class
+                        loginContainer.style.display = 'none';
+                        dashboardWrapper.style.display = 'block';
+                        dashboardWrapper.classList.add('visible'); // Add visible class to handle opacity
+                    } catch (error) {
+                        let errorMessage = 'Login failed. Please check your credentials.';
+                        if (error.code === 'auth/user-not-found') {
+                            errorMessage = 'No account found with this email address.';
+                        } else if (error.code === 'auth/wrong-password') {
+                            errorMessage = 'Incorrect password.';
+                        }
+                        showAlert(errorMessage, 'error');
+                    }
+                });
+            }
+
+            // Handle forgot password
+            const forgotPasswordLink = document.getElementById('forgotPassword');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const emailInput = document.querySelector('input[name="email"]');
+                    const email = emailInput.value;
+
+                    if (!email) {
+                        showAlert('Please enter your email address first', 'error');
+                        emailInput.focus();
+                        return;
+                    }
+
+                    try {
+                        await sendPasswordResetEmail(auth, email);
+                        showAlert('Password reset email sent! Please check your inbox.', 'success');
+                    } catch (error) {
+                        let errorMessage = 'Failed to send password reset email.';
+                        if (error.code === 'auth/user-not-found') {
+                            errorMessage = 'No account found with this email address.';
+                        }
+                        showAlert(errorMessage, 'error');
+                    }
+                });
+            }
+
+            // Setup logout button
+            const logoutButton = document.getElementById('logout-button');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    auth.signOut().then(() => {
+                        // Show login
+                        loginContainer.style.display = 'flex';
+                        dashboardWrapper.style.display = 'none';
+                        dashboardWrapper.classList.remove('visible'); // Remove visible class on logout
+                        showAlert('Successfully logged out', 'success');
+                    });
+                });
+            }
+
+            // Alert management
+            const alertEl = document.getElementById('alert');
+            const alertText = alertEl.querySelector('.alert-text');
+            const alertIconSuccess = alertEl.querySelector('.alert-icon-success');
+            const alertIconError = alertEl.querySelector('.alert-icon-error');
+            let alertTimeout;
+
+            function showAlert(message, type = 'error') {
+                // Clear any existing timeout
+                if (alertTimeout) {
+                    clearTimeout(alertTimeout);
+                }
+
+                // Update alert content
+                alertText.textContent = message;
+                alertEl.className = `alert visible ${type}`;
+
+                // Show/hide appropriate icon
+                alertIconSuccess.style.display = type === 'success' ? 'block' : 'none';
+                alertIconError.style.display = type === 'error' ? 'block' : 'none';
+
+                // Auto-hide after 5 seconds
+                alertTimeout = setTimeout(() => {
+                    hideAlert();
+                }, 5000);
+            }
+
+            function hideAlert() {
+                alertEl.classList.remove('visible');
+            }
+
+            // Add event listener to close button
+            alertEl.querySelector('.alert-close').addEventListener('click', hideAlert);
+
+            // Check authentication state
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    // No user is signed in, show login
+                    loginContainer.style.display = 'flex';
+                    dashboardWrapper.style.display = 'none';
+                    dashboardWrapper.classList.remove('visible'); // Remove visible class
+                } else {
+                    console.log('User authenticated:', user.email);
+                    // User is signed in, show dashboard
+                    loginContainer.style.display = 'none';
+                    dashboardWrapper.style.display = 'block';
+                    dashboardWrapper.classList.add('visible'); // Add visible class
+                    
+                    // Make sure SecureFirebaseAuth is initialized with the current user
+                    if (window.SecureFirebaseAuth) {
+                        window.SecureFirebaseAuth.setCurrentUser(user);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<!-- Local test styles - not included in production -->
+<style>
+    :root {
+        /* White */
+        --white-hsl: 0, 0%, 100%;
+
+        /* Light cream */
+        --lightAccent-hsl: 36, 100%, 97%;
+
+        /* Gold */
+        --accent-hsl: 36, 57%, 58%;
+
+        /* Olive green */
+        --darkAccent-hsl: 82, 23%, 41%;
+
+        /* Dark green */
+        --black-hsl: 94, 26%, 21%;
+    }
+    
+    /* Initial state for dashboard and login */
+    .dashboard-wrapper {
+        display: none;
+    }
+    
+    #login-container {
+        display: flex;
+    }
+</style>
+
+<body>
+    <!-- Login Container -->
+    <div id="login-container" class="sh-login-wrapper">
+        <!-- Gradient Circle 1 -->
+        <div class="gradient-circle-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 639 701" fill="none">
+                <g filter="url(#a)" opacity=".4">
+                    <circle cx="288.5" cy="350.5" r="256.5" fill="url(#b)" fill-opacity=".7"></circle>
+                </g>
+                <defs>
+                    <linearGradient id="b" x1="288.5" x2="288.5" y1="94" y2="607" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00D1FF"></stop>
+                        <stop offset=".45" stop-color="#A603F3"></stop>
+                        <stop offset=".975" stop-color="#FF00E6"></stop>
+                    </linearGradient>
+                    <filter id="a" width="701" height="701" x="-62" y="0" color-interpolation-filters="sRGB"
+                        filterUnits="userSpaceOnUse">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+                        <feGaussianBlur result="effect1_foregroundBlur_200_26237" stdDeviation="47"></feGaussianBlur>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
+
+        <!-- Gradient Circle 2 -->
+        <div class="gradient-circle-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 639 701" fill="none">
+                <g filter="url(#a)" opacity=".4">
+                    <circle cx="288.5" cy="350.5" r="256.5" fill="url(#b)" fill-opacity=".7"></circle>
+                </g>
+                <defs>
+                    <linearGradient id="b" x1="288.5" x2="288.5" y1="94" y2="607" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00D1FF"></stop>
+                        <stop offset=".45" stop-color="#A603F3"></stop>
+                        <stop offset=".975" stop-color="#FF00E6"></stop>
+                    </linearGradient>
+                    <filter id="a" width="701" height="701" x="-62" y="0" color-interpolation-filters="sRGB"
+                        filterUnits="userSpaceOnUse">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                        <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+                        <feGaussianBlur result="effect1_foregroundBlur_200_26237" stdDeviation="47"></feGaussianBlur>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
+
+        <div class="sh-login-container">
+            <div class="sh-login-header">
+                <img src="sh-logo.png" alt="SquareHero Logo" width="180">
+                <h1>Dashboard Login</h1>
+            </div>
+            <form class="sh-login-form" id="loginForm">
+                <input type="email" class="sh-login-input" name="email" placeholder="Enter email" required>
+                <input type="password" class="sh-login-input" name="password" placeholder="Enter password" required>
+                <button type="submit" class="sh-login-button">Login to Dashboard</button>
+                <a href="#" class="sh-forgot-password" id="forgotPassword">Forgot Password?</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div class="alert" id="alert">
+        <div class="alert-message">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path class="alert-icon-success" d="M8 12l3 3 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"/>
+                <path class="alert-icon-error" d="M12 8v5m0 2v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display: none;"/>
+            </svg>
+            <span class="alert-text"></span>
+        </div>
+        <div class="alert-actions">
+            <button type="button" class="alert-close">Close</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Wrapper -->
+    <div class="dashboard-wrapper" data-wizard-enabled="false">
+        <header class="dashboard-header">
+            <img src="sh-logo.png" alt="SquareHero Logo" class="logo">
+            <div class="title-section">
+                <h1 class="dashboard-title">SquareHero Hub</h1>
+            </div>
+            <div class="header-buttons">
+                <button class="support-button">SquareHero Support</button>
+            </div>
+        </header>
+
+        <div class="dashboard-tabs">
+            <button class="dashboard-tab active" data-tab="plugins">Your Plugins</button>
+            <button class="dashboard-tab" data-tab="discover-plugins">Discover Plugins</button>
+            <button class="dashboard-tab" data-tab="settings">Settings</button>
+        </div>
+
+        <main class="dashboard-container">
+            <section class="plugins-column dashboard-tab-content active" id="plugins-tab">
+                <div class="column-header">
+                    <h2 class="column-title">Manage your plugins</h2>
+                    <p class="column-description">Your plugins are shown below. Click any plugin to adjust settings or
+                        view documentation.</p>
+                </div>
+
+                <div id="plugin-cards-container">
+                    <div class="loading-indicator">
+                    </div>
+                </div>
+            </section>
+
+            <section class="whats-new-column dashboard-tab-content" id="news-tab">
+                <div class="column-header">
+                    <h2 class="column-title">What's new</h2>
+                    <p class="column-description">Stay updated on the latest announcements, feature releases, and
+                        important plugin updates from the SquareHero team.</p>
+                </div>
+
+                <div id="news-items-container">
+                    <div class="loading-indicator">
+                        <p>Loading updates...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="discover-plugins-column dashboard-tab-content" id="discover-plugins-tab">
+                <div class="column-header">
+                    <h2 class="column-title">Explore plugins with our no-risk trial</h2>
+                    <p class="column-description">Simple setup, instant results - just one click. No code, no downloads, no emails, no commitment.</p>
+                </div>
+                <div id="discover-plugins-content">
+                </div>
+            </section>
+
+            <section class="help-column dashboard-tab-content" id="settings-tab">
+                <div class="column-header">
+                    <h2 class="column-title">Settings</h2>
+                    <p class="column-description">General settings for this dashboard.</p>
+                </div>
+                <div id="help-content">
+                    <p>Settings content will go here.</p>
+                    <button class="logout-button" id="logout-button">Logout</button>
+                </div>
+            </section>
+        </main>
+
+        <div class="settings-panel" id="settings-panel">
+            <div class="panel-header">
+                <h2 class="panel-title" id="plugin-settings-title">Plugin Settings</h2>
+                <button class="close-button" id="close-panel">&times;</button>
+            </div>
+            <div class="panel-content" id="panel-content">
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+    </div>
+
+    <script src="settings-components.js"></script>
+    <script src="component-system.js"></script>
+    <script src="wizard-component.js"></script>
+    <script src="licensing.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="firebase-docs-integration.js"></script>
+    <script src="help-docs-loader.js"></script>
+    
+</body>
+
+</html>
