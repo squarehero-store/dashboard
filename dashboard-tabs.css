@@ -48,6 +48,22 @@
     background: linear-gradient(90deg, #00D1FF 20.4%, #E600FF 55.91%, #FF003D 80.09%);
 }
 
+/* Logout button */
+.logout-button {
+    margin-left: auto !important;
+    color: var(--red) !important;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    color: var(--white) !important;
+    background-color: var(--red) !important;
+}
+
+.logout-button:after {
+    display: none !important;
+}
+
 /* Tab Content Container */
 .dashboard-tabs-content {
     width: 100%;

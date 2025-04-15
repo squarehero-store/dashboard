@@ -26,16 +26,19 @@ const Dashboard = (function () {
         }
     };
 
-
-
     // Default cards
     function createDefaultCard(plugin) {
+        console.log(`🔍 [DEBUG-CARD] Creating default card for plugin: ${plugin.id}`);
+        console.log(`🔍 [DEBUG-CARD] Plugin status from data:`, plugin.status);
+        console.log(`🔍 [DEBUG-CARD] Plugin settings:`, plugin.settings);
+        
         const card = document.createElement('div');
         card.className = 'plugin-card';
         card.setAttribute('data-plugin-id', plugin.id);
 
         // Add default status if not defined
         const status = plugin.status || 'disabled';
+        console.log(`🔍 [DEBUG-CARD] Using status:`, status);
 
         card.innerHTML = `
             <div class="top-wrapper">
@@ -71,6 +74,7 @@ const Dashboard = (function () {
     let notificationTimeout = null; // Reference to timeout for auto-hiding notifications
     let attentionTimeout = null; // Reference to timeout for removing attention class
     let loadingStates = {}; // Track skeleton loaders
+    let isInitializationInProgress = false; // Flag to prevent double initialization
 
     // Firebase service for settings storage
     const FirebaseService = {
@@ -80,40 +84,58 @@ const Dashboard = (function () {
         initialize: async function() {
             if (this.isInitialized) return true;
             
+            // Check if SecureFirebaseAuth is available
             if (!window.SecureFirebaseAuth) {
                 console.error('Secure Firebase Authentication service not found');
+                // Look for auth.js and try to load it dynamically if not already loaded
+                if (!document.querySelector('script[src*="auth.js"]')) {
+                    console.log('Attempting to load auth.js dynamically');
+                    return new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = 'auth.js';
+                        script.onload = async () => {
+                            console.log('auth.js loaded dynamically');
+                            // Wait for initialization
+                            if (window.SecureFirebaseAuth) {
+                                const result = await window.SecureFirebaseAuth.initialize();
+                                this.isInitialized = result;
+                                resolve(result);
+                            } else {
+                                console.error('SecureFirebaseAuth still not available after loading auth.js');
+                                reject(new Error('Failed to load SecureFirebaseAuth'));
+                            }
+                        };
+                        script.onerror = () => {
+                            console.error('Failed to load auth.js dynamically');
+                            reject(new Error('Failed to load auth.js'));
+                        };
+                        document.head.appendChild(script);
+                    });
+                }
                 return false;
             }
             
-            const result = await window.SecureFirebaseAuth.initialize();
-            this.isInitialized = result;
-            return result;
-        },
-        
-        // Get website info by delegating to the secure service
-        getWebsiteInfo: async function() {
-            if (!window.SecureFirebaseAuth) {
-                console.error('Secure Firebase Authentication service not found');
-                throw new Error('Secure Firebase Authentication service not available');
+            // Initialize using the secure service
+            try {
+                const result = await window.SecureFirebaseAuth.initialize();
+                this.isInitialized = result;
+                console.log('Firebase service initialized:', result);
+                return result;
+            } catch (error) {
+                console.error('Error initializing Firebase service:', error);
+                return false;
             }
-            
-            return await window.SecureFirebaseAuth.getWebsiteInfo();
-        },
-        
-        // Authenticate by delegating to the secure service
-        authenticate: async function() {
-            if (!window.SecureFirebaseAuth) {
-                console.error('Secure Firebase Authentication service not found');
-                return null;
-            }
-            
-            return await window.SecureFirebaseAuth.authenticate();
         },
         
         // Get plugin settings by delegating to the secure service
         getPluginSettings: async function(pluginId, defaultSettings = {}) {
+            if (!this.isInitialized) {
+                console.log('Firebase service not initialized, initializing now');
+                await this.initialize();
+            }
+            
             if (!window.SecureFirebaseAuth) {
-                console.error('Secure Firebase Authentication service not found');
+                console.error('Secure Firebase Authentication service not found after initialization');
                 return defaultSettings;
             }
             
@@ -127,17 +149,36 @@ const Dashboard = (function () {
         
         // Update plugin settings by delegating to the secure service
         updatePluginSettings: async function(pluginId, settings) {
+            if (!this.isInitialized) {
+                console.log('Firebase service not initialized, initializing now');
+                await this.initialize();
+            }
+            
             if (!window.SecureFirebaseAuth) {
-                console.error('Secure Firebase Authentication service not found');
+                console.error('Secure Firebase Authentication service not found after initialization');
                 return false;
             }
             
             try {
-                return await window.SecureFirebaseAuth.updatePluginSettings(pluginId, settings);
+                const result = await window.SecureFirebaseAuth.updatePluginSettings(pluginId, settings);
+                console.log(`Settings update for ${pluginId} result:`, result);
+                return result;
             } catch (error) {
                 console.error(`Error updating settings for plugin ${pluginId}:`, error);
                 return false;
             }
+        },
+        
+        // Check if a user is authenticated
+        isAuthenticated: function() {
+            if (!window.SecureFirebaseAuth) return false;
+            return window.SecureFirebaseAuth.isAuthenticated();
+        },
+        
+        // Get current user information
+        getCurrentUser: function() {
+            if (!window.SecureFirebaseAuth) return null;
+            return window.SecureFirebaseAuth.getCurrentUser();
         }
     };
 
@@ -209,7 +250,7 @@ const Dashboard = (function () {
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
                     <line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
-                    <circle cx="12" cy="6" r="1" fill="currentColor"/>
+                    <circle cx="12" y1="6" r="1" fill="currentColor"/>
                 </svg>
                 <span>Unsaved changes</span>
             </div>
@@ -308,50 +349,6 @@ const Dashboard = (function () {
         }
     }
 
-    // Show Firebase sync status
-    function showFirebaseStatus(message, status = 'info') {
-        // Create or get the status indicator
-        let statusIndicator = document.querySelector('.firebase-status');
-
-        if (!statusIndicator) {
-            statusIndicator = document.createElement('div');
-            statusIndicator.className = 'firebase-status';
-            document.body.appendChild(statusIndicator);
-        }
-
-        // Clear any existing classes
-        statusIndicator.className = 'firebase-status';
-
-        // Add appropriate class based on status
-        statusIndicator.classList.add(status);
-        statusIndicator.classList.add('visible');
-
-        // Set icon based on status
-        let iconSvg = '';
-
-        switch (status) {
-            case 'success':
-                iconSvg = '<svg class="firebase-status-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12l3 3 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-                break;
-            case 'error':
-                iconSvg = '<svg class="firebase-status-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-                break;
-            default:
-                iconSvg = '<svg class="firebase-status-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="currentColor"/><line x1="12" y1="7" x2="12" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-        }
-
-        // Set content
-        statusIndicator.innerHTML = `
-            ${iconSvg}
-            <span class="firebase-status-message">${message}</span>
-        `;
-
-        // Auto-hide after a delay
-        setTimeout(() => {
-            statusIndicator.classList.remove('visible');
-        }, 3000);
-    }
-
     // Show success notification
     function showSuccessNotification(message) {
         const bar = getNotificationBar();
@@ -388,10 +385,6 @@ const Dashboard = (function () {
             hideNotification();
         }, 3000);
 
-        // Also show Firebase status if message indicates cloud sync
-        if (message.includes('cloud') || message.includes('Firebase')) {
-            showFirebaseStatus(message, 'success');
-        }
     }
 
     // Hide notification bar
@@ -419,25 +412,243 @@ const Dashboard = (function () {
 
     // Load the skeleton loader library if not already loaded
     async function loadSkeletonLoader() {
+        console.log('🎯 [Dashboard] Loading skeleton loader');
+        
         // Check if SkeletonLoader is already available
         if (window.SkeletonLoader) {
+            console.log('🎯 [Dashboard] SkeletonLoader already loaded');
             return;
         }
 
-        // Load the skeleton styles
-        const style = document.createElement('link');
-        style.rel = 'stylesheet';
-        style.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.min.css';
-        document.head.appendChild(style);
-
-        // Load the skeleton script
+        // Load both CSS and JS
         return new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.min.js';
-            script.onload = resolve;
-            script.onerror = reject;
-            document.body.appendChild(script);
+            // Load the skeleton styles first
+            const style = document.createElement('link');
+            style.rel = 'stylesheet';
+            style.href = 'skeleton-loader.css';
+            
+            // If local CSS fails, try CDN
+            style.onerror = () => {
+                console.log('🎯 [Dashboard] Local skeleton CSS failed, trying CDN');
+                style.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/skeleton-loader.min.css';
+            };
+
+            // Once CSS is loaded, load the script
+            style.onload = () => {
+                console.log('🎯 [Dashboard] Skeleton CSS loaded');
+                
+                // Now load the script
+                const script = document.createElement('script');
+                script.src = 'skeleton-loader.js';
+                script.onerror = reject;
+                script.onload = () => {
+                    console.log('🎯 [Dashboard] Skeleton script loaded');
+                    // Wait a brief moment for script to initialize
+                    setTimeout(() => {
+                        if (window.SkeletonLoader) {
+                            console.log('🎯 [Dashboard] SkeletonLoader ready');
+                            resolve();
+                        } else {
+                            reject(new Error('SkeletonLoader not initialized'));
+                        }
+                    }, 100);
+                };
+                document.body.appendChild(script);
+            };
+
+            document.head.appendChild(style);
         });
+    }
+
+    // Check authentication status directly and wait if needed
+    async function ensureAuthenticated(maxRetries = 3) {
+        console.log('🔒 [Auth-Check] Checking authentication status...');
+        
+        // First check if already authenticated
+        if (FirebaseService.isAuthenticated()) {
+            console.log('🔒 [Auth-Check] Already authenticated ✓');
+            return true;
+        }
+        
+        console.log('🔒 [Auth-Check] Not currently authenticated, checking Firebase auth directly');
+        
+        // Try to get authentication status directly from Firebase
+        if (window.SecureFirebaseAuth && window.SecureFirebaseAuth.auth) {
+            const currentUser = window.SecureFirebaseAuth.auth.currentUser;
+            if (currentUser) {
+                console.log('🔒 [Auth-Check] Found authenticated user in Firebase:', currentUser.email);
+                window.SecureFirebaseAuth.currentUser = currentUser;
+                return true;
+            }
+        }
+        
+        // Wait and retry a few times - auth might be in progress
+        for (let i = 0; i < maxRetries; i++) {
+            console.log(`🔒 [Auth-Check] Waiting for authentication (attempt ${i + 1}/${maxRetries})...`);
+            
+            // Wait a short time for auth to complete
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Check again
+            if (FirebaseService.isAuthenticated()) {
+                console.log('🔒 [Auth-Check] Successfully authenticated after retry ✓');
+                return true;
+            }
+            
+            // Try one more direct check with Firebase auth
+            if (window.SecureFirebaseAuth && window.SecureFirebaseAuth.auth && 
+                window.SecureFirebaseAuth.auth.currentUser) {
+                console.log('🔒 [Auth-Check] Found authenticated user after retry:', 
+                           window.SecureFirebaseAuth.auth.currentUser.email);
+                window.SecureFirebaseAuth.currentUser = window.SecureFirebaseAuth.auth.currentUser;
+                return true;
+            }
+        }
+        
+        console.log('🔒 [Auth-Check] Authentication check failed after retries ✗');
+        return false;
+    }
+
+    // Generate licensing UI for settings panel
+    function generateLicensingUI(plugin) {
+        // Default to inactive if not set
+        const licenseStatus = plugin.licenseStatus || 'inactive';
+        let trialData = plugin.trialData || null;
+        
+        // Create the container
+        const licensingUI = document.createElement('div');
+        licensingUI.className = 'settings-section licensing-section';
+        
+        // Different UI based on license status
+        switch (licenseStatus) {
+            case 'authorized':
+                licensingUI.innerHTML = `
+                    <div class="license-status-container">
+                        <div class="license-status-icon active">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M7.5 12l3 3 6-6"/>
+                            </svg>
+                        </div>
+                        <div class="license-status-info">
+                            <h3 class="license-status-title">Licensed</h3>
+                            <p class="license-status-description">This plugin is licensed and active.</p>
+                        </div>
+                    </div>
+                    <div class="license-details">
+                        <div class="license-detail-item">
+                            <span class="license-detail-label">License Key:</span>
+                            <span class="license-detail-value">•••••••••${plugin.settings?.license_key?.substring(plugin.settings.license_key.length - 4) || '••••'}</span>
+                        </div>
+                        <div class="license-detail-item">
+                            <span class="license-detail-label">Activated On:</span>
+                            <span class="license-detail-value">${new Date(plugin.settings?.activated_at || Date.now()).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="license-actions">
+                        <button class="button secondary-button" id="deactivate-license">Deactivate License</button>
+                    </div>
+                `;
+                break;
+                
+            case 'trial':
+                // Calculate days remaining
+                const daysRemaining = trialData?.daysRemaining || 14;
+                const trialEnds = trialData?.trialEnd ? new Date(trialData.trialEnd).toLocaleDateString() : 'Unknown';
+                
+                licensingUI.innerHTML = `
+                    <div class="license-status-container">
+                        <div class="license-status-icon trial">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="license-status-info">
+                            <h3 class="license-status-title">Trial Mode</h3>
+                            <p class="license-status-description">This plugin is currently in trial mode.</p>
+                        </div>
+                    </div>
+                    <div class="license-details">
+                        <div class="license-detail-item">
+                            <span class="license-detail-label">Days Remaining:</span>
+                            <span class="license-detail-value">${daysRemaining}</span>
+                        </div>
+                        <div class="license-detail-item">
+                            <span class="license-detail-label">Trial Ends:</span>
+                            <span class="license-detail-value">${trialEnds}</span>
+                        </div>
+                    </div>
+                    <div class="license-activation">
+                        <h4 class="license-activation-title">Have a License Key?</h4>
+                        <div class="license-activation-form">
+                            <input type="text" class="license-key-input" placeholder="Enter your license key" id="license-key-input">
+                            <button class="button primary-button" id="activate-license">Activate License</button>
+                        </div>
+                    </div>
+                `;
+                break;
+                
+            case 'unauthorized':
+                licensingUI.innerHTML = `
+                    <div class="license-status-container">
+                        <div class="license-status-icon expired">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div class="license-status-info">
+                            <h3 class="license-status-title">License Required</h3>
+                            <p class="license-status-description">Your trial has expired or is invalid.</p>
+                        </div>
+                    </div>
+                    <div class="license-activation">
+                        <h4 class="license-activation-title">Enter Your License Key</h4>
+                        <div class="license-activation-form">
+                            <input type="text" class="license-key-input" placeholder="Enter your license key" id="license-key-input">
+                            <button class="button primary-button" id="activate-license">Activate License</button>
+                        </div>
+                    </div>
+                    <div class="license-purchase">
+                        <a href="https://squarehero.store/products/${plugin.id}" target="_blank" class="button secondary-button purchase-button">Purchase License</a>
+                    </div>
+                `;
+                break;
+                
+            case 'inactive':
+            default:
+                licensingUI.innerHTML = `
+                    <div class="license-status-container">
+                        <div class="license-status-icon inactive">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="license-status-info">
+                            <h3 class="license-status-title">Not Activated</h3>
+                            <p class="license-status-description">This plugin is not activated.</p>
+                        </div>
+                    </div>
+                    <div class="license-actions">
+                        <button class="button primary-button" id="start-trial">Start Free Trial</button>
+                        <p class="trial-info">Start a 14-day free trial with full features.</p>
+                    </div>
+                    <div class="license-activation">
+                        <h4 class="license-activation-title">Already have a License?</h4>
+                        <div class="license-activation-form">
+                            <input type="text" class="license-key-input" placeholder="Enter your license key" id="license-key-input">
+                            <button class="button secondary-button" id="activate-license">Activate License</button>
+                        </div>
+                    </div>
+                `;
+                break;
+        }
+        
+        return licensingUI;
     }
 
     // Load plugins from JSON
@@ -451,7 +662,44 @@ const Dashboard = (function () {
             }
 
             const data = await response.json();
-            return data.plugins || [];
+            const plugins = data.plugins || [];
+            
+            // If licensing system is available, check license status for each plugin
+            if (window.SquareHeroLicensing && window.SquareHeroLicensing._initialized) {
+                console.log('🔑 [Licensing] Checking license status for plugins');
+                
+                for (const plugin of plugins) {
+                    try {
+                        // Get licensing data
+                        const licenseData = await window.SquareHeroLicensing.getPluginData(plugin.id);
+                        plugin.licenseStatus = licenseData.status || 'inactive';
+                        
+                        // If in trial mode, get trial details
+                        if (plugin.licenseStatus === 'trial') {
+                            const trialStatus = await window.SquareHeroLicensing.checkTrialStatus(plugin.id);
+                            plugin.trialData = trialStatus;
+                            
+                            // If trial has expired, update status
+                            if (trialStatus.expired) {
+                                plugin.licenseStatus = 'unauthorized';
+                            }
+                        }
+                        
+                        console.log(`🔑 [Licensing] License status for ${plugin.id}: ${plugin.licenseStatus}`);
+                    } catch (error) {
+                        console.error(`🔑 [Licensing] Error checking license for ${plugin.id}:`, error);
+                        plugin.licenseStatus = 'inactive';
+                    }
+                }
+            } else {
+                console.log('🔑 [Licensing] Licensing system not initialized, skipping license checks');
+                // Set default license status
+                for (const plugin of plugins) {
+                    plugin.licenseStatus = 'inactive';
+                }
+            }
+            
+            return plugins;
         } catch (error) {
             console.error('Error loading plugins:', error);
             return [];
@@ -462,19 +710,23 @@ const Dashboard = (function () {
     function detectInstalledPlugins(allPlugins) {
         // Find all script tags with our custom attribute
         const installedIds = [];
+        console.log('🔍 [DEBUG-INSTALLED] Looking for script tags with data-squarehero-plugin attribute');
         document.querySelectorAll('script[data-squarehero-plugin]').forEach(script => {
-            installedIds.push(script.getAttribute('data-squarehero-plugin'));
+            const pluginId = script.getAttribute('data-squarehero-plugin');
+            installedIds.push(pluginId);
+            console.log(`🔍 [DEBUG-INSTALLED] Found installed plugin: ${pluginId}`);
         });
 
-        console.log('Detected installed plugin IDs:', installedIds);
+        console.log('🔍 [DEBUG-INSTALLED] All detected installed plugin IDs:', installedIds);
 
         // Filter available plugins to only include those that are installed
         const detectedPlugins = allPlugins.filter(plugin => installedIds.includes(plugin.id));
+        console.log('🔍 [DEBUG-INSTALLED] Matched installed plugins from available plugins:', detectedPlugins.map(p => p.id));
 
         // For development/testing purposes only:
         // If we're in development mode, show a message but still return empty array
         if (detectedPlugins.length === 0 && window.location.hostname === 'localhost') {
-            console.log('No installed plugins detected. In production, no plugins would be shown.');
+            console.log('🔍 [DEBUG-INSTALLED] No installed plugins detected. In production, no plugins would be shown.');
             // Uncomment the next line during development to see all plugins anyway
             return allPlugins; // For testing, show all plugins
         }
@@ -516,22 +768,43 @@ const Dashboard = (function () {
 
     // Render plugin cards
     function renderPluginCards() {
-        // Don't show any text loading indicators
-
+        // Don't show any text loading indicators or hide skeleton loader here
+        // The skeleton loader will be hidden after all settings are loaded
+        console.log('🔍 [DEBUG-RENDER] Rendering plugin cards with installedPlugins:', installedPlugins?.length);
+        console.log('🔍 [DEBUG-RENDER] Plugin data being rendered:', JSON.stringify(installedPlugins.map(p => ({
+            id: p.id,
+            status: p.status,
+            settings: p.settings?.enabled
+        }))));
+        
         if (!installedPlugins || !installedPlugins.length) {
             elements.pluginCardsContainer.innerHTML = '<p>No plugins installed on this site. Visit the SquareHero plugin store to browse available plugins.</p>';
+            
+            // Hide skeleton loader if no plugins are installed
+            if (loadingStates.plugins) {
+                console.log('🎯 [Dashboard] Hiding plugin card skeletons (no plugins)');
+                loadingStates.plugins.hide();
+            }
             return;
         }
 
         // Process each plugin and create its card
-        Promise.all(installedPlugins.map(createPluginCard))
+        return Promise.all(installedPlugins.map(createPluginCard))
             .then(cards => {
+                console.log('🔍 [DEBUG-RENDER] Card creation promises resolved, about to update DOM');
+                
                 // Clear any existing content
+                const existingContent = elements.pluginCardsContainer.innerHTML;
+                console.log('🔍 [DEBUG-RENDER] Clearing container with existing content length:', existingContent.length);
                 elements.pluginCardsContainer.innerHTML = '';
 
                 // Add each card to the container
                 cards.forEach(card => {
                     if (card) {
+                        const pluginId = card.getAttribute('data-plugin-id');
+                        const plugin = installedPlugins.find(p => p.id === pluginId);
+                        const status = plugin?.status || 'unknown';
+                        console.log(`🔍 [DEBUG-RENDER] Adding card for ${pluginId} with status: ${status}`);
                         elements.pluginCardsContainer.appendChild(card);
                     }
                 });
@@ -539,11 +812,25 @@ const Dashboard = (function () {
                 // If no cards were added, show a message
                 if (elements.pluginCardsContainer.children.length === 0) {
                     elements.pluginCardsContainer.innerHTML = '<p>No plugins available.</p>';
+                    console.log('🔍 [DEBUG-RENDER] No cards were created, showing "No plugins available" message');
+                } else {
+                    console.log('🔍 [DEBUG-RENDER] Added cards to DOM, total count:', elements.pluginCardsContainer.children.length);
+                }
+                
+                // Hide skeleton loader after cards are rendered
+                if (loadingStates.plugins) {
+                    console.log('🔍 [DEBUG-RENDER] Hiding plugin card skeletons after rendering cards');
+                    loadingStates.plugins.hide();
                 }
             })
             .catch(error => {
                 console.error('Error rendering plugin cards:', error);
                 elements.pluginCardsContainer.innerHTML = '<p>Error loading plugins. Please try again later.</p>';
+                
+                // Hide skeleton loader on error
+                if (loadingStates.plugins) {
+                    loadingStates.plugins.hide();
+                }
             });
     }
 
@@ -551,6 +838,61 @@ const Dashboard = (function () {
     function createPluginCard(plugin) {
         return new Promise((resolve) => {
             try {
+                // IMPORTANT: Only consider it an error if settings are completely missing
+                // Some plugins can legitimately just have {enabled: true} as their only setting
+                if (!plugin.settings) {
+                    console.error(`⛔ [ERROR] No settings found for plugin ${plugin.id}. Showing error card.`);
+                    
+                    // Create error card instead
+                    const errorCard = document.createElement('div');
+                    errorCard.className = 'plugin-card error-card';
+                    errorCard.setAttribute('data-plugin-id', plugin.id);
+                    errorCard.innerHTML = `
+                        <div class="top-wrapper">
+                            <div class="plugin-icon">
+                                <img src="${plugin.icon}" alt="${plugin.name} icon">
+                            </div>
+                            <div class="status-wrapper">
+                                <span class="plugin-status status-error">ERROR</span>
+                            </div>
+                        </div>
+                        <div class="plugin-content">
+                            <div class="plugin-header">
+                                <h3 class="plugin-title">${plugin.name}</h3>
+                            </div>
+                            <p class="plugin-description">Settings could not be loaded for this plugin.</p>
+                            <button class="reload-settings-button">Reload Settings</button>
+                        </div>
+                    `;
+                    
+                    // Add click event to reload settings
+                    const reloadButton = errorCard.querySelector('.reload-settings-button');
+                    if (reloadButton) {
+                        reloadButton.addEventListener('click', async function(e) {
+                            e.stopPropagation(); // Don't trigger the card's main click event
+                            
+                            // Try to fix settings for this plugin
+                            if (window.inspectAndFixPluginSettings) {
+                                try {
+                                    const result = await window.inspectAndFixPluginSettings(plugin.id);
+                                    if (result && !result.error) {
+                                        alert(`Settings repair attempted for ${plugin.name}. Please refresh the page.`);
+                                    } else {
+                                        alert(`Could not repair settings: ${result.error || 'Unknown error'}`);
+                                    }
+                                } catch (err) {
+                                    console.error(`Error repairing settings:`, err);
+                                    alert(`Failed to repair settings: ${err.message}`);
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Return the error card
+                    resolve(errorCard);
+                    return;
+                }
+                
                 // Check if the module is already registered
                 const cardModule = PluginRegistry.get(plugin.id, 'card');
                 if (cardModule) {
@@ -560,12 +902,111 @@ const Dashboard = (function () {
                     return;
                 }
 
-                // If not registered, use the default card implementation
-                const card = createDefaultCard(plugin);
+                // If not registered, use the default card implementation with license status
+                console.log(`🔍 [DEBUG-CARD] Creating default card for plugin: ${plugin.id}`);
+                console.log(`🔍 [DEBUG-CARD] Plugin status from data:`, plugin.status);
+                console.log(`🔍 [DEBUG-CARD] Plugin settings:`, plugin.settings);
+                console.log(`🔍 [DEBUG-CARD] License status:`, plugin.licenseStatus);
+                
+                const card = document.createElement('div');
+                card.className = 'plugin-card';
+                card.setAttribute('data-plugin-id', plugin.id);
+
+                // Get license status info
+                const licenseStatus = plugin.licenseStatus || 'inactive';
+                let licenseClass = '';
+                let licenseDisplay = '';
+                let licenseDetails = '';
+                
+                // Map license status to display and classes
+                switch (licenseStatus) {
+                    case 'authorized':
+                        licenseClass = 'license-active';
+                        licenseDisplay = 'LICENSED';
+                        break;
+                    case 'trial':
+                        licenseClass = 'license-trial';
+                        licenseDisplay = 'TRIAL';
+                        // Add trial days remaining if available
+                        if (plugin.trialData && plugin.trialData.daysRemaining !== undefined) {
+                            licenseDetails = `<div class="license-details">Trial: ${plugin.trialData.daysRemaining} days left</div>`;
+                        }
+                        break;
+                    case 'unauthorized':
+                        licenseClass = 'license-expired';
+                        licenseDisplay = 'EXPIRED';
+                        break;
+                    case 'inactive':
+                    default:
+                        licenseClass = 'license-inactive';
+                        licenseDisplay = 'ACTIVATE';
+                        break;
+                }
+                
+                // Determine what status display to use
+                // For unlicensed plugins (inactive, unauthorized), use UNLICENSED
+                // For other license statuses, use the plugin's enabled/disabled status
+                let statusDisplay;
+                let statusClass;
+                
+                if (licenseStatus === 'inactive' || licenseStatus === 'unauthorized') {
+                    statusDisplay = 'UNLICENSED';
+                    statusClass = 'status-unlicensed';
+                } else {
+                    // Add default status if not defined - only for licensed or trial
+                    const status = plugin.status || 'disabled';
+                    statusDisplay = status.toUpperCase();
+                    statusClass = `status-${status}`;
+                }
+
+                card.innerHTML = `
+                    <div class="top-wrapper">
+                    <div class="plugin-icon">
+                        <img src="${plugin.icon}" alt="${plugin.name} icon">
+                    </div>
+                    <div class="status-wrapper">
+                    <span class="plugin-status ${statusClass}">${statusDisplay}</span>
+                    ${licenseDetails}
+                    </div>
+                    </div>
+                    <div class="plugin-content">
+                        <div class="plugin-header">
+                            <h3 class="plugin-title">${plugin.name}</h3>
+                        </div>
+                        <p class="plugin-description">${plugin.description}</p>
+                    </div>
+                `;
+
+                // Add click event listener to open settings panel
+                card.addEventListener('click', function () {
+                    loadPluginSettingsModule(plugin.id);
+                });
+
                 resolve(card);
             } catch (error) {
                 console.error(`Error creating card for plugin ${plugin.id}:`, error);
-                resolve(null);
+                
+                // Create error card on exception
+                const errorCard = document.createElement('div');
+                errorCard.className = 'plugin-card error-card';
+                errorCard.setAttribute('data-plugin-id', plugin.id);
+                errorCard.innerHTML = `
+                    <div class="top-wrapper">
+                        <div class="plugin-icon">
+                            <img src="${plugin.icon || 'sqs-placeholder.jpg'}" alt="${plugin.name || 'Plugin'} icon">
+                        </div>
+                        <div class="status-wrapper">
+                            <span class="plugin-status status-error">ERROR</span>
+                        </div>
+                        <div class="plugin-content">
+                            <div class="plugin-header">
+                                <h3 class="plugin-title">${plugin.name || 'Unknown Plugin'}</h3>
+                            </div>
+                            <p class="plugin-description">Error: ${error.message}</p>
+                        </div>
+                    </div>
+                `;
+                resolve(errorCard);
             }
         });
     }
@@ -592,6 +1033,66 @@ const Dashboard = (function () {
             return true;
         }
         return false;
+    }
+
+    // Collect settings from all forms
+    function collectSettingsFromForms(pluginId, schema) {
+        console.log(`🔍 [DEBUG-SETTINGS] Collecting settings from forms for plugin: ${pluginId}`);
+        
+        const forms = elements.panelContent.querySelectorAll('.settings-form');
+        if (!forms || forms.length === 0) {
+            console.log(`🔍 [DEBUG-SETTINGS] No forms found for plugin: ${pluginId}`);
+            return { enabled: true }; // Default setting
+        }
+
+        // Extract categories if they exist
+        const categories = schema.filter(item => item.type === 'category');
+        let allSettings = {};
+
+        // If using categories/tabs
+        if (categories.length > 0) {
+            console.log(`🔍 [DEBUG-SETTINGS] Plugin has ${categories.length} categories/tabs`);
+            
+            // Process each form (one per tab)
+            forms.forEach(form => {
+                // Get the tab ID and corresponding category
+                const tabContent = form.closest('.tab-content');
+                if (!tabContent) {
+                    console.log(`🔍 [DEBUG-SETTINGS] Form not in a tab container, skipping`);
+                    return;
+                }
+                
+                const tabId = tabContent.getAttribute('data-tab-content');
+                console.log(`🔍 [DEBUG-SETTINGS] Processing form in tab: ${tabId}`);
+                
+                const category = categories.find(item => item.id === tabId);
+                if (!category) {
+                    console.log(`🔍 [DEBUG-SETTINGS] No category found for tabId: ${tabId}`);
+                    return;
+                }
+
+                // Get components from the category
+                const tabSchema = category.components || [];
+                const formSettings = SettingsComponents.collectFormValues(form, tabSchema);
+                console.log(`🔍 [DEBUG-SETTINGS] Collected settings from tab ${tabId}:`, formSettings);
+                
+                // Merge with allSettings
+                allSettings = { ...allSettings, ...formSettings };
+            });
+        } else {
+            // Single form, no tabs
+            console.log(`🔍 [DEBUG-SETTINGS] Plugin has a single form without tabs`);
+            allSettings = SettingsComponents.collectFormValues(forms[0], schema);
+        }
+
+        // Ensure the enabled property exists
+        if (!allSettings.hasOwnProperty('enabled')) {
+            console.log(`🔍 [DEBUG-SETTINGS] Adding default enabled=true property`);
+            allSettings.enabled = true;
+        }
+        
+        console.log(`🔍 [DEBUG-SETTINGS] Final collected settings:`, allSettings);
+        return allSettings;
     }
 
     // Load a plugin's settings module and open the panel
@@ -694,44 +1195,114 @@ const Dashboard = (function () {
                     let panelHTML = '';
 
                     if (schema) {
-                        // Extract categories if they exist
                         const categories = schema.filter(item => item.type === 'category');
-                        const defaultCategory = categories.find(cat => cat.isDefault) || categories[0];
-
-                        // Add tabs in a container at the top
-                        let tabsHTML = '';
+                        
                         if (categories.length > 0) {
-                            tabsHTML = `
-                        <div class="settings-tabs">
-                            ${categories.map(category =>
-                                `<button type="button" class="tab-button ${category.id === defaultCategory.id ? 'active' : ''}" 
-                                       data-tab="${category.id}">${category.label}</button>`
-                            ).join('')}
-                        </div>
-                    `;
+                            console.log(`🔍 [DEBUG-SETTINGS] Plugin has ${categories.length} categories/tabs`);
+                            
+                            // Create tabbed interface with categories plus licensing tab at the end
+                            panelHTML = `
+                                <div class="settings-tabs">
+                                    ${categories.map(cat => `<button class="tab-button" data-tab-target="${cat.id}">${cat.title ? cat.title.charAt(0).toUpperCase() + cat.title.slice(1) : cat.id.charAt(0).toUpperCase() + cat.id.slice(1)}</button>`).join('')}
+                                    <button class="tab-button" data-tab-target="licensing">Licensing</button>
+                                </div>
+                                <div class="settings-content">
+                                    ${categories.map((cat, index) => `
+                                        <div class="tab-content ${index === 0 ? 'active' : ''}" data-tab-content="${cat.id}">
+                                            <form class="settings-form" data-category="${cat.id}">
+                                                ${SettingsComponents ? cat.components.map(component => SettingsComponents.renderSetting(component, plugin.settings || {})).join('') : ''}
+                                            </form>
+                                        </div>
+                                    `).join('')}
+                                    <div class="tab-content ${categories.length === 0 ? 'active' : ''}" data-tab-content="licensing">
+                                        <div class="settings-form">
+                                            ${generateLicensingUI(plugin).outerHTML}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="button cancel-button">Cancel</button>
+                                    <button type="button" class="button save-button">Save</button>
+                                </div>
+                            `;
+                        } else {
+                            console.log(`🔍 [DEBUG-SETTINGS] Plugin has a simple settings panel without tabs`);
+                            
+                            // Simple settings panel with just main settings and licensing tab
+                            panelHTML = `
+                                <div class="settings-tabs">
+                                    <button class="tab-button active" data-tab-target="settings">Settings</button>
+                                    <button class="tab-button" data-tab-target="licensing">Licensing</button>
+                                </div>
+                                <div class="settings-content">
+                                    <div class="tab-content active" data-tab-content="settings">
+                                        <form class="settings-form">
+                                            <div class="settings-section">
+                                                <div class="setting-group toggle-group">
+                                                    <label class="toggle-switch">
+                                                        <input type="checkbox" id="enabled" name="enabled" ${plugin.settings?.enabled !== false ? 'checked' : ''}>
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                    <div class="toggle-labels">
+                                                        <span class="toggle-title">Plugin Enabled</span>
+                                                        <span class="toggle-status">${plugin.settings?.enabled !== false ? 'Enabled' : 'Disabled'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ${SettingsComponents ? schema.map(setting => SettingsComponents.renderSetting(setting, plugin.settings || {})).join('') : ''}
+                                        </form>
+                                    </div>
+                                    <div class="tab-content" data-tab-content="licensing">
+                                        <div class="settings-form">
+                                            ${generateLicensingUI(plugin).outerHTML}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="button cancel-button">Cancel</button>
+                                    <button type="button" class="button save-button">Save</button>
+                                </div>
+                            `;
                         }
-
-                        // Create a wrapper for the settings - tabs and content are siblings
-                        panelHTML = `
-                    <div class="plugin-settings">
-                        ${tabsHTML}
-                        ${SettingsComponents.generateForm(schema, plugin.settings || {})}
-                    </div>
-                `;
-                    } else if (customModule) {
-                        // Use the custom module
-                        panelHTML = customModule.createSettingsPanel(plugin);
                     } else {
-                        // No settings available
+                        // Fallback for plugins with no registered settings schema
+                        console.log(`🔍 [DEBUG-SETTINGS] Plugin ${plugin.id} has no registered schema`);
+                        
+                        // Simple toggle and licensing UI
                         panelHTML = `
-                    <div class="plugin-settings">
-                        <h3>${plugin.name} Settings</h3>
-                        <p>Settings for this plugin are not available.</p>
-                        <div class="form-actions">
-                            <button class="button cancel-button">Close</button>
-                        </div>
-                    </div>
-                `;
+                            <div class="settings-tabs">
+                                <button class="tab-button active" data-tab-target="settings">Settings</button>
+                                <button class="tab-button" data-tab-target="licensing">Licensing</button>
+                            </div>
+                            <div class="settings-content">
+                                <div class="tab-content active" data-tab-content="settings">
+                                    <form class="settings-form">
+                                        <div class="settings-section">
+                                            <div class="setting-group toggle-group">
+                                                <label class="toggle-switch">
+                                                    <input type="checkbox" id="enabled" name="enabled" ${plugin.settings?.enabled !== false ? 'checked' : ''}>
+                                                    <span class="toggle-slider"></span>
+                                                </label>
+                                                <div class="toggle-labels">
+                                                    <span class="toggle-title">Plugin Enabled</span>
+                                                    <span class="toggle-status">${plugin.settings?.enabled !== false ? 'Enabled' : 'Disabled'}</span>
+                                                </div>
+                                            </div>
+                                            <p class="no-settings-message">This plugin has no additional settings.</p>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-content" data-tab-content="licensing">
+                                    <div class="settings-form">
+                                        ${generateLicensingUI(plugin).outerHTML}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="button cancel-button">Cancel</button>
+                                <button type="button" class="button save-button">Save</button>
+                            </div>
+                        `;
                     }
 
                     // Hide skeleton loading and update panel content
@@ -751,139 +1322,333 @@ const Dashboard = (function () {
 
                     if (saveButton && forms.length > 0) {
                         saveButton.addEventListener('click', function () {
-                            let settings = {};
-
-                            if (schema) {
-                                // Use the new function to collect settings from all forms and tabs
-                                settings = collectSettingsFromForms(pluginId, schema);
-                            } else if (customModule && customModule.saveSettings) {
-                                // Use module's custom saving
-                                settings = customModule.saveSettings(elements.panelContent);
-                            } else {
-                                // Basic settings
-                                const enabledCheckbox = elements.panelContent.querySelector('#plugin-enabled');
-                                settings = { enabled: enabledCheckbox ? enabledCheckbox.checked : false };
-                            }
-
-                            // Save settings
-                            console.log(`Saving collected settings:`, settings);
+                            // Collect settings from all forms and save them
+                            const settings = collectSettingsFromForms(pluginId, schema);
                             savePluginSettings(pluginId, settings);
-                            hasUnsavedChanges = false; // Reset after saving
+                            hasUnsavedChanges = false;
                             updateNotificationState();
                         });
                     }
 
-                    // Bind tab switching functionality
+                    // Ensure the first tab is active by default
                     const tabButtons = elements.panelContent.querySelectorAll('.settings-tabs .tab-button');
                     if (tabButtons.length > 0) {
+                        // Set the first tab as active
+                        tabButtons[0].classList.add('active');
+                        
+                        // Bind tab switching functionality
                         tabButtons.forEach(button => {
                             button.addEventListener('click', function () {
-                                // Remove active class from all tabs and contents
-                                elements.panelContent.querySelectorAll('.tab-button').forEach(btn =>
-                                    btn.classList.remove('active'));
-                                elements.panelContent.querySelectorAll('.tab-content').forEach(content =>
-                                    content.classList.remove('active'));
-
-                                // Add active class to current tab and content
+                                // Update active tab button
+                                tabButtons.forEach(btn => btn.classList.remove('active'));
                                 button.classList.add('active');
-                                const tabId = button.getAttribute('data-tab');
-                                const tabContent = elements.panelContent.querySelector(`.tab-content[data-tab-content="${tabId}"]`);
-                                tabContent.classList.add('active');
 
-                                // Handle any custom components in the active tab
-                                const customComponents = tabContent.querySelectorAll('.custom-component-container');
-                                if (customComponents.length > 0) {
-                                    customComponents.forEach(container => {
-                                        const componentId = container.getAttribute('data-component-id');
-
-                                        // Check if the component is already initialized
-                                        const isInitialized = container.getAttribute('data-initialized') === 'true';
-
-                                        if (!isInitialized) {
-                                            console.log(`Initializing custom component: ${componentId}`);
-                                            // Look for an init function for this component
-                                            const initFunction = window[`init${componentId.charAt(0).toUpperCase() + componentId.slice(1).replace(/-([a-z])/g, g => g[1].toUpperCase())}`];
-                                            if (typeof initFunction === 'function') {
-                                                initFunction();
-                                                container.setAttribute('data-initialized', 'true');
-                                            }
-                                        } else {
-                                            // Component already initialized, check if it has an update function
-                                            console.log(`Custom component already initialized: ${componentId}, looking for update function`);
-                                            // Try to find an update function for this component
-                                            const updateFunction = window[`update${componentId.charAt(0).toUpperCase() + componentId.slice(1).replace(/-([a-z])/g, g => g[1].toUpperCase())}`];
-                                            if (typeof updateFunction === 'function') {
-                                                updateFunction();
-                                            }
-
-                                            // Also look for a component object with an updateView method
-                                            const componentObject = window[`${componentId.charAt(0).toUpperCase() + componentId.slice(1).replace(/-([a-z])/g, g => g[1].toUpperCase())}`];
-                                            if (componentObject && typeof componentObject.updateView === 'function') {
-                                                componentObject.updateView();
-                                            }
-                                        }
-                                    });
-                                }
+                                // Update active tab content
+                                const targetTabId = button.getAttribute('data-tab-target');
+                                const tabContents = elements.panelContent.querySelectorAll('.tab-content');
+                                tabContents.forEach(content => content.classList.remove('active'));
+                                elements.panelContent.querySelector(`.tab-content[data-tab-content="${targetTabId}"]`).classList.add('active');
                             });
                         });
                     }
 
                     // Bind change handlers to all forms
                     if (schema && forms.length > 0) {
-                        const handlers = PluginSettingsRegistry.getHandlers(pluginId);
-
                         forms.forEach(form => {
-                            // Get the tab ID and corresponding category
-                            const tabId = form.closest('.tab-content')?.getAttribute('data-tab-content');
-                            const category = schema.find(item =>
-                                item.type === 'category' && item.id === tabId);
-
-                            // Get components from the category
-                            const tabSchema = category ? (category.components || []) : schema;
-
-                            // Bind toggle warning handlers first
-                            tabSchema.forEach(setting => {
-                                if (setting.type === 'toggle' && setting.warning) {
-                                    const toggleElement = form.querySelector(`#${setting.id}`);
-                                    if (toggleElement) {
-                                        toggleElement.addEventListener('change', function (e) {
-                                            // If there's a warning message, show it
-                                            if (setting.warning) {
-                                                if (!confirm("Are you sure you want to change this setting?")) {
-                                                    // Revert the change if user cancels
-                                                    e.target.checked = !e.target.checked;
-                                                    return;
-                                                }
+                            // Find all form elements - inputs, selects, textareas
+                            const formElements = form.querySelectorAll('input, select, textarea');
+                            formElements.forEach(element => {
+                                // Checkboxes and radios use change event, others use input event
+                                const eventType = (element.type === 'checkbox' || element.type === 'radio') ? 'change' : 'input';
+                                
+                                // For toggle switches, update the toggle status text
+                                if (element.type === 'checkbox' && element.closest('.toggle-switch')) {
+                                    element.addEventListener(eventType, function(e) {
+                                        const toggleGroup = element.closest('.toggle-group');
+                                        if (toggleGroup) {
+                                            const statusEl = toggleGroup.querySelector('.toggle-status');
+                                            if (statusEl) {
+                                                statusEl.textContent = element.checked ? 'Enabled' : 'Disabled';
                                             }
-
+                                        }
+                                        
+                                        // Mark as having unsaved changes
+                                        hasUnsavedChanges = true;
+                                        updateNotificationState();
+                                    });
+                                } else {
+                                    // Regular form element change handler
+                                    element.addEventListener(eventType, function(e) {
+                                        hasUnsavedChanges = true;
+                                        updateNotificationState();
+                                    });
+                                }
+                            });
+                            
+                            // Specifically handle sliders which need special handling for value display
+                            const sliders = form.querySelectorAll('input[type="range"]');
+                            sliders.forEach(slider => {
+                                const valueDisplay = slider.parentElement.querySelector('.slider-value');
+                                if (valueDisplay) {
+                                    slider.addEventListener('input', function() {
+                                        valueDisplay.textContent = this.value;
+                                        hasUnsavedChanges = true;
+                                        updateNotificationState();
+                                    });
+                                }
+                            });
+                            
+                            // Handle color pickers - this is critical for expanding/collapsing and tab switching
+                            const colorPickers = form.querySelectorAll('.color-picker-compact');
+                            
+                            // Function to close all color pickers
+                            const closeAllColorPickers = () => {
+                                colorPickers.forEach(picker => {
+                                    const expanded = picker.querySelector('.color-picker-expanded');
+                                    if (expanded) {
+                                        expanded.style.display = 'none';
+                                    }
+                                });
+                            };
+                            
+                            colorPickers.forEach(pickerContainer => {
+                                // Toggle expanded state when clicking the color display
+                                const colorDisplay = pickerContainer.querySelector('.current-color-display');
+                                if (colorDisplay) {
+                                    colorDisplay.addEventListener('click', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        
+                                        const expanded = pickerContainer.querySelector('.color-picker-expanded');
+                                        if (!expanded) return;
+                                        
+                                        const isCurrentlyHidden = expanded.style.display === 'none' || !expanded.style.display;
+                                        
+                                        // Close all other color pickers first
+                                        closeAllColorPickers();
+                                        
+                                        // Then open this one if it was closed
+                                        if (isCurrentlyHidden) {
+                                            expanded.style.display = 'block';
+                                        }
+                                    });
+                                }
+                                
+                                // Tab switching in color picker
+                                const tabButtons = pickerContainer.querySelectorAll('.color-picker-tab-buttons .tab-button');
+                                tabButtons.forEach(button => {
+                                    button.addEventListener('click', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        
+                                        const targetTab = this.getAttribute('data-tab');
+                                        
+                                        // Update active state on tabs
+                                        pickerContainer.querySelectorAll('.tab-button').forEach(btn => {
+                                            btn.classList.remove('active');
+                                        });
+                                        this.classList.add('active');
+                                        
+                                        // Show the correct panel
+                                        const panels = pickerContainer.querySelectorAll('.tab-panel');
+                                        panels.forEach(panel => {
+                                            panel.classList.toggle('active', panel.getAttribute('data-panel') === targetTab);
+                                        });
+                                    });
+                                });
+                                
+                                // Palette color swatch selection
+                                const swatches = pickerContainer.querySelectorAll('.color-swatch');
+                                swatches.forEach(swatch => {
+                                    swatch.addEventListener('click', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        
+                                        const colorVar = this.getAttribute('data-color-var');
+                                        const settingId = this.getAttribute('data-for');
+                                        const colorInput = pickerContainer.querySelector('input[type="color"]');
+                                        
+                                        if (colorInput) {
+                                            // Set the used var attribute
+                                            colorInput.setAttribute('data-used-var', colorVar);
+                                            
+                                            // Remove selection from all swatches
+                                            pickerContainer.querySelectorAll('.color-swatch').forEach(s => {
+                                                s.classList.remove('selected');
+                                            });
+                                            
+                                            // Add selection to this swatch
+                                            this.classList.add('selected');
+                                            
+                                            // Update the display color
+                                            const colorDisplay = pickerContainer.querySelector('.current-color-display');
+                                            if (colorDisplay) {
+                                                colorDisplay.style.backgroundColor = this.style.backgroundColor;
+                                            }
+                                            
+                                            // Close color picker after selection
+                                            const expanded = pickerContainer.querySelector('.color-picker-expanded');
+                                            if (expanded) {
+                                                expanded.style.display = 'none';
+                                            }
+                                            
                                             // Mark as having unsaved changes
                                             hasUnsavedChanges = true;
                                             updateNotificationState();
+                                        }
+                                    });
+                                });
+                                
+                                // Color input handling
+                                const colorInput = pickerContainer.querySelector('input[type="color"]');
+                                const hexInput = pickerContainer.querySelector('.color-hex-input');
+                                
+                                if (colorInput) {
+                                    colorInput.addEventListener('input', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        
+                                        // Clear any used var
+                                        this.setAttribute('data-used-var', '');
+                                        
+                                        // Update hex input
+                                        if (hexInput) {
+                                            hexInput.value = this.value;
+                                        }
+                                        
+                                        // Remove selection from all swatches
+                                        pickerContainer.querySelectorAll('.color-swatch').forEach(s => {
+                                            s.classList.remove('selected');
                                         });
+                                        
+                                        // Update display color
+                                        const colorDisplay = pickerContainer.querySelector('.current-color-display');
+                                        if (colorDisplay) {
+                                            colorDisplay.style.backgroundColor = this.value;
+                                        }
+                                        
+                                        // Mark as having unsaved changes
+                                        hasUnsavedChanges = true;
+                                        updateNotificationState();
+                                    });
+                                }
+                                
+                                if (hexInput) {
+                                    hexInput.addEventListener('input', function(e) {
+                                        e.stopPropagation(); // Prevent event bubbling
+                                        
+                                        // Only update if valid hex
+                                        if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                                            if (colorInput) {
+                                                colorInput.value = this.value;
+                                                colorInput.setAttribute('data-used-var', '');
+                                            }
+                                            
+                                            // Remove selection from all swatches
+                                            pickerContainer.querySelectorAll('.color-swatch').forEach(s => {
+                                                s.classList.remove('selected');
+                                            });
+                                            
+                                            // Update display color
+                                            const colorDisplay = pickerContainer.querySelector('.current-color-display');
+                                            if (colorDisplay) {
+                                                colorDisplay.style.backgroundColor = this.value;
+                                            }
+                                            
+                                            // Mark as having unsaved changes
+                                            hasUnsavedChanges = true;
+                                            updateNotificationState();
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            // Close color pickers when clicking outside
+                            document.addEventListener('click', function(e) {
+                                // Don't close if clicking inside a color picker
+                                if (e.target.closest('.color-picker-compact')) {
+                                    return;
+                                }
+                                
+                                // Close all color pickers
+                                colorPickers.forEach(picker => {
+                                    const expanded = picker.querySelector('.color-picker-expanded');
+                                    if (expanded) {
+                                        expanded.style.display = 'none';
                                     }
-                                }
+                                });
                             });
-
-                            // Bind normal change events for tracking unsaved changes
-                            SettingsComponents.bindEventHandlers(form, tabSchema, (settingId, value) => {
-                                console.log(`Setting changed: ${settingId} = ${value}`); // Debug log
-                                hasUnsavedChanges = true;
-                                updateNotificationState();
-                                if (handlers.onChange) {
-                                    handlers.onChange(settingId, value);
+                            
+                            // Specifically handle custom components if any
+                            if (customModule && customModule.initializeCustomComponents) {
+                                try {
+                                    customModule.initializeCustomComponents(elements.panelContent);
+                                    console.log(`📍 [Settings] Custom components initialized for ${pluginId}`);
+                                } catch (error) {
+                                    console.error(`📍 [Settings] Error initializing custom components for ${pluginId}:`, error);
                                 }
-                            });
+                            }
+                            
+                            // Use SettingsComponents.bindEventHandlers if available
+                            if (SettingsComponents && SettingsComponents.bindEventHandlers) {
+                                forms.forEach(form => {
+                                    try {
+                                        // Use the actual schema for the specific form
+                                        const formCategory = form.getAttribute('data-category');
+                                        let formSchema = schema;
+                                        
+                                        if (formCategory) {
+                                            const category = schema.find(item => item.type === 'category' && item.id === formCategory);
+                                            if (category && category.components) {
+                                                formSchema = category.components;
+                                            }
+                                        }
+                                        
+                                        SettingsComponents.bindEventHandlers(form, formSchema, function(settingId, value) {
+                                            hasUnsavedChanges = true;
+                                            updateNotificationState();
+                                        });
+                                        
+                                        console.log(`📍 [Settings] SettingsComponents event handlers bound for form ${formCategory || 'default'}`);
+                                    } catch (error) {
+                                        console.error(`📍 [Settings] Error binding SettingsComponents event handlers:`, error);
+                                    }
+                                });
+                            }
                         });
-                    }
-
-                    // Initialize any plugin-specific event handlers
-                    if (customModule && customModule.bindEvents) {
-                        customModule.bindEvents(elements.panelContent);
-                    }
-
-                    // Load saved settings if available
-                    if (plugin.settings && customModule && customModule.loadSettings) {
-                        customModule.loadSettings(elements.panelContent, plugin.settings);
+                        
+                        // Specifically handle custom components if any
+                        if (customModule && customModule.initializeCustomComponents) {
+                            try {
+                                customModule.initializeCustomComponents(elements.panelContent);
+                                console.log(`📍 [Settings] Custom components initialized for ${pluginId}`);
+                            } catch (error) {
+                                console.error(`📍 [Settings] Error initializing custom components for ${pluginId}:`, error);
+                            }
+                        }
+                        
+                        // Use SettingsComponents.bindEventHandlers if available
+                        if (SettingsComponents && SettingsComponents.bindEventHandlers) {
+                            forms.forEach(form => {
+                                try {
+                                    // Use the actual schema for the specific form
+                                    const formCategory = form.getAttribute('data-category');
+                                    let formSchema = schema;
+                                    
+                                    if (formCategory) {
+                                        const category = schema.find(item => item.type === 'category' && item.id === formCategory);
+                                        if (category && category.components) {
+                                            formSchema = category.components;
+                                        }
+                                    }
+                                    
+                                    SettingsComponents.bindEventHandlers(form, formSchema, function(settingId, value) {
+                                        hasUnsavedChanges = true;
+                                        updateNotificationState();
+                                    });
+                                    
+                                    console.log(`📍 [Settings] SettingsComponents event handlers bound for form ${formCategory || 'default'}`);
+                                } catch (error) {
+                                    console.error(`📍 [Settings] Error binding SettingsComponents event handlers:`, error);
+                                }
+                            });
+                        }
                     }
                 }
         } catch (error) {
@@ -988,10 +1753,10 @@ const Dashboard = (function () {
             // Update UI
             const card = document.querySelector(`.plugin-card[data-plugin-id="${pluginId}"]`);
             if (card) {
-                const statusBadge = card.querySelector('.plugin-status');
-                if (statusBadge) {
-                    statusBadge.className = `plugin-status status-${settings.enabled ? 'enabled' : 'disabled'}`;
-                    statusBadge.textContent = settings.enabled ? 'ENABLED' : 'DISABLED';
+                const statusElement = card.querySelector('.plugin-status');
+                if (statusElement) {
+                    statusElement.className = `plugin-status status-${settings.enabled ? 'enabled' : 'disabled'}`;
+                    statusElement.textContent = settings.enabled ? 'ENABLED' : 'DISABLED';
                 }
             }
         }
@@ -1001,7 +1766,14 @@ const Dashboard = (function () {
         if (customData) {
             // Include custom component data in settings
             for (const componentId in customData) {
-                settings[componentId] = customData[componentId];
+                if (typeof settings[componentId] === 'object') {
+                    settings[componentId] = {
+                        ...settings[componentId],
+                        ...customData[componentId]
+                    };
+                } else {
+                    settings[componentId] = customData[componentId];
+                }
             }
         }
 
@@ -1010,6 +1782,41 @@ const Dashboard = (function () {
             ...installedPlugins[pluginIndex].settings || {},
             ...settings
         };
+
+        // Also save licensing information if present
+        if (settings.license_key || settings.trial_start || installedPlugins[pluginIndex].licenseStatus) {
+            // Update licensing data if we have it, either from newly saved settings or existing plugin data
+            try {
+                if (window.SquareHeroLicensing) {
+                    const licenseData = await window.SquareHeroLicensing.getPluginData(pluginId);
+                    
+                    // Update license data with settings
+                    if (settings.license_key && !licenseData.license_key) {
+                        licenseData.license_key = settings.license_key;
+                    }
+                    
+                    if (settings.activated_at && !licenseData.activated_at) {
+                        licenseData.activated_at = settings.activated_at;
+                    }
+                    
+                    // Update status if needed
+                    const currentStatus = licenseData.status || 'inactive';
+                    const pluginLicenseStatus = installedPlugins[pluginIndex].licenseStatus || currentStatus;
+                    
+                    // Only update if different to avoid unnecessary writes
+                    if (currentStatus !== pluginLicenseStatus) {
+                        licenseData.status = pluginLicenseStatus;
+                    }
+                    
+                    // Save updates back to licensing system
+                    await window.SquareHeroLicensing.savePluginData(pluginId, licenseData);
+                    console.log(`Updated licensing data for ${pluginId}:`, licenseData);
+                }
+            } catch (licenseError) {
+                console.error(`Error updating licensing data for ${pluginId}:`, licenseError);
+                // Continue with saving other settings even if licensing update fails
+            }
+        }
 
         // Call onSave handler if registered
         const handlers = PluginSettingsRegistry.getHandlers(pluginId);
@@ -1030,9 +1837,9 @@ const Dashboard = (function () {
             );
 
             if (savedToFirebase) {
-                showSuccessNotification('Settings saved successfully!');
+                showSuccessNotification('Settings saved to cloud.');
             } else {
-                showSuccessNotification('Settings saved locally only.');
+                showSuccessNotification('Settings saved locally.');
             }
         } catch (error) {
             console.error(`Error saving settings to Firebase: ${error.message}`);
@@ -1056,20 +1863,24 @@ const Dashboard = (function () {
                 handleClosePanel();
             }
         });
+
+        // Handle logout button click
+        document.getElementById('logout-button').addEventListener('click', async () => {
+            try {
+                // Import required Firebase auth functions
+                const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js");
+                const auth = getAuth();
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Error signing out:', error);
+            }
+        });
     }
 
     // Load news items from Firebase
     async function loadNewsItems() {
-        // Don't show any text loading indicators here
-        // The skeleton should already be showing from the init function
-
         try {
-            // Authenticate if needed (though it might not be strictly necessary for read-only)
-            await Dashboard.FirebaseService.authenticate();
-
-            // Import functions (exactly as in getPluginSettings)
-            const { ref, get, set, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js");
-
             // Logging for debugging
             console.log("loadNewsItems() - Dashboard.FirebaseService.db:", Dashboard.FirebaseService.db);
             console.log("loadNewsItems() - typeof Dashboard.FirebaseService.db:", typeof Dashboard.FirebaseService.db);
@@ -1148,8 +1959,13 @@ const Dashboard = (function () {
     // Render all available plugins for discovery
     function renderDiscoverPluginCards() {
         const discoverPluginsContainer = document.getElementById('discover-plugins-content');
+        
+        console.log('🔍 [DEBUG-DISCOVER] Starting renderDiscoverPluginCards');
+        console.log('🔍 [DEBUG-DISCOVER] Available plugins count:', availablePlugins?.length);
+        console.log('🔍 [DEBUG-DISCOVER] Installed plugins count:', installedPlugins?.length);
 
         if (!availablePlugins || !availablePlugins.length) {
+            console.log('🔍 [DEBUG-DISCOVER] No available plugins found');
             discoverPluginsContainer.innerHTML = '<p>No plugins available to discover.</p>';
             return;
         }
@@ -1159,8 +1975,24 @@ const Dashboard = (function () {
         pluginGrid.id = 'discover-plugins-grid';
         pluginGrid.className = 'discover-plugins-grid';
 
-        // Process each available plugin
-        availablePlugins.forEach(plugin => {
+        console.log('🔍 [DEBUG-DISCOVER] Installed plugin IDs:', installedPlugins.map(p => p.id));
+
+        // Filter available plugins to only include those that aren't already installed
+        const pluginsToDiscover = availablePlugins.filter(plugin => {
+            const isInstalled = installedPlugins.some(p => p.id === plugin.id);
+            console.log(`🔍 [DEBUG-DISCOVER] Plugin ${plugin.id}: installed=${isInstalled}`);
+            return !isInstalled; // Only include plugins that are NOT installed
+        });
+
+        // If no plugins to discover, show a message
+        if (pluginsToDiscover.length === 0) {
+            console.log('🔍 [DEBUG-DISCOVER] No plugins to discover after filtering out installed plugins');
+            discoverPluginsContainer.innerHTML = '<p>You have installed all available plugins. Check back soon for new additions!</p>';
+            return;
+        }
+
+        // Process each plugin to discover
+        pluginsToDiscover.forEach(plugin => {
             const card = document.createElement('div');
             card.className = 'discover-plugin-card';
 
@@ -1172,7 +2004,12 @@ const Dashboard = (function () {
                 <h3 class="discover-plugin-title">${plugin.name}</h3>
                 <p class="discover-plugin-description">${plugin.description}</p>
                 <div class="discover-plugin-actions">
-                    <button class="sh-button free-trial">Start Free Trial</button>
+                    <button class="sh-button activate-license" data-plugin-id="${plugin.id}">
+                        Activate License
+                    </button>
+                    <button class="sh-primary-button install-plugin" data-plugin-id="${plugin.id}">
+                        Get Started
+                    </button>
                     <p class="fine-print">14 day free trial. No credit card required.</p>
                 </div>
             </div>
@@ -1183,6 +2020,7 @@ const Dashboard = (function () {
 
         discoverPluginsContainer.innerHTML = '';
         discoverPluginsContainer.appendChild(pluginGrid);
+        console.log('🔍 [DEBUG-DISCOVER] Finished rendering discover plugins');
     }
 
     // Function to switch tabs
@@ -1213,110 +2051,219 @@ const Dashboard = (function () {
 
     // Initialize the dashboard
     async function init() {
+        // Prevent double initialization with a global flag that persists
+        if (isInitializationInProgress || window.dashboardInitialized) {
+            console.log('🎯 [Dashboard] Initialization already in progress or completed, skipping');
+            return;
+        }
+        
+        // Set both flags to prevent any further initialization attempts
+        isInitializationInProgress = true;
+        window.dashboardInitialized = true;
+        
         try {
-            // First load the skeleton loader
+            console.log('🎯 [Dashboard] Starting initialization');
+            
+            // First initialize the licensing system
+            console.log('🎯 [Dashboard] Initializing licensing system');
+            if (window.SquareHeroLicensing) {
+                try {
+                    await window.SquareHeroLicensing.initialize({
+                        debug: true,
+                        autoSyncWithFirebase: true
+                    });
+                    console.log('🎯 [Dashboard] Licensing system initialized');
+                } catch (licenseError) {
+                    console.error('🎯 [Dashboard] Error initializing licensing system:', licenseError);
+                    // Continue with initialization even if licensing fails
+                }
+            } else {
+                console.warn('🎯 [Dashboard] Licensing system not available');
+            }
+            
+            // Then load the skeleton loader
             await loadSkeletonLoader();
+            console.log('🎯 [Dashboard] Skeleton loader loaded');
 
             // Set up event listeners
             initEventListeners();
+            console.log('🎯 [Dashboard] Event listeners initialized');
 
-            // Initialize tab event listeners <--- HERE'S THE FIX
+            // Initialize tab event listeners
             initTabEventListeners();
 
             // Show skeleton loaders BEFORE loading any data
             if (window.SkeletonLoader) {
+                console.log('🎯 [Dashboard] Creating skeleton loaders');
                 loadingStates.plugins = window.SkeletonLoader.show('plugin-cards-container', 'pluginCard', 3);
                 loadingStates.news = window.SkeletonLoader.show('news-items-container', 'newsItem', 4);
+                console.log('🎯 [Dashboard] Skeleton loaders created:', loadingStates);
+            } else {
+                console.error('🎯 [Dashboard] SkeletonLoader not available');
             }
 
             // Initialize Firebase
             await FirebaseService.initialize();
-            console.log('Firebase initialized');
+            console.log('🎯 [Dashboard] Firebase initialized');
+
+            // Wait for authentication to be ready
+            console.log('🎯 [Dashboard] Checking authentication status');
+            if (!window.SecureFirebaseAuth || !window.SecureFirebaseAuth.isInitialized) {
+                console.warn('🎯 [Dashboard] Firebase authentication not initialized, attempting to initialize');
+                // Try to manually initialize authentication
+                if (window.SecureFirebaseAuth && typeof window.SecureFirebaseAuth.initialize === 'function') {
+                    await window.SecureFirebaseAuth.initialize();
+                }
+            }
+
+            // If user isn't authenticated yet, prompt them to authenticate first
+            const isAuthenticated = await ensureAuthenticated();
+            console.log(`🎯 [Dashboard] Authentication status: ${isAuthenticated ? 'Authenticated ✓' : 'Not authenticated ✗'}`);
 
             // Load all available plugins from JSON
             availablePlugins = await loadPlugins();
-            console.log('Available plugins:', availablePlugins);
+            console.log('🎯 [Dashboard] Available plugins loaded:', availablePlugins);
 
-            // Render discover plugins grid
-            renderDiscoverPluginCards();
-
-            // Detect which plugins are actually installed on this site
+            // Detect which plugins are actually installed on this site - DO THIS FIRST
             installedPlugins = detectInstalledPlugins(availablePlugins);
-            console.log('Installed plugins:', installedPlugins);
+            console.log('🎯 [Dashboard] Installed plugins detected:', installedPlugins);
 
-            // Make installedPlugins globally available (PATCH)
+            // Make installedPlugins globally available
             window.installedPlugins = installedPlugins;
 
-            // If no plugins are installed, hide skeletons and show message
-            if (installedPlugins.length === 0) {
-                // Hide plugin skeletons
+            // Now render discover plugins grid AFTER detecting installed plugins
+            console.log('🎯 [Dashboard] Rendering discover plugins with detected installed plugins');
+            renderDiscoverPluginCards();
+
+            // Only proceed with loading settings if we have installed plugins
+            if (installedPlugins.length > 0) {
+                console.log('🎯 [Dashboard] Loading settings for installed plugins');
+                try {
+                    // Load saved settings for each plugin from Firebase
+                    await Promise.all(installedPlugins.map(async (plugin) => {
+                        try {
+                            // Set proper default settings for each plugin only as a fallback
+                            console.log(`🎯 [Dashboard] Loading settings for ${plugin.id}`);
+                            
+                            // Always include enabled: true in default settings as a minimum fallback
+                            const defaultSettings = { enabled: true };
+                            
+                            // IMPORTANT: Get existing settings from Firebase
+                            // getPluginSettings will only use defaults if nothing is found in Firebase
+                            const savedSettings = await FirebaseService.getPluginSettings(plugin.id, defaultSettings);
+                            
+                            // Apply settings to the plugin object
+                            plugin.settings = savedSettings;
+                            
+                            // Set plugin status based on the enabled property
+                            plugin.status = savedSettings.enabled === false ? 'disabled' : 'enabled';
+                            
+                            // Get licensing status
+                            if (window.SquareHeroLicensing) {
+                                try {
+                                    // Check licensing status
+                                    const licenseData = await window.SquareHeroLicensing.getPluginData(plugin.id);
+                                    plugin.licenseStatus = licenseData.status || 'inactive';
+                                    
+                                    // If in trial mode, get trial details
+                                    if (plugin.licenseStatus === 'trial') {
+                                        const trialStatus = await window.SquareHeroLicensing.checkTrialStatus(plugin.id);
+                                        plugin.trialData = trialStatus;
+                                        
+                                        // If trial has expired, update status
+                                        if (trialStatus.expired) {
+                                            plugin.licenseStatus = 'unauthorized';
+                                        }
+                                    }
+                                    
+                                    console.log(`🎯 [Dashboard] License status for ${plugin.id}: ${plugin.licenseStatus}`);
+                                } catch (licError) {
+                                    console.error(`🎯 [Dashboard] Error getting license data for ${plugin.id}:`, licError);
+                                    plugin.licenseStatus = 'inactive';
+                                }
+                            }
+                            
+                            console.log(`🎯 [Dashboard] Settings loaded for ${plugin.id}:`, plugin.settings);
+                            console.log(`🎯 [Dashboard] Plugin status set to: ${plugin.status} based on enabled=${plugin.settings.enabled}`);
+                        } catch (error) {
+                            console.error(`🎯 [Dashboard] Error loading settings for ${plugin.id}:`, error);
+                            // For error recovery, set some default values
+                            plugin.settings = { enabled: true };
+                            plugin.status = 'enabled';
+                            plugin.licenseStatus = 'inactive';
+                        }
+                    }));
+
+                    // Load scripts for installed plugins
+                    console.log('🎯 [Dashboard] Loading plugin scripts');
+                    await Promise.all(installedPlugins.map(loadPluginScripts));
+                    console.log('🎯 [Dashboard] Plugin scripts loaded');
+
+                    // Now render plugin cards - this will hide the skeleton loader when finished
+                    console.log('🎯 [Dashboard] Rendering plugin cards');
+                    await renderPluginCards();
+                    console.log('🎯 [Dashboard] Plugin cards rendered');
+                } catch (error) {
+                    console.error('🎯 [Dashboard] Error loading plugin settings:', error);
+                    if (loadingStates.plugins) {
+                        loadingStates.plugins.hide();
+                    }
+                    elements.pluginCardsContainer.innerHTML = '<p>Error loading plugin settings. Please try again later.</p>';
+                }
+            } else {
+                // No plugins installed, hide skeletons and show message
+                console.log('🎯 [Dashboard] No plugins installed');
                 if (loadingStates.plugins) {
+                    console.log('🎯 [Dashboard] Hiding plugin card skeletons (no plugins)');
                     loadingStates.plugins.hide();
                 }
-
                 elements.pluginCardsContainer.innerHTML = '<p>No plugins installed on this site. Visit the SquareHero plugin store to browse available plugins.</p>';
-
-                // Still load news items
-                await loadNewsItems();
-                return;
             }
 
-            // Load saved settings for each plugin from Firebase
-            await Promise.all(installedPlugins.map(async (plugin) => {
-                try {
-                    // Set default plugin settings if none exist
-                    const defaultSettings = {
-                        enabled: true
-                    };
-
-                    // Get settings from Firebase
-                    const savedSettings = await FirebaseService.getPluginSettings(plugin.id, defaultSettings);
-
-                    // Update plugin object with retrieved settings
-                    plugin.settings = savedSettings;
-
-                    // Update status based on enabled setting
-                    if (savedSettings.hasOwnProperty('enabled')) {
-                        plugin.status = savedSettings.enabled ? 'enabled' : 'disabled';
-                    }
-
-                    console.log(`Loaded settings for ${plugin.id}:`, savedSettings);
-                } catch (error) {
-                    console.error(`Error loading settings for ${plugin.id}:`, error);
-                    // Continue with next plugin - don't break the initialization
-                }
-            }));
-
-            // Load scripts for installed plugins
-            await Promise.all(installedPlugins.map(loadPluginScripts));
-            console.log('Plugin scripts loaded');
-
-            // Render plugin cards and hide skeletons
-            renderPluginCards();
-            if (loadingStates.plugins) {
-                loadingStates.plugins.hide();
-            }
-
-            // Load and render news items (skeletons are handled inside this function)
+            // Load and render news items
             await loadNewsItems();
 
-            console.log('Dashboard initialized successfully!');
+            console.log('🎯 [Dashboard] Dashboard initialized successfully!');
+            isInitializationInProgress = false;
+            
         } catch (error) {
-            console.error('Error initializing dashboard:', error);
-
+            console.error('🎯 [Dashboard] Error initializing dashboard:', error);
+            isInitializationInProgress = false;
+            
             // Hide all skeletons in case of error
             if (loadingStates.plugins) {
+                console.log('🎯 [Dashboard] Hiding plugin card skeletons (error)');
                 loadingStates.plugins.hide();
             }
             if (loadingStates.news) {
+                console.log('🎯 [Dashboard] Hiding news skeletons (error)');
                 loadingStates.news.hide();
             }
 
             elements.pluginCardsContainer.innerHTML = `
-            <div class="error-message">
-                <p>Error initializing dashboard: ${error.message}</p>
-            </div>
-        `;
+                <div class="error-message">
+                    <p>Error initializing dashboard: ${error.message}</p>
+                    <button class="button" id="retry-auth-button">Retry Authentication</button>
+                </div>
+            `;
+            
+            // Add a retry button event listener
+            setTimeout(() => {
+                const retryButton = document.getElementById('retry-auth-button');
+                if (retryButton) {
+                    retryButton.addEventListener('click', async () => {
+                        console.log('🎯 [Dashboard] Retrying authentication...');
+                        elements.pluginCardsContainer.innerHTML = '<div class="loading-indicator"><p>Authenticating...</p></div>';
+                        
+                        // Reset initialization flags
+                        isInitializationInProgress = false;
+                        window.dashboardInitialized = false;
+                        
+                        // Try to initialize again
+                        Dashboard.init();
+                    });
+                }
+            }, 0);
         }
     }
 
@@ -1402,9 +2349,9 @@ const Dashboard = (function () {
                     }
                 }, 100);
             };
-            script.onerror = (err) => {
-                console.error(`Failed to load wizard script for ${plugin.id}:`, err);
-                reject(err);
+            script.onerror = (error) => {
+                console.error(`Error loading wizard script for ${plugin.id}:`, error);
+                reject(error);
             };
             document.body.appendChild(script);
         });
@@ -1423,7 +2370,7 @@ const Dashboard = (function () {
 
         // Load wizard styles first if needed
         if (!wizardStylesLoaded) {
-            styleLink.href = 'https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/wizard-component.css';
+            const styleLink = document.createElement('link');
             styleLink.rel = 'stylesheet';
             styleLink.href = 'wizard-component.css';
             document.head.appendChild(styleLink);
@@ -1566,6 +2513,108 @@ const Dashboard = (function () {
         },
         enumerable: true
     });
+
+    // Debug utility to inspect and fix plugin settings in Firebase
+    window.inspectAndFixPluginSettings = async function(pluginId) {
+        if (!pluginId) {
+            console.error('🔧 [SETTINGS-FIX] No pluginId provided');
+            return { error: 'No pluginId provided' };
+        }
+        
+        console.log(`🔧 [SETTINGS-FIX] Inspecting settings for plugin: ${pluginId}`);
+        
+        try {
+            if (!window.SecureFirebaseAuth || !window.SecureFirebaseAuth.isInitialized) {
+                console.error('🔧 [SETTINGS-FIX] SecureFirebaseAuth not initialized');
+                return { error: 'SecureFirebaseAuth not initialized' };
+            }
+            
+            if (!window.SecureFirebaseAuth.isAuthenticated()) {
+                console.error('🔧 [SETTINGS-FIX] Not authenticated');
+                return { error: 'Not authenticated' };
+            }
+            
+            // Get current plugin data from Dashboard
+            const installedPlugin = window.installedPlugins.find(p => p.id === pluginId);
+            if (!installedPlugin) {
+                console.error(`🔧 [SETTINGS-FIX] Plugin ${pluginId} not found in installedPlugins`);
+                return { error: 'Plugin not found' };
+            }
+            
+            const currentSettings = installedPlugin.settings;
+            console.log(`🔧 [SETTINGS-FIX] Current settings in memory:`, currentSettings);
+            
+            // Get Firebase paths
+            const auth = window.SecureFirebaseAuth;
+            const userEmail = auth.currentUser.email;
+            const safeName = auth.getSafeFirebaseKey(userEmail);
+            const siteUrl = auth.internalUrl || window.location.hostname;
+            const safeSiteUrl = auth.getSafeFirebaseKey(siteUrl);
+            
+            console.log(`🔧 [SETTINGS-FIX] User: ${userEmail} → ${safeName}`);
+            console.log(`🔧 [SETTINGS-FIX] Site URL: ${siteUrl} → ${safeSiteUrl}`);
+            
+            // Path structure
+            const pluginPath = `users/${safeName}/sites/${safeSiteUrl}/plugins/${pluginId}`;
+            const settingsPath = `${pluginPath}/settings`;
+            
+            console.log(`🔧 [SETTINGS-FIX] Settings path: ${settingsPath}`);
+            
+            // Get existing settings from Firebase
+            const { ref, get, set } = auth.dbFunctions;
+            const settingsRef = ref(auth.db, settingsPath);
+            const snapshot = await get(settingsRef);
+            
+            let existingSettings = null;
+            if (snapshot.exists()) {
+                existingSettings = snapshot.val();
+                console.log(`🔧 [SETTINGS-FIX] Existing settings found in Firebase:`, existingSettings);
+            } else {
+                console.log(`🔧 [SETTINGS-FIX] No settings found in Firebase path`);
+            }
+            
+            // Compare and fix if needed
+            if (!existingSettings && currentSettings) {
+                console.log(`🔧 [SETTINGS-FIX] Saving current memory settings to Firebase`);
+                await set(settingsRef, currentSettings);
+                console.log(`🔧 [SETTINGS-FIX] ✅ Settings saved successfully to Firebase`);
+                return { 
+                    action: 'created', 
+                    settings: currentSettings, 
+                    path: settingsPath 
+                };
+            }
+            else if (existingSettings && JSON.stringify(existingSettings) !== JSON.stringify(currentSettings)) {
+                console.log(`🔧 [SETTINGS-FIX] Settings in Firebase differ from memory, updating memory with Firebase values`);
+                
+                // Update plugin object with Firebase settings
+                installedPlugin.settings = existingSettings;
+                
+                // Verify all settings were copied
+                console.log(`🔧 [SETTINGS-FIX] ✅ Updated memory settings:`, installedPlugin.settings);
+                
+                return { 
+                    action: 'updated_memory', 
+                    settings: existingSettings, 
+                    path: settingsPath 
+                };
+            }
+            else {
+                console.log(`🔧 [SETTINGS-FIX] ✓ Settings are synchronized between memory and Firebase`);
+                return { 
+                    action: 'none', 
+                    settings: existingSettings || currentSettings, 
+                    path: settingsPath 
+                };
+            }
+        } catch (error) {
+            console.error(`🔧 [SETTINGS-FIX] Error:`, error);
+            return { 
+                error: error.message,
+                stack: error.stack
+            };
+        }
+    };
 
     // Public API
     return {

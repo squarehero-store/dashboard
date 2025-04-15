@@ -47,6 +47,7 @@
         <button class="dashboard-tab" data-tab="discover-plugins">Discover Plugins</button>
         <button class="dashboard-tab" data-tab="register">Register Plugins</button>
         <button class="dashboard-tab" data-tab="news">Notifications</button>
+        <button class="dashboard-tab logout-tab" id="logoutButton" style="margin-left: auto;">Logout</button>
     </div>
 
     <main class="dashboard-container">
