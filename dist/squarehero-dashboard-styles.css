@@ -768,6 +768,56 @@ h1, h2, h3, h4 {
     opacity: 1;
   }
 }
+/* Plugin Settings Panel Tabs */
+.settings-tabs {
+  display: flex;
+  border-bottom: 1px solid #e9e9ec;
+  background: #fff;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.settings-tabs .tab-button {
+  padding: 15px 25px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 400;
+  position: relative;
+  color: #555;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.settings-tabs .tab-button:hover:not(.active) {
+  color: #0cc2ed;
+}
+.settings-tabs .tab-button.active {
+  color: #0cc2ed;
+  font-weight: 500;
+}
+.settings-tabs .tab-button.active:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00D1FF 20.4%, #E600FF 55.91%, #FF003D 80.09%);
+}
+
+.settings-content {
+  padding: 30px;
+}
+
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
 .button {
   padding: 8px 16px;
   font-size: 14px;
