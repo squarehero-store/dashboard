@@ -4,7 +4,7 @@
 # But not these files...
 !.gitignore
 !LICENSE
-@plugins.json
+!plugins.json
 
 # ...and not the dist folder and all its contents
 !dist/
