@@ -3,8 +3,8 @@
 
 # But not these files...
 !.gitignore
-!README.md
 !LICENSE
+@plugins.json
 
 # ...and not the dist folder and all its contents
 !dist/
