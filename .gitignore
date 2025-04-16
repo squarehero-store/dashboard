@@ -5,6 +5,8 @@
 !.gitignore
 !LICENSE
 !plugins.json
+!sh-helper.js
+!sh-helper.css
 
 # ...and not the dist folder and all its contents
 !dist/

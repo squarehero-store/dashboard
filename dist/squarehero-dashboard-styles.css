@@ -1217,6 +1217,15 @@ h1, h2, h3, h4 {
   left: 0;
   transform: rotateY(180deg);
   min-height: 100%;
+  /*Bullet points*/
+}
+.card-back .plugin-name {
+  margin: 0 0 10px 0;
+  color: var(--darkblue);
+  font-size: 16px;
+}
+.card-back .discover-plugin-description {
+  margin-left: 20px;
 }
 
 .discover-plugin-icon {
@@ -1229,7 +1238,7 @@ h1, h2, h3, h4 {
 }
 
 .discover-plugin-content {
-  padding: 30px;
+  padding: 0 30px 30px 30px;
   display: flex;
   flex-direction: column;
   text-align: left;
