@@ -688,10 +688,19 @@ h1, h2, h3, h4 {
   display: none;
   padding: 30px;
   animation: fadeIn 0.3s ease;
+  /* Critical fix: Keep plugins tab visible when settings panel is open */
 }
 .dashboard-tab-content.active {
   display: block;
   height: 100%;
+}
+.dashboard-tab-content#plugins-tab.active, .dashboard-tab-content#plugins-tab.active.settings-open {
+  display: block;
+}
+
+/* When settings panel is open, ensure plugins tab remains visible */
+.settings-panel.visible ~ .dashboard-tabs-content #plugins-tab {
+  display: block !important;
 }
 
 /* Registration Form Styles */
@@ -923,7 +932,7 @@ h1, h2, h3, h4 {
 }
 
 .sh-primary-button {
-  background: #011e45 !important;
+  background: #011e45;
   z-index: 1;
   display: inline-block;
   color: white;
@@ -1071,7 +1080,7 @@ h1, h2, h3, h4 {
 .plugin-card .plugin-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
 }
 .plugin-card .plugin-title {
@@ -1192,6 +1201,40 @@ h1, h2, h3, h4 {
 .discover-plugin-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
+.discover-plugin-card.flipped-license .card-inner {
+  transform: rotateY(180deg);
+}
+.discover-plugin-card .card-front {
+  z-index: 1;
+}
+.discover-plugin-card .get-started-card {
+  z-index: 0;
+  visibility: hidden;
+  transition: visibility 0s 0.7s;
+}
+.discover-plugin-card .license-card {
+  z-index: 0;
+  visibility: hidden;
+  transition: visibility 0s 0.7s;
+}
+.discover-plugin-card.flipped:not(.flipped-license) .get-started-card {
+  z-index: 2;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.discover-plugin-card.flipped:not(.flipped-license) .license-card {
+  z-index: -1;
+  visibility: hidden;
+}
+.discover-plugin-card.flipped-license .license-card {
+  z-index: 2;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.discover-plugin-card.flipped-license .get-started-card {
+  z-index: -1;
+  visibility: hidden;
+}
 
 .card-front,
 .card-back {
@@ -1208,8 +1251,8 @@ h1, h2, h3, h4 {
 
 .card-front {
   position: relative;
-  z-index: 2;
   transform: rotateY(0deg);
+  /* Remove the fixed z-index that was conflicting with our new structure */
 }
 
 .card-back {
@@ -1218,6 +1261,7 @@ h1, h2, h3, h4 {
   left: 0;
   transform: rotateY(180deg);
   min-height: 100%;
+  pointer-events: none;
   /*Bullet points*/
 }
 .card-back .plugin-name {
@@ -1227,6 +1271,11 @@ h1, h2, h3, h4 {
 }
 .card-back .discover-plugin-description {
   margin-left: 20px;
+}
+
+.discover-plugin-card.flipped:not(.flipped-license) .get-started-card,
+.discover-plugin-card.flipped-license .license-card {
+  pointer-events: auto;
 }
 
 .discover-plugin-icon {
@@ -1246,9 +1295,14 @@ h1, h2, h3, h4 {
   flex: 1;
   height: 100%;
 }
+.discover-plugin-content .plugin-name-eyebrow {
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 600 !important;
+  margin-bottom: 20px;
+}
 
 .discover-plugin-title {
-  font-size: 21px;
+  font-size: 20px;
   margin-bottom: 10px;
   margin-top: 0;
   color: #011e45;
@@ -1274,6 +1328,9 @@ h1, h2, h3, h4 {
 }
 .discover-plugin-actions .activate-license {
   color: #011e45 !important;
+}
+.discover-plugin-actions .install-now {
+  background: #ff003d;
 }
 
 .flip-card-btn {
@@ -1383,6 +1440,68 @@ h1, h2, h3, h4 {
   margin-bottom: 20px;
 }
 
+.license-card .license-input-wrapper {
+  margin: 30px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.license-card .license-key-input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #e9e9ec;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 1px;
+  color: #011e45;
+}
+.license-card .license-key-input::placeholder {
+  color: #ccc;
+  letter-spacing: 2px;
+}
+.license-card .license-key-input.error {
+  border-color: #ff003d;
+  animation: shake 0.5s;
+}
+.license-card .license-help-text {
+  text-align: center;
+  color: #4d627d;
+  font-size: 14px;
+  margin: 5px 0 0;
+}
+.license-card .purchase-license-link {
+  color: #0cc2ed;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.license-card .license-success-message {
+  margin-top: 15px;
+  text-align: center;
+  color: #4CAF50;
+  font-weight: 500;
+}
+.license-card .activate-now {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: #ff003d;
+}
+.license-card .activate-now.success {
+  background-color: #4CAF50;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
 .form-group {
   padding: 0 10px;
   margin-bottom: 20px;
@@ -1593,17 +1712,18 @@ h1, h2, h3, h4 {
 
 .palette-swatches {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   justify-content: space-between;
 }
 
 .color-swatch {
-  width: 40px;
+  width: 100%;
+  flex: 1;
   height: 40px;
   border: 1px solid #e9e9ec;
   cursor: pointer;
   position: relative;
-  border-radius: 50%;
+  border-radius: 4px;
   transition: transform 0.2s;
 }
 .color-swatch:hover {
@@ -1611,17 +1731,6 @@ h1, h2, h3, h4 {
 }
 .color-swatch.selected {
   border: 2px solid #0cc2ed;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
-}
-.color-swatch.selected:after {
-  content: "✓";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-  font-size: 24px;
 }
 
 .color-picker-simple {
@@ -1638,7 +1747,7 @@ h1, h2, h3, h4 {
   width: 36px;
   height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
+  border-radius: 4px;
 }
 
 .color-picker-compact {
@@ -1902,6 +2011,112 @@ h1, h2, h3, h4 {
   border: none;
 }
 
+.sh-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 2010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.sh-modal-overlay.closing {
+  opacity: 0;
+}
+
+.sh-modal {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  width: 90%;
+  max-width: 380px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  margin: auto;
+}
+.sh-modal.closing {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.sh-modal .sh-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 0;
+  border-bottom: none;
+}
+.sh-modal .sh-modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+.sh-modal .sh-modal-header .sh-modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+.sh-modal .sh-modal-header .sh-modal-close:hover {
+  color: #666;
+}
+.sh-modal .sh-modal-content {
+  padding: 16px 24px 20px;
+  color: #555;
+}
+.sh-modal .sh-modal-content p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 16px;
+}
+.sh-modal .sh-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 24px 24px;
+  border-top: none;
+  gap: 12px;
+}
+.sh-modal .sh-modal-footer .sh-modal-button {
+  padding: 10px 24px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.sh-modal .sh-modal-footer .sh-modal-button.sh-cancel-button {
+  background-color: #f0f0f0;
+  border: none;
+  color: #333;
+}
+.sh-modal .sh-modal-footer .sh-modal-button.sh-cancel-button:hover {
+  background-color: #e5e5e5;
+}
+.sh-modal .sh-modal-footer .sh-modal-button.sh-confirm-button {
+  background-color: #0cc2ed;
+  border: none;
+  color: white;
+}
+.sh-modal .sh-modal-footer .sh-modal-button.sh-confirm-button:hover {
+  background-color: rgb(10.7710843373, 174.1325301205, 212.7289156627);
+}
+
+.sh-confirm-modal .sh-modal-content {
+  padding-top: 8px;
+  padding-bottom: 24px;
+}
+
 @keyframes shake {
   0%, 100% {
     transform: translateY(0);
@@ -2061,6 +2276,127 @@ h1, h2, h3, h4 {
 
 .form-description {
   margin-bottom: 20px;
+}
+
+/* Hexagon Notifications */
+.sh-hexagon-notification-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  pointer-events: none;
+  min-height: 80px;
+}
+
+.dynamic-island {
+  position: fixed;
+  bottom: -70px; /* Start off-screen, increased for larger size */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px; /* Increased from 57px to 70px */
+  height: 70px; /* Increased to match width */
+  background-color: transparent; /* Keep transparent */
+  overflow: visible; /* Changed from hidden to visible to allow shadow to be seen */
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  pointer-events: auto;
+}
+
+.dynamic-island.visible {
+  bottom: 30px; /* Slide up to this position */
+}
+
+.dynamic-island.circle {
+  width: 70px; /* Increased from 57px */
+  height: 70px; /* Increased from 57px */
+}
+
+.dynamic-island.expanded {
+  width: auto; /* Allow width to adjust to content */
+  min-width: 250px; /* Minimum width for short messages, increased */
+  max-width: calc(100% - 40px); /* Maximum width with some padding from screen edges */
+  height: 70px; /* Increased from 57px */
+  background-color: transparent; /* Ensure transparency */
+  bottom: 30px;
+  justify-content: flex-start;
+}
+
+.logo-container {
+  position: absolute;
+  left: 0;
+  width: 70px; /* Increased from 57px */
+  height: 70px; /* Increased from 57px */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  flex-shrink: 0; /* Don't allow logo to shrink */
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25); /* Add shadow to logo */
+  border-radius: 50%; /* Circular shadow for logo */
+  background-color: transparent; /* Keep it transparent */
+}
+
+.content-background {
+  position: absolute;
+  left: 35px; /* Half of logo width (70px / 2) */
+  width: calc(100% - 35px);
+  height: 100%;
+  background-color: #011e45;
+  border-radius: 6px; /* Simple border radius */
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25); /* Add shadow to background */
+}
+
+.dynamic-island.expanded .content-background {
+  opacity: 1;
+}
+
+/* Animation for shrinking back to circle */
+.dynamic-island.circle .content-background {
+  width: 0; /* Smoothly shrink to 0 width */
+}
+
+.notification-content {
+  position: relative;
+  margin-left: 70px; /* Start after the logo - increased from 57px */
+  color: white;
+  padding: 0 20px; /* Padding for content */
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 3;
+  white-space: nowrap; /* Prevent wrapping for content-based width */
+}
+
+.notification-content.visible {
+  opacity: 1;
+}
+
+.message-text {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Increased from 8px for better spacing */
+  font-size: 16px; /* Added explicit font size */
+}
+
+.message-text strong {
+  font-weight: 600; /* Make type label slightly bolder */
+}
+
+.message-text p {
+  margin: 0;
 }
 
 .plugin-settings .discover-plugin-card {
@@ -3223,373 +3559,5 @@ h1, h2, h3, h4 {
   .settings-panel {
     width: 100%;
     right: -100%;
-  }
-}
-/*!*****************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./help-docs.css ***!
-  \*****************************************************************/
-/* SquareHero Help Documentation Styles */
-
-/* Help Docs Container */
-.help-docs-container {
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  padding: 20px;
-  width: 100%;
-}
-
-/* Search and Filter Bar */
-.help-docs-search {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.help-search-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--medium-gray);
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.help-category-filter {
-  width: 180px;
-  padding: 8px 12px;
-  border: 1px solid var(--medium-gray);
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-/* Help Docs List */
-.help-docs-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* Help Doc Item */
-.help-doc-item {
-  background-color: var(--white);
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--border-radius);
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.help-doc-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.doc-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.doc-category {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--blue);
-  padding: 2px 8px;
-  background-color: var(--lightblue);
-  border-radius: 12px;
-}
-
-.doc-date {
-  font-size: 12px;
-  color: var(--text-light);
-}
-
-.doc-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--darkblue);
-}
-
-.doc-excerpt {
-  font-size: 14px;
-  color: var(--text-light);
-  margin-bottom: 16px;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.doc-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: auto;
-}
-
-.view-doc-btn {
-  padding: 6px 12px;
-  background-color: transparent;
-  color: var(--blue);
-  border: 1px solid var(--blue);
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.view-doc-btn:hover {
-  background-color: var(--lightblue);
-}
-
-/* Empty State */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  background-color: var(--light-gray);
-  border-radius: var(--border-radius);
-}
-
-.empty-state svg {
-  color: var(--text-light);
-  margin-bottom: 16px;
-}
-
-.empty-state h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: var(--text-color);
-}
-
-.empty-state p {
-  color: var(--text-light);
-  max-width: 400px;
-}
-
-/* Help Doc Modal */
-.help-doc-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-}
-
-.help-doc-modal.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.help-doc-modal-content {
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  width: 90%;
-  max-width: 800px;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--card-shadow);
-  transform: translateY(20px);
-  transition: transform 0.3s;
-}
-
-.help-doc-modal.visible .help-doc-modal-content {
-  transform: translateY(0);
-}
-
-.help-doc-modal-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--medium-gray);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.help-doc-modal-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.help-doc-modal-close {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-light);
-}
-
-.help-doc-modal-body {
-  padding: 24px;
-  overflow-y: auto;
-  flex-grow: 1;
-  line-height: 1.6;
-}
-
-/* Rich text content styling */
-.help-doc-modal-body h1,
-.help-doc-modal-body h2,
-.help-doc-modal-body h3,
-.help-doc-modal-body h4 {
-  margin-top: 24px;
-  margin-bottom: 16px;
-  color: var(--darkblue);
-}
-
-.help-doc-modal-body h1 {
-  font-size: 24px;
-}
-
-.help-doc-modal-body h2 {
-  font-size: 20px;
-}
-
-.help-doc-modal-body h3 {
-  font-size: 18px;
-}
-
-.help-doc-modal-body p {
-  margin-bottom: 16px;
-}
-
-.help-doc-modal-body ul,
-.help-doc-modal-body ol {
-  margin-bottom: 16px;
-  padding-left: 24px;
-}
-
-.help-doc-modal-body li {
-  margin-bottom: 8px;
-}
-
-.help-doc-modal-body code {
-  background-color: var(--light-gray);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-family: monospace;
-}
-
-.help-doc-modal-body pre {
-  background-color: var(--light-gray);
-  padding: 16px;
-  border-radius: 4px;
-  overflow-x: auto;
-  margin-bottom: 16px;
-}
-
-.help-doc-modal-body blockquote {
-  border-left: 4px solid var(--blue);
-  padding-left: 16px;
-  margin-left: 0;
-  color: var(--text-light);
-}
-
-.help-doc-modal-body img {
-  max-width: 100%;
-  height: auto;
-  margin: 16px 0;
-  border-radius: 4px;
-}
-
-.help-doc-modal-body a {
-  color: var(--blue);
-  text-decoration: none;
-}
-
-.help-doc-modal-body a:hover {
-  text-decoration: underline;
-}
-
-.help-doc-modal-body table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 16px;
-}
-
-.help-doc-modal-body th,
-.help-doc-modal-body td {
-  border: 1px solid var(--medium-gray);
-  padding: 8px;
-  text-align: left;
-}
-
-.help-doc-modal-body th {
-  background-color: var(--light-gray);
-}
-
-/* Loading indicator */
-.loading-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.loading-spinner {
-  border: 4px solid var(--medium-gray);
-  border-top: 4px solid var(--blue);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Test container specifically for demonstration */
-.test-help-docs-container {
-  margin-top: 30px !important;
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  padding: 30px;
-  box-shadow: var(--card-shadow);
-}
-
-.test-help-docs-container h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--medium-gray);
-  color: var(--darkblue);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .help-docs-search {
-    flex-direction: column;
-  }
-  
-  .help-category-filter {
-    width: 100%;
-  }
-  
-  .help-docs-list {
-    grid-template-columns: 1fr;
-  }
-  
-  .help-doc-modal-content {
-    width: 95%;
-    max-height: 95vh;
   }
 }
