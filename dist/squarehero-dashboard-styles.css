@@ -33,6 +33,33 @@ h1, h2, h3, h4 {
   font-size: 1.125rem;
 }
 
+#squarehero-dashboard-container h1, #squarehero-dashboard-container h2, #squarehero-dashboard-container h3, #squarehero-dashboard-container h4,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h1,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h2,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h3,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h4 {
+  font-family: "Red Hat Display", sans-serif;
+  font-weight: 800;
+  text-transform: none;
+  color: #011e45;
+}
+#squarehero-dashboard-container h1,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h1 {
+  font-size: 1.5rem;
+}
+#squarehero-dashboard-container h2,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h2 {
+  font-size: 1.35rem;
+}
+#squarehero-dashboard-container h3,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h3 {
+  font-size: 1.2rem;
+}
+#squarehero-dashboard-container h4,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container h4 {
+  font-size: 1.1rem;
+}
+
 #header, #footer-sections {
   display: none !important;
 }
@@ -1046,7 +1073,8 @@ h1, h2, h3, h4 {
   color: #ff003d;
 }
 
-.plugin-card {
+#squarehero-dashboard-container .plugin-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
@@ -1058,42 +1086,51 @@ h1, h2, h3, h4 {
   cursor: pointer;
   padding: 30px;
 }
-.plugin-card:hover {
+#squarehero-dashboard-container .plugin-card:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-.plugin-card .plugin-icon {
+#squarehero-dashboard-container .plugin-card .plugin-icon,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-icon {
   width: 80px;
   height: 80px;
   flex-shrink: 0;
 }
-.plugin-card .plugin-icon svg,
-.plugin-card .plugin-icon img {
+#squarehero-dashboard-container .plugin-card .plugin-icon svg,
+#squarehero-dashboard-container .plugin-card .plugin-icon img,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-icon svg,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-icon img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
-.plugin-card .plugin-content {
+#squarehero-dashboard-container .plugin-card .plugin-content,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-content {
   flex-grow: 1;
   padding: 0;
 }
-.plugin-card .plugin-header {
+#squarehero-dashboard-container .plugin-card .plugin-header,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 8px;
 }
-.plugin-card .plugin-title {
+#squarehero-dashboard-container .plugin-card .plugin-title,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-title {
   font-size: 18px;
   font-weight: 600;
   margin: 0 !important;
   color: #011e45 !important;
 }
-.plugin-card .plugin-description {
+#squarehero-dashboard-container .plugin-card .plugin-description,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-description {
   color: #4d627d;
   font-size: 16px;
 }
-.plugin-card .plugin-status {
+#squarehero-dashboard-container .plugin-card .plugin-status,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status {
   background-color: #ccc;
   color: #ffffff;
   padding: 6px 12px;
@@ -1101,7 +1138,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.plugin-card .plugin-status.status-enabled {
+#squarehero-dashboard-container .plugin-card .plugin-status.status-enabled,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status.status-enabled {
   background-color: #4CAF50;
   color: #ffffff;
   padding: 6px 12px;
@@ -1109,7 +1147,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.plugin-card .plugin-status.status-disabled {
+#squarehero-dashboard-container .plugin-card .plugin-status.status-disabled,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status.status-disabled {
   background-color: #F9A825;
   color: #ffffff;
   padding: 6px 12px;
@@ -1117,7 +1156,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.plugin-card .plugin-status.status-unlicensed {
+#squarehero-dashboard-container .plugin-card .plugin-status.status-unlicensed,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status.status-unlicensed {
   background-color: #ff003d;
   color: #ffffff;
   padding: 6px 12px;
@@ -1125,7 +1165,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.plugin-card .plugin-status.status-connect {
+#squarehero-dashboard-container .plugin-card .plugin-status.status-connect,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status.status-connect {
   background-color: #0cc2ed;
   color: #ffffff;
   padding: 6px 12px;
@@ -1133,7 +1174,8 @@ h1, h2, h3, h4 {
   font-weight: 600;
   text-transform: uppercase;
 }
-.plugin-card .license-status {
+#squarehero-dashboard-container .plugin-card .license-status,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-status {
   font-size: 0.7rem;
   font-weight: 600;
   padding: 2px 6px;
@@ -1144,44 +1186,51 @@ h1, h2, h3, h4 {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
-.plugin-card .license-status.license-inactive {
+#squarehero-dashboard-container .plugin-card .license-status.license-inactive,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-status.license-inactive {
   background-color: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.7);
 }
-.plugin-card .license-status.license-trial {
+#squarehero-dashboard-container .plugin-card .license-status.license-trial,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-status.license-trial {
   background-color: rgba(78, 156, 242, 0.2);
   color: rgb(34, 102, 179);
 }
-.plugin-card .license-status.license-active {
+#squarehero-dashboard-container .plugin-card .license-status.license-active,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-status.license-active {
   background-color: rgba(72, 187, 120, 0.2);
   color: rgb(39, 134, 80);
 }
-.plugin-card .license-status.license-expired {
+#squarehero-dashboard-container .plugin-card .license-status.license-expired,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-status.license-expired {
   background-color: rgba(245, 101, 101, 0.2);
   color: rgb(176, 42, 42);
 }
-.plugin-card .license-details {
+#squarehero-dashboard-container .plugin-card .license-details,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .license-details {
   font-size: 0.65rem;
   margin-top: 2px;
   text-align: center;
   color: rgba(0, 0, 0, 0.7);
 }
-.plugin-card.error-card {
+#squarehero-dashboard-container .plugin-card.error-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card.error-card {
   background-color: #fff8f8;
   border-left: 3px solid #ff003d;
 }
-
-.discover-plugins-grid {
+#squarehero-dashboard-container .discover-plugins-grid,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugins-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
   margin-bottom: 30px;
 }
-.discover-plugins-grid .discover-plugin-card {
+#squarehero-dashboard-container .discover-plugins-grid .discover-plugin-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugins-grid .discover-plugin-card {
   height: 100%;
 }
-
-.discover-plugin-card {
+#squarehero-dashboard-container .discover-plugin-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card {
   position: relative;
   perspective: 1000px;
   width: 100%;
@@ -1189,7 +1238,8 @@ h1, h2, h3, h4 {
   background-color: transparent;
   height: 100%;
 }
-.discover-plugin-card .card-inner {
+#squarehero-dashboard-container .discover-plugin-card .card-inner,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card .card-inner {
   position: relative;
   width: 100%;
   height: 100%;
@@ -1198,46 +1248,56 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
 }
-.discover-plugin-card.flipped .card-inner {
+#squarehero-dashboard-container .discover-plugin-card.flipped .card-inner,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
-.discover-plugin-card.flipped-license .card-inner {
+#squarehero-dashboard-container .discover-plugin-card.flipped-license .card-inner,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped-license .card-inner {
   transform: rotateY(180deg);
 }
-.discover-plugin-card .card-front {
+#squarehero-dashboard-container .discover-plugin-card .card-front,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card .card-front {
   z-index: 1;
 }
-.discover-plugin-card .get-started-card {
+#squarehero-dashboard-container .discover-plugin-card .get-started-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card .get-started-card {
   z-index: 0;
   visibility: hidden;
   transition: visibility 0s 0.7s;
 }
-.discover-plugin-card .license-card {
+#squarehero-dashboard-container .discover-plugin-card .license-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card .license-card {
   z-index: 0;
   visibility: hidden;
   transition: visibility 0s 0.7s;
 }
-.discover-plugin-card.flipped:not(.flipped-license) .get-started-card {
+#squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .get-started-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .get-started-card {
   z-index: 2;
   visibility: visible;
   transition-delay: 0s;
 }
-.discover-plugin-card.flipped:not(.flipped-license) .license-card {
+#squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .license-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .license-card {
   z-index: -1;
   visibility: hidden;
 }
-.discover-plugin-card.flipped-license .license-card {
+#squarehero-dashboard-container .discover-plugin-card.flipped-license .license-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped-license .license-card {
   z-index: 2;
   visibility: visible;
   transition-delay: 0s;
 }
-.discover-plugin-card.flipped-license .get-started-card {
+#squarehero-dashboard-container .discover-plugin-card.flipped-license .get-started-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped-license .get-started-card {
   z-index: -1;
   visibility: hidden;
 }
-
-.card-front,
-.card-back {
+#squarehero-dashboard-container .card-front,
+#squarehero-dashboard-container .card-back,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-front,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-back {
   width: 100%;
   background-color: white;
   border-radius: 8px;
@@ -1248,14 +1308,14 @@ h1, h2, h3, h4 {
   flex-direction: column;
   height: 100%;
 }
-
-.card-front {
+#squarehero-dashboard-container .card-front,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-front {
   position: relative;
   transform: rotateY(0deg);
   /* Remove the fixed z-index that was conflicting with our new structure */
 }
-
-.card-back {
+#squarehero-dashboard-container .card-back,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-back {
   position: absolute;
   top: 0;
   left: 0;
@@ -1264,30 +1324,34 @@ h1, h2, h3, h4 {
   pointer-events: none;
   /*Bullet points*/
 }
-.card-back .plugin-name {
+#squarehero-dashboard-container .card-back .plugin-name,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-back .plugin-name {
   margin: 0 0 10px 0;
   color: var(--darkblue);
   font-size: 16px;
 }
-.card-back .discover-plugin-description {
+#squarehero-dashboard-container .card-back .discover-plugin-description,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .card-back .discover-plugin-description {
   margin-left: 20px;
 }
-
-.discover-plugin-card.flipped:not(.flipped-license) .get-started-card,
-.discover-plugin-card.flipped-license .license-card {
+#squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .get-started-card,
+#squarehero-dashboard-container .discover-plugin-card.flipped-license .license-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped:not(.flipped-license) .get-started-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-card.flipped-license .license-card {
   pointer-events: auto;
 }
-
-.discover-plugin-icon {
+#squarehero-dashboard-container .discover-plugin-icon,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-icon {
   padding: 30px;
 }
-.discover-plugin-icon img {
+#squarehero-dashboard-container .discover-plugin-icon img,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-icon img {
   max-width: 100px;
   max-height: 100px;
   object-fit: contain;
 }
-
-.discover-plugin-content {
+#squarehero-dashboard-container .discover-plugin-content,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-content {
   padding: 0 30px 30px 30px;
   display: flex;
   flex-direction: column;
@@ -1295,45 +1359,49 @@ h1, h2, h3, h4 {
   flex: 1;
   height: 100%;
 }
-.discover-plugin-content .plugin-name-eyebrow {
+#squarehero-dashboard-container .discover-plugin-content .plugin-name-eyebrow,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-content .plugin-name-eyebrow {
   font-family: "Roboto Condensed", sans-serif;
   font-weight: 600 !important;
   margin-bottom: 20px;
 }
-
-.discover-plugin-title {
+#squarehero-dashboard-container .discover-plugin-title,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-title {
   font-size: 20px;
   margin-bottom: 10px;
   margin-top: 0;
   color: #011e45;
 }
-
-.discover-plugin-description {
+#squarehero-dashboard-container .discover-plugin-description,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-description {
   color: #4d627d;
   font-size: 16px;
   margin-bottom: 15px;
   flex: 1;
 }
-
-.discover-plugin-actions {
+#squarehero-dashboard-container .discover-plugin-actions,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: auto;
   width: 100%;
 }
-.discover-plugin-actions button {
+#squarehero-dashboard-container .discover-plugin-actions button,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-actions button {
   flex: 1 0 100%;
   padding: 15px;
 }
-.discover-plugin-actions .activate-license {
+#squarehero-dashboard-container .discover-plugin-actions .activate-license,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-actions .activate-license {
   color: #011e45 !important;
 }
-.discover-plugin-actions .install-now {
+#squarehero-dashboard-container .discover-plugin-actions .install-now,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .discover-plugin-actions .install-now {
   background: #ff003d;
 }
-
-.flip-card-btn {
+#squarehero-dashboard-container .flip-card-btn,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .flip-card-btn {
   background: none;
   border: none;
   color: #0cc2ed;
@@ -1342,11 +1410,12 @@ h1, h2, h3, h4 {
   margin-top: 10px;
   font-size: 14px;
 }
-.flip-card-btn:hover {
+#squarehero-dashboard-container .flip-card-btn:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .flip-card-btn:hover {
   color: #0aa9cf;
 }
-
-.fine-print {
+#squarehero-dashboard-container .fine-print,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .fine-print {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -1354,30 +1423,34 @@ h1, h2, h3, h4 {
   margin-top: 10px;
   color: #4d627d;
 }
-
-.help-docs-list {
+#squarehero-dashboard-container .help-docs-list,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
-.help-docs-list .help-doc-item {
+#squarehero-dashboard-container .help-docs-list .help-doc-item,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list .help-doc-item {
   background-color: #f7f7f9;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease;
 }
-.help-docs-list .help-doc-item:hover {
+#squarehero-dashboard-container .help-docs-list .help-doc-item:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list .help-doc-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.help-docs-list .help-doc-item .help-doc-title {
+#squarehero-dashboard-container .help-docs-list .help-doc-item .help-doc-title,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list .help-doc-item .help-doc-title {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 10px 0;
   color: #011e45;
 }
-.help-docs-list .help-doc-item .help-doc-excerpt {
+#squarehero-dashboard-container .help-docs-list .help-doc-item .help-doc-excerpt,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list .help-doc-item .help-doc-excerpt {
   font-size: 14px;
   color: #4d627d;
   margin-bottom: 15px;
@@ -1386,67 +1459,76 @@ h1, h2, h3, h4 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.registration-form,
-.registered-plugins-section {
+#squarehero-dashboard-container .registration-form,
+#squarehero-dashboard-container .registered-plugins-section,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registration-form,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registered-plugins-section {
   background: white;
   border-radius: 8px;
   padding: 30px;
   margin-bottom: 30px;
   box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
 }
-
-.registered-plugin-item {
+#squarehero-dashboard-container .registered-plugin-item,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registered-plugin-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 15px 0;
   border-bottom: 1px solid #e9e9ec;
 }
-.registered-plugin-item:last-child {
+#squarehero-dashboard-container .registered-plugin-item:last-child,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registered-plugin-item:last-child {
   border-bottom: none;
 }
-.registered-plugin-item .plugin-info h4 {
+#squarehero-dashboard-container .registered-plugin-item .plugin-info h4,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registered-plugin-item .plugin-info h4 {
   margin: 0 0 5px 0;
 }
-.registered-plugin-item .license-info {
+#squarehero-dashboard-container .registered-plugin-item .license-info,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .registered-plugin-item .license-info {
   font-size: 14px;
   color: #4d627d;
   margin: 0;
 }
-
-.license-options {
+#squarehero-dashboard-container .license-options,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
   margin-top: 20px;
 }
 @media (max-width: 768px) {
-  .license-options {
+  #squarehero-dashboard-container .license-options,
+  .squarehero-dashboard-wrapper #squarehero-dashboard-container .license-options {
     grid-template-columns: 1fr;
   }
 }
-.license-options .license-option {
+#squarehero-dashboard-container .license-options .license-option,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-options .license-option {
   background-color: #f7f7f9;
   border-radius: 8px;
   padding: 20px;
 }
-.license-options .license-option h3 {
+#squarehero-dashboard-container .license-options .license-option h3,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-options .license-option h3 {
   font-size: 18px;
   margin-bottom: 10px;
 }
-.license-options .license-option p {
+#squarehero-dashboard-container .license-options .license-option p,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-options .license-option p {
   color: #4d627d;
   margin-bottom: 20px;
 }
-
-.license-card .license-input-wrapper {
+#squarehero-dashboard-container .license-card .license-input-wrapper,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-input-wrapper {
   margin: 30px 0 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.license-card .license-key-input {
+#squarehero-dashboard-container .license-card .license-key-input,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-key-input {
   width: 100%;
   padding: 15px;
   border: 1px solid #e9e9ec;
@@ -1456,38 +1538,45 @@ h1, h2, h3, h4 {
   letter-spacing: 1px;
   color: #011e45;
 }
-.license-card .license-key-input::placeholder {
+#squarehero-dashboard-container .license-card .license-key-input::placeholder,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-key-input::placeholder {
   color: #ccc;
   letter-spacing: 2px;
 }
-.license-card .license-key-input.error {
+#squarehero-dashboard-container .license-card .license-key-input.error,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-key-input.error {
   border-color: #ff003d;
   animation: shake 0.5s;
 }
-.license-card .license-help-text {
+#squarehero-dashboard-container .license-card .license-help-text,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-help-text {
   text-align: center;
   color: #4d627d;
   font-size: 14px;
   margin: 5px 0 0;
 }
-.license-card .purchase-license-link {
+#squarehero-dashboard-container .license-card .purchase-license-link,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .purchase-license-link {
   color: #0cc2ed;
   text-decoration: underline;
   cursor: pointer;
 }
-.license-card .license-success-message {
+#squarehero-dashboard-container .license-card .license-success-message,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .license-success-message {
   margin-top: 15px;
   text-align: center;
   color: #4CAF50;
   font-weight: 500;
 }
-.license-card .activate-now {
+#squarehero-dashboard-container .license-card .activate-now,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .activate-now {
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
   background: #ff003d;
 }
-.license-card .activate-now.success {
+#squarehero-dashboard-container .license-card .activate-now.success,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .activate-now.success {
   background-color: #4CAF50;
 }
 
