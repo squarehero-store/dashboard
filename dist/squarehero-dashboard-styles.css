@@ -1117,12 +1117,12 @@ h1, h2, h3, h4 {
   align-items: flex-start;
   margin-bottom: 8px;
 }
-#squarehero-dashboard-container .plugin-card .plugin-title,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-title {
+#squarehero-dashboard-container .plugin-card .plugin-name,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-name {
   font-size: 18px;
   font-weight: 600;
-  margin: 0 !important;
-  color: #011e45 !important;
+  margin: 0;
+  color: #011e45;
 }
 #squarehero-dashboard-container .plugin-card .plugin-description,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-description {
