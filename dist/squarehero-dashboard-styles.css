@@ -2,68 +2,6 @@
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./scss/dashboard.scss ***!
   \**************************************************************************************************************/
 @charset "UTF-8";
-/*
-  Square Hero Plugin Dashboard Styles
-  Main SCSS file that imports all partials
-*/
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Roboto Condensed";
-}
-
-body {
-  font-family: "Roboto Condensed";
-  color: #011e45;
-  background-color: #f7f7f9;
-  line-height: 1.5;
-  display: flex;
-  min-height: 100vh;
-}
-
-input, select {
-  color: #011e45;
-}
-
-h1, h2, h3, h4 {
-  font-family: "Red Hat Display", sans-serif;
-  font-weight: 800 !important;
-  text-transform: none !important;
-  font-size: 1.125rem;
-}
-
-#squarehero-dashboard-container h1, #squarehero-dashboard-container h2, #squarehero-dashboard-container h3, #squarehero-dashboard-container h4,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h1,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h2,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h3,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h4 {
-  font-family: "Red Hat Display", sans-serif;
-  font-weight: 800;
-  text-transform: none;
-  color: #011e45;
-}
-#squarehero-dashboard-container h1,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h1 {
-  font-size: 1.5rem;
-}
-#squarehero-dashboard-container h2,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h2 {
-  font-size: 1.35rem;
-}
-#squarehero-dashboard-container h3,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h3 {
-  font-size: 1.2rem;
-}
-#squarehero-dashboard-container h4,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container h4 {
-  font-size: 1.1rem;
-}
-
-#header, #footer-sections {
-  display: none !important;
-}
-
 .dashboard-header {
   background: #011e45;
   color: #ffffff;
@@ -675,10 +613,10 @@ h1, h2, h3, h4 {
   /* Logout button */
 }
 .dashboard-tabs .dashboard-tab:hover:not(.active) {
-  color: var(--blue);
+  color: #0cc2ed;
 }
 .dashboard-tabs .dashboard-tab.active {
-  color: var(--blue);
+  color: #0cc2ed;
   font-weight: 500;
 }
 .dashboard-tabs .dashboard-tab.active:after {
@@ -688,16 +626,16 @@ h1, h2, h3, h4 {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #00D1FF 20.4%, #E600FF 55.91%, #FF003D 80.09%);
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
 }
 .dashboard-tabs .dashboard-tab.logout-button {
   margin-left: auto !important;
-  color: var(--red) !important;
+  color: #ff003d !important;
   cursor: pointer;
 }
 .dashboard-tabs .dashboard-tab.logout-button:hover {
-  color: var(--white) !important;
-  background-color: var(--red) !important;
+  color: #ffffff !important;
+  background-color: #ff003d !important;
 }
 .dashboard-tabs .dashboard-tab.logout-button:after {
   display: none !important;
@@ -706,7 +644,7 @@ h1, h2, h3, h4 {
 /* Tab Content Container */
 .dashboard-tabs-content {
   width: 100%;
-  background-color: var(--light-gray);
+  background-color: #f7f7f9;
   min-height: 600px;
 }
 
@@ -733,10 +671,10 @@ h1, h2, h3, h4 {
 /* Registration Form Styles */
 .registration-form {
   background: white;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   padding: 30px;
   margin-bottom: 30px;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
 }
 
 .form-description {
@@ -746,10 +684,10 @@ h1, h2, h3, h4 {
 .registration-help {
   margin-top: 20px;
   font-size: 14px;
-  color: var(--text-light);
+  color: #4d627d;
 }
 .registration-help a {
-  color: var(--blue);
+  color: #0cc2ed;
   text-decoration: none;
 }
 .registration-help a:hover {
@@ -759,9 +697,9 @@ h1, h2, h3, h4 {
 /* Registered Plugins Section */
 .registered-plugins-section {
   background: white;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   padding: 30px;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
 }
 .registered-plugins-section h3 {
   margin-top: 0;
@@ -773,7 +711,7 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: space-between;
   padding: 15px 0;
-  border-bottom: 1px solid var(--medium-gray);
+  border-bottom: 1px solid #e9e9ec;
 }
 .registered-plugin-item:last-child {
   border-bottom: none;
@@ -783,12 +721,12 @@ h1, h2, h3, h4 {
 }
 .registered-plugin-item .license-info {
   font-size: 14px;
-  color: var(--text-light);
+  color: #4d627d;
   margin: 0;
 }
 
 .activate-button {
-  background-color: var(--green);
+  background-color: #4CAF50;
   color: white;
   border: none;
   padding: 8px 15px;
@@ -840,7 +778,7 @@ h1, h2, h3, h4 {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #00D1FF 20.4%, #E600FF 55.91%, #FF003D 80.09%);
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
 }
 
 .settings-content {
@@ -1079,17 +1017,20 @@ h1, h2, h3, h4 {
   border-radius: 8px;
   box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
-  flex-direction: column;
-  justify-content: center;
-  display: flex;
-  gap: 30px;
-  cursor: pointer;
-  padding: 30px;
 }
 #squarehero-dashboard-container .plugin-card:hover,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+#squarehero-dashboard-container .plugin-card,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  cursor: pointer;
+  padding: 30px;
 }
 #squarehero-dashboard-container .plugin-card .plugin-icon,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-icon {
@@ -1327,7 +1268,7 @@ h1, h2, h3, h4 {
 #squarehero-dashboard-container .card-back .plugin-name,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .card-back .plugin-name {
   margin: 0 0 10px 0;
-  color: var(--darkblue);
+  color: #011e45;
   font-size: 16px;
 }
 #squarehero-dashboard-container .card-back .discover-plugin-description,
@@ -2855,6 +2796,216 @@ h1, h2, h3, h4 {
   background-color: rgb(60.5577689243, 139.4422310757, 63.7450199203);
 }
 
+#page, #header, #footer-sections {
+  display: none !important;
+}
+
+.sh-login-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #011E45;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.sh-login-wrapper.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.sh-login-wrapper:before {
+  content: "";
+  background: url(https://static1.squarespace.com/static/6699beb0946c0f4e15b9cb69/t/67887d262438f226602378e4/1736998182767/Hexagon-Tile.svg);
+  background-repeat: repeat;
+  background-size: 35px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.sh-login-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 4px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sh-login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.sh-login-header h1 {
+  font-family: "Red Hat Display", sans-serif;
+  color: white;
+  margin: 20px 0 10px;
+  font-size: 24px;
+}
+
+.sh-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sh-login-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  border-radius: 2px;
+  color: white;
+  font-size: 16px;
+}
+.sh-login-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sh-login-button {
+  border: none;
+  background: none;
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  position: relative;
+  font-family: "Roboto Condensed";
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.sh-login-button:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease;
+}
+.sh-login-button:hover {
+  opacity: 0.9;
+}
+
+.sh-forgot-password {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+  transition: color 0.2s;
+}
+.sh-forgot-password:hover {
+  color: white;
+}
+
+.gradient-circle-1, .gradient-circle-2 {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+.gradient-circle-1 svg, .gradient-circle-2 svg {
+  overflow: visible;
+}
+
+.gradient-circle-1 {
+  bottom: -250px;
+  left: -250px;
+  width: 50%;
+}
+
+.gradient-circle-2 {
+  top: -250px;
+  right: -250px;
+  width: 50%;
+}
+
+.dashboard-wrapper {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.dashboard-wrapper.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-alert {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  background-color: #1d1f22;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s;
+  min-width: 300px;
+  opacity: 0;
+  visibility: hidden;
+}
+.login-alert.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+.login-alert.success {
+  background-color: #4CAF50;
+}
+.login-alert.error {
+  background-color: #d32f2f;
+}
+
+.login-alert-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-alert-message svg {
+  width: 24px;
+  height: 24px;
+}
+
+.login-alert-actions {
+  display: flex;
+  gap: 12px;
+}
+.login-alert-actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  color: white;
+}
+.login-alert-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 /* SquareHero Skeleton Loader System
  * A universal skeleton loading system for the SquareHero dashboard
  */
@@ -2973,6 +3124,7 @@ h1, h2, h3, h4 {
 
 .plugin-content.skeleton-wrapper {
   flex-grow: 1;
+  width: 100%;
 }
 
 .status-badge-skeleton {
@@ -3428,225 +3580,166 @@ h1, h2, h3, h4 {
     font-size: 14px;
   }
 }
-#page, #header, #footer-sections {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Condensed";
+}
+
+h1, h2, h3, h4 {
+  font-family: "Red Hat Display", sans-serif;
+  font-weight: 800 !important;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+}
+
+.sqs-admin-placeholder {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.sqs-admin-placeholder img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.squarehero-dashboard-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+}
+
+.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.skeleton-hidden {
   display: none !important;
 }
 
-.sh-login-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #011E45;
-  z-index: 9999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.sh-login-wrapper.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.sh-login-wrapper:before {
-  content: "";
-  background: url(https://static1.squarespace.com/static/6699beb0946c0f4e15b9cb69/t/67887d262438f226602378e4/1736998182767/Hexagon-Tile.svg);
-  background-repeat: repeat;
-  background-size: 35px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+.skeleton-wrapper {
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.sh-login-container {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 4px;
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  position: relative;
-  z-index: 1;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+#squarehero-dashboard-container {
+  min-height: 800px;
 }
 
-.sh-login-header {
+.text-center {
   text-align: center;
-  margin-bottom: 30px;
-}
-.sh-login-header h1 {
-  font-family: "Red Hat Display", sans-serif;
-  color: white;
-  margin: 20px 0 10px;
-  font-size: 24px;
 }
 
-.sh-login-form {
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.d-flex {
   display: flex;
+}
+
+.flex-column {
   flex-direction: column;
-  gap: 20px;
 }
 
-.sh-login-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 12px 16px;
-  border-radius: 2px;
-  color: white;
-  font-size: 16px;
-}
-.sh-login-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.align-center {
+  align-items: center;
 }
 
-.sh-login-button {
-  border: none;
-  background: none;
-  padding: 20px;
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  position: relative;
-  font-family: "Roboto Condensed";
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.sh-login-button:before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
-  background-size: 200% 100%;
-  transition: background-position 0.5s ease;
-}
-.sh-login-button:hover {
-  opacity: 0.9;
+.justify-center {
+  justify-content: center;
 }
 
-.sh-forgot-password {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  font-size: 14px;
-  text-align: center;
-  transition: color 0.2s;
-}
-.sh-forgot-password:hover {
-  color: white;
-}
-
-.gradient-circle-1, .gradient-circle-2 {
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-}
-.gradient-circle-1 svg, .gradient-circle-2 svg {
-  overflow: visible;
-}
-
-.gradient-circle-1 {
-  bottom: -250px;
-  left: -250px;
-  width: 50%;
-}
-
-.gradient-circle-2 {
-  top: -250px;
-  right: -250px;
-  width: 50%;
-}
-
-.dashboard-wrapper {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-.dashboard-wrapper.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.login-alert {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100%);
-  background-color: #1d1f22;
-  color: white;
-  padding: 16px 24px;
-  border-radius: 4px;
-  display: flex;
+.justify-between {
   justify-content: space-between;
-  align-items: center;
-  z-index: 2000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, opacity 0.3s;
-  min-width: 300px;
-  opacity: 0;
-  visibility: hidden;
-}
-.login-alert.visible {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-  visibility: visible;
-}
-.login-alert.success {
-  background-color: #4CAF50;
-}
-.login-alert.error {
-  background-color: #d32f2f;
 }
 
-.login-alert-message {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.login-alert-message svg {
-  width: 24px;
-  height: 24px;
+.justify-end {
+  justify-content: flex-end;
 }
 
-.login-alert-actions {
-  display: flex;
-  gap: 12px;
-}
-.login-alert-actions button {
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background-color: transparent;
-  color: white;
-}
-.login-alert-actions button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.gap-1 {
+  gap: 0.5rem;
 }
 
-@media (max-width: 768px) {
-  .dashboard-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-    padding: 20px;
-  }
-  .settings-panel {
-    width: 100%;
-    right: -100%;
-  }
+.gap-2 {
+  gap: 1rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.ml-1 {
+  margin-left: 0.5rem;
+}
+
+.mr-1 {
+  margin-right: 0.5rem;
+}
+
+.p-1 {
+  padding: 0.5rem;
+}
+
+.p-2 {
+  padding: 1rem;
+}
+
+.p-3 {
+  padding: 1.5rem;
 }
