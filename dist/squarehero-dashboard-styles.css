@@ -3616,7 +3616,7 @@ img {
 
 .squarehero-dashboard-wrapper {
   width: 100%;
-  max-width: 1200px;
+  background: #edf6f8;
   margin: 0 auto;
   padding: 0;
   position: relative;
