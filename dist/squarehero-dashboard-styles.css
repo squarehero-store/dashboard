@@ -3590,6 +3590,7 @@
 h1, h2, h3, h4 {
   font-family: "Red Hat Display", sans-serif;
   font-weight: 800 !important;
+  color: #011e45;
 }
 
 a {
@@ -3604,6 +3605,10 @@ img {
   max-width: 100%;
 }
 
+body {
+  background: #fafafa;
+}
+
 .sqs-admin-placeholder {
   width: 100%;
   margin: 0 auto;
@@ -3616,7 +3621,7 @@ img {
 
 .squarehero-dashboard-wrapper {
   width: 100%;
-  background: #edf6f8;
+  background: #fafafa;
   margin: 0 auto;
   padding: 0;
   position: relative;
