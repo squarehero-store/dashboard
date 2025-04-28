@@ -1599,6 +1599,7 @@
 }
 
 .settings-form {
+  color: #011e45;
   display: flex;
   flex-wrap: wrap;
   margin: 0 -10px;
