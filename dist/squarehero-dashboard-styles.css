@@ -1074,25 +1074,15 @@
 }
 #squarehero-dashboard-container .plugin-card .trial-indicator,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator {
-  margin-top: 8px;
-  margin-bottom: -8px;
+  margin-bottom: 8px;
 }
 #squarehero-dashboard-container .plugin-card .trial-indicator .trial-text,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator .trial-text {
-  display: inline-block;
-  background-color: rgba(245, 158, 11, 0.1);
-  color: rgb(194, 120, 3);
-  font-size: 12px;
+  color: #ff003d;
+  font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
-  padding: 4px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-}
-#squarehero-dashboard-container .plugin-card .trial-indicator.expired .trial-text,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator.expired .trial-text {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: rgb(185, 28, 28);
+  letter-spacing: 0.9px;
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions {
@@ -1129,13 +1119,29 @@
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin {
-  background-color: white;
-  color: #0cc2ed;
+  background-color: none;
+  color: #011e45;
   border: 1px solid #011e45;
+  position: relative;
+  background: transparent;
 }
-#squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover,
-.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover {
-  background-color: rgba(12, 194, 237, 0.05);
+#squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:before,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover:before,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover:before {
+  background-position: 150% 0;
 }
 #squarehero-dashboard-container .plugin-card .plugin-status,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status {
