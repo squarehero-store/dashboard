@@ -1120,6 +1120,7 @@
 #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin {
   background-color: none;
+  border: none;
   color: #011e45;
   position: relative;
   background: transparent;
