@@ -1060,15 +1060,17 @@
 }
 #squarehero-dashboard-container .plugin-card .plugin-name,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-name {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 21px;
+  font-weight: 8600;
   margin: 0;
   color: #011e45;
 }
 #squarehero-dashboard-container .plugin-card .plugin-description,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-description {
+  margin-top: 5px;
   color: #4d627d;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 130%;
 }
 #squarehero-dashboard-container .plugin-card .trial-indicator,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator {
@@ -1103,7 +1105,7 @@
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions button {
   flex: 1;
   padding: 10px 15px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   text-transform: uppercase;
@@ -1428,9 +1430,9 @@
 #squarehero-dashboard-container .fine-print,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .fine-print {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 100%;
   margin-top: 5px;
   text-transform: none;
