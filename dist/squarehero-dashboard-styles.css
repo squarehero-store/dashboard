@@ -3588,7 +3588,10 @@
   font-family: "Roboto Condensed";
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Red Hat Display", sans-serif;
   font-weight: 800 !important;
   color: #011e45;
@@ -3607,7 +3610,12 @@ img {
 }
 
 body {
-  background: #fafafa;
+  background: #fafafa !important;
+}
+
+/*Hide default page stuff*/
+#siteWrapper {
+  display: none !important;
 }
 
 .sqs-admin-placeholder {
