@@ -1029,7 +1029,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 30px;
-  cursor: pointer;
+  cursor: default;
   padding: 30px;
 }
 #squarehero-dashboard-container .plugin-card .plugin-icon,
@@ -1070,6 +1070,71 @@
   color: #4d627d;
   font-size: 16px;
 }
+#squarehero-dashboard-container .plugin-card .trial-indicator,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator {
+  margin-top: 8px;
+  margin-bottom: -8px;
+}
+#squarehero-dashboard-container .plugin-card .trial-indicator .trial-text,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator .trial-text {
+  display: inline-block;
+  background-color: rgba(245, 158, 11, 0.1);
+  color: rgb(194, 120, 3);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+#squarehero-dashboard-container .plugin-card .trial-indicator.expired .trial-text,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .trial-indicator.expired .trial-text {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: rgb(185, 28, 28);
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions button,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions button {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions button.full-width,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions button.full-width {
+  flex: 1 0 100%;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin {
+  background-color: #0cc2ed;
+  color: white;
+  border: none;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin:hover {
+  background-color: rgb(9.5421686747, 154.265060241, 188.4578313253);
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin {
+  background-color: white;
+  color: #0cc2ed;
+  border: 1px solid #0cc2ed;
+}
+#squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover {
+  background-color: rgba(12, 194, 237, 0.05);
+}
 #squarehero-dashboard-container .plugin-card .plugin-status,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-status {
   background-color: #ccc;
@@ -1077,6 +1142,7 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  border-radius: 100px;
   text-transform: uppercase;
 }
 #squarehero-dashboard-container .plugin-card .plugin-status.status-enabled,
@@ -1086,6 +1152,7 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  border-radius: 100px;
   text-transform: uppercase;
 }
 #squarehero-dashboard-container .plugin-card .plugin-status.status-disabled,
@@ -1095,6 +1162,7 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  border-radius: 100px;
   text-transform: uppercase;
 }
 #squarehero-dashboard-container .plugin-card .plugin-status.status-unlicensed,
@@ -1104,6 +1172,7 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  border-radius: 100px;
   text-transform: uppercase;
 }
 #squarehero-dashboard-container .plugin-card .plugin-status.status-connect,
@@ -1113,6 +1182,7 @@
   padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
+  border-radius: 100px;
   text-transform: uppercase;
 }
 #squarehero-dashboard-container .plugin-card .license-status,
