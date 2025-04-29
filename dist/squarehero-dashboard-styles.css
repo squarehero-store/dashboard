@@ -918,7 +918,7 @@
   text-decoration: none !important;
 }
 .sh-primary-button:hover {
-  background: rgb(0.6357142857, 19.0714285714, 43.8642857143) !important;
+  background: rgb(0.6357142857, 19.0714285714, 43.8642857143);
 }
 
 .button.disabled,
@@ -1117,19 +1117,19 @@
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin {
-  background-color: #0cc2ed;
+  background-color: #011e45;
   color: white;
   border: none;
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin:hover,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .manage-plugin:hover {
-  background-color: rgb(9.5421686747, 154.265060241, 188.4578313253);
+  background-color: #ff003d;
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin {
   background-color: white;
   color: #0cc2ed;
-  border: 1px solid #0cc2ed;
+  border: 1px solid #011e45;
 }
 #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions .purchase-plugin:hover {
@@ -1427,12 +1427,15 @@
 }
 #squarehero-dashboard-container .fine-print,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .fine-print {
-  font-size: 14px;
+  display: block;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 130%;
-  margin-top: 10px;
-  color: #4d627d;
+  line-height: 100%;
+  margin-top: 5px;
+  text-transform: none;
+  color: white;
+  opacity: 0.7;
 }
 #squarehero-dashboard-container .help-docs-list,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .help-docs-list {
