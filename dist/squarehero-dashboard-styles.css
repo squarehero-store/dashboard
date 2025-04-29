@@ -2996,6 +2996,9 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
+.license-activation-form .activate-button {
+  color: #011e45;
+}
 
 .license-key-input {
   flex: 1;
