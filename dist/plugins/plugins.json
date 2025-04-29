@@ -10,7 +10,7 @@
         "https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/scroll-to-top/settings.js"
       ],
       "panelWidth": "half",
-      "install": "<script data-squarehero-plugin=\"scroll-to-top\" src=\"https://cdn.jsdelivr.net/gh/squarehero-store/dashboard@0/plugins/scroll-to-top/scroll-to-top.min.js\"></script>"
+      "install": "<script data-squarehero-plugin=\"scroll-to-top\" src=\"https://cdn.jsdelivr.net/gh/squarehero-store/back-to-top@1/back-to-top.min.js\"></script>"
     },
     {
       "id": "food-menu",
