@@ -5,7 +5,7 @@
 .dashboard-header {
   background: #011e45;
   color: #ffffff;
-  padding: 20px 40px;
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -206,7 +206,6 @@
   padding: 20px;
 }
 .news-item:hover {
-  transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .news-item .news-date {
@@ -611,6 +610,9 @@
   white-space: nowrap;
   transition: all 0.2s ease;
   /* Logout button */
+}
+.dashboard-tabs .dashboard-tab:first-child {
+  padding-left: 30px;
 }
 .dashboard-tabs .dashboard-tab:hover:not(.active) {
   color: #0cc2ed;
@@ -1027,7 +1029,6 @@
 }
 #squarehero-dashboard-container .plugin-card:hover,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card:hover {
-  transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 #squarehero-dashboard-container .plugin-card,
@@ -1102,7 +1103,7 @@
 #squarehero-dashboard-container .plugin-card .plugin-actions button,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .plugin-card .plugin-actions button {
   flex: 1;
-  padding: 10px 15px;
+  padding: 15px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -1445,13 +1446,12 @@
 #squarehero-dashboard-container .fine-print,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .fine-print {
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 100%;
   margin-top: 5px;
   text-transform: none;
-  color: white;
   opacity: 0.7;
 }
 #squarehero-dashboard-container .help-docs-list,
@@ -1609,6 +1609,262 @@
 #squarehero-dashboard-container .license-card .activate-now.success,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .license-card .activate-now.success {
   background-color: #4CAF50;
+}
+#squarehero-dashboard-container .purchase-item,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#squarehero-dashboard-container .purchase-item:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+#squarehero-dashboard-container .purchase-item,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item {
+  display: flex;
+  max-width: 775px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 30px;
+  gap: 30px;
+}
+#squarehero-dashboard-container .purchase-item:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+#squarehero-dashboard-container .purchase-item .purchase-icon,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-icon {
+  width: 70px;
+  height: 78px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#squarehero-dashboard-container .purchase-item .purchase-icon img,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info {
+  flex: 1 0 30%;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .purchase-name,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .purchase-name {
+  margin: 0 0 5px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0a2540;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-info,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.single,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.single {
+  background-color: #4CAF50;
+  color: white;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.multisite,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.multisite {
+  background-color: #9575CD;
+  color: white;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited {
+  background-color: #01579B;
+  color: white;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.gifted,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.gifted {
+  background-color: #E91E63;
+  color: white;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .activations-count,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .activations-count {
+  font-size: 14px;
+  color: #64748b;
+}
+#squarehero-dashboard-container .purchase-item .purchase-actions,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-actions {
+  margin-left: 20px;
+  display: flex;
+  flex: 1 0 15%;
+  flex-direction: column;
+  align-items: center;
+}
+#squarehero-dashboard-container .purchase-item .purchase-actions .activate-button,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-actions .activate-button {
+  width: 100%;
+  background: #011e45;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+#squarehero-dashboard-container .purchase-item .purchase-actions .activate-button:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-actions .activate-button:hover {
+  background: #00346e;
+}
+#squarehero-dashboard-container .purchase-item .purchase-actions .activate-button.active,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-actions .activate-button.active {
+  background: #002147;
+}
+#squarehero-dashboard-container .purchase-item .purchase-actions .activations-count,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-actions .activations-count {
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 8px;
+  text-align: center;
+}
+#squarehero-dashboard-container .sh-overlay,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#squarehero-dashboard-container .sh-overlay.visible,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+#squarehero-dashboard-container .sh-modal,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal {
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+#squarehero-dashboard-container .sh-modal.visible,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-header,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-header h3,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-header .sh-modal-close,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-header .sh-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #64748b;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-header .sh-modal-close:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-header .sh-modal-close:hover {
+  color: #0a2540;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body {
+  padding: 20px;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list {
+  margin-top: 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 15px;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list h4,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li:last-child,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li:last-child {
+  border-bottom: none;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn:hover,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn:hover {
+  background: #dc2626;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn:disabled,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-body .active-sites-list ul li .deactivate-site-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+#squarehero-dashboard-container .sh-modal .sh-modal-footer,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .sh-modal .sh-modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 @keyframes shake {
@@ -2428,7 +2684,6 @@
   overflow: hidden;
 }
 .property-card:hover {
-  transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 .property-card .property-image {
@@ -3088,10 +3343,6 @@
 }
 .purchase-item:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-}
-.purchase-item.free-plugin {
-  background: linear-gradient(135deg, var(--card-bg), rgba(75, 192, 192, 0.1));
-  border-left: 3px solid #4BC0C0;
 }
 .purchase-item .purchase-icon {
   width: 60px;
@@ -4173,240 +4424,4 @@ body {
 }
 #squarehero-dashboard-container {
   min-height: 800px;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.d-flex {
-  display: flex;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.justify-end {
-  justify-content: flex-end;
-}
-
-.gap-1 {
-  gap: 0.5rem;
-}
-
-.gap-2 {
-  gap: 1rem;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.mt-1 {
-  margin-top: 0.5rem;
-}
-
-.mt-2 {
-  margin-top: 1rem;
-}
-
-.mt-3 {
-  margin-top: 1.5rem;
-}
-
-.mb-1 {
-  margin-bottom: 0.5rem;
-}
-
-.mb-2 {
-  margin-bottom: 1rem;
-}
-
-.mb-3 {
-  margin-bottom: 1.5rem;
-}
-
-.ml-1 {
-  margin-left: 0.5rem;
-}
-
-.mr-1 {
-  margin-right: 0.5rem;
-}
-
-.p-1 {
-  padding: 0.5rem;
-}
-
-.p-2 {
-  padding: 1rem;
-}
-
-.p-3 {
-  padding: 1.5rem;
-}
-
-/* Critical fix: Hide purchases tab in all views unless explicitly active */
-#purchases-tab {
-  display: none !important;
-}
-#purchases-tab.active {
-  display: block !important;
-}
-
-/* Apply the same fix to the purchases list container to ensure it's hidden in other tabs */
-.purchases-list-container {
-  display: none !important;
-}
-
-#purchases-tab.active .purchases-list-container {
-  display: block !important;
-}
-
-.purchases-column {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-.purchases-column .purchases-content {
-  flex-grow: 1;
-  overflow: auto;
-  padding: 20px;
-}
-.purchases-column .purchases-list-container {
-  background-color: var(--sh-card-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-.purchases-column .purchases-list {
-  padding: 0;
-}
-.purchases-column .purchase-item {
-  display: flex;
-  padding: 20px;
-  border-bottom: 1px solid var(--sh-border-color);
-  background-color: var(--sh-card-bg);
-  transition: background-color 0.2s;
-}
-.purchases-column .purchase-item:hover {
-  background-color: var(--sh-card-hover-bg);
-}
-.purchases-column .purchase-item:last-child {
-  border-bottom: none;
-}
-.purchases-column .purchase-icon {
-  width: 60px;
-  height: 60px;
-  margin-right: 20px;
-  background-color: var(--sh-accent-light);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.purchases-column .purchase-icon img {
-  max-width: 40px;
-  max-height: 40px;
-}
-.purchases-column .purchase-info {
-  flex-grow: 1;
-}
-.purchases-column .purchase-name {
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 5px;
-  color: var(--sh-text-color);
-}
-.purchases-column .purchase-type {
-  font-size: 14px;
-  color: var(--sh-text-secondary);
-  margin-bottom: 5px;
-}
-.purchases-column .purchase-type.single {
-  color: #4A6FA5;
-}
-.purchases-column .purchase-type.multisite {
-  color: #7E57C2;
-}
-.purchases-column .purchase-type.unlimited {
-  color: #26A69A;
-}
-.purchases-column .purchase-date {
-  font-size: 14px;
-  color: var(--sh-text-secondary);
-}
-.purchases-column .purchase-actions {
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-}
-.purchases-column .activate-button {
-  padding: 8px 16px;
-  background-color: var(--sh-primary-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-.purchases-column .activate-button:hover {
-  background-color: var(--sh-primary-dark);
-}
-.purchases-column .activate-button.active {
-  background-color: var(--sh-success-color);
-}
-.purchases-column .activate-button.active:hover {
-  background-color: var(--sh-success-dark);
-}
-.purchases-column .activate-button.disabled {
-  background-color: var(--sh-disabled-color);
-  cursor: not-allowed;
-}
-.purchases-column .activate-button.disabled:hover {
-  background-color: var(--sh-disabled-color);
-}
-.purchases-column .no-purchases {
-  text-align: center;
-  padding: 40px 20px;
-}
-.purchases-column .no-purchases h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: var(--sh-text-color);
-}
-.purchases-column .no-purchases p {
-  color: var(--sh-text-secondary);
-  margin-bottom: 20px;
-}
-.purchases-column .no-purchases .sh-button {
-  display: inline-block;
 }
