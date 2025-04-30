@@ -654,12 +654,19 @@
   padding: 30px;
   animation: fadeIn 0.3s ease;
   /* Critical fix: Keep plugins tab visible when settings panel is open */
+  /* Ensure purchases tab is properly hidden when not active */
 }
 .dashboard-tab-content.active {
   display: block;
   height: 100%;
 }
 .dashboard-tab-content#plugins-tab.active, .dashboard-tab-content#plugins-tab.active.settings-open {
+  display: block;
+}
+.dashboard-tab-content#purchases-tab {
+  display: none;
+}
+.dashboard-tab-content#purchases-tab.active {
   display: block;
 }
 
@@ -4262,6 +4269,23 @@ body {
 
 .p-3 {
   padding: 1.5rem;
+}
+
+/* Critical fix: Hide purchases tab in all views unless explicitly active */
+#purchases-tab {
+  display: none !important;
+}
+#purchases-tab.active {
+  display: block !important;
+}
+
+/* Apply the same fix to the purchases list container to ensure it's hidden in other tabs */
+.purchases-list-container {
+  display: none !important;
+}
+
+#purchases-tab.active .purchases-list-container {
+  display: block !important;
 }
 
 .purchases-column {
