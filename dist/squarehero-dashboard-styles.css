@@ -809,6 +809,27 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .cancel-button {
@@ -816,17 +837,11 @@
   border: 1px solid #e9e9ec;
   color: #011e45;
 }
-.cancel-button:hover {
-  background-color: #e9e9ec;
-}
 
 .save-button {
   background-color: #0cc2ed;
   border: 1px solid #0cc2ed;
   color: #ffffff;
-}
-.save-button:hover {
-  background-color: rgb(9.5421686747, 154.265060241, 188.4578313253);
 }
 
 .secondary-button {
@@ -834,17 +849,11 @@
   border: 1px solid #0cc2ed;
   color: #0cc2ed;
 }
-.secondary-button:hover {
-  background-color: rgba(12, 194, 237, 0.1);
-}
 
 .confirm-ok {
   background-color: #0cc2ed;
   border: 1px solid #0cc2ed;
   color: #ffffff;
-}
-.confirm-ok:hover {
-  background-color: rgb(9.5421686747, 154.265060241, 188.4578313253);
 }
 
 .confirm-destructive {
@@ -852,20 +861,16 @@
   border: 1px solid #ff003d;
   color: #ffffff;
 }
-.confirm-destructive:hover {
-  background-color: rgb(204, 0, 48.8);
-}
 
 .confirm-cancel {
   background-color: #f7f7f9;
   border: 1px solid #e9e9ec;
   color: #011e45;
 }
-.confirm-cancel:hover {
-  background-color: #e9e9ec;
-}
 
 .support-button, .sh-button {
+  position: relative;
+  overflow: hidden;
   background: none !important;
   z-index: 1;
   display: inline-block;
@@ -889,6 +894,25 @@
   position: relative;
   background: transparent;
 }
+.support-button:after, .sh-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.support-button:hover::after, .sh-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
+}
 .support-button:before, .sh-button:before {
   content: "";
   position: absolute;
@@ -907,6 +931,8 @@
 }
 
 .sh-primary-button {
+  position: relative;
+  overflow: hidden;
   background: #011e45;
   z-index: 1;
   display: inline-block;
@@ -927,8 +953,24 @@
   cursor: pointer;
   text-decoration: none !important;
 }
-.sh-primary-button:hover {
-  background: rgb(0.6357142857, 19.0714285714, 43.8642857143);
+.sh-primary-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.sh-primary-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .button.disabled,
@@ -945,6 +987,11 @@
 .sh-primary-button.disabled:before {
   display: none;
 }
+.button.disabled:after,
+.sh-button.disabled:after,
+.sh-primary-button.disabled:after {
+  display: none;
+}
 
 .view-doc-button {
   padding: 6px 12px;
@@ -955,9 +1002,27 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+  position: relative;
+  overflow: hidden;
 }
-.view-doc-button:hover {
-  background-color: rgb(10.0337349398, 162.2120481928, 198.1662650602);
+.view-doc-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.view-doc-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .help-doc-modal-close-btn {
@@ -967,6 +1032,27 @@
   color: #011e45;
   border-radius: 4px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.help-doc-modal-close-btn:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.help-doc-modal-close-btn:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .purchase-button, .activate-button {
@@ -980,9 +1066,27 @@
   transition: background-color 0.2s;
   display: inline-block;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
 }
-.purchase-button:hover, .activate-button:hover {
-  background-color: rgb(10.0337349398, 162.2120481928, 198.1662650602);
+.purchase-button:after, .activate-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.purchase-button:hover::after, .activate-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .copy-code-button {
@@ -997,18 +1101,54 @@
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s;
+  position: relative;
+  overflow: hidden;
 }
-.copy-code-button:hover {
-  background-color: rgb(10.0337349398, 162.2120481928, 198.1662650602);
+.copy-code-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.copy-code-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .discard-button {
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
+  position: relative;
+  overflow: hidden;
 }
-.discard-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.discard-button:after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  opacity: 0.1;
+}
+.discard-button:hover::after {
+  animation: shine 1s ease;
+}
+@keyframes shine {
+  to {
+    left: 100%;
+  }
 }
 
 .notification-bar .save-button {
@@ -1669,11 +1809,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 5px;
+  margin-top: 5px;
 }
 #squarehero-dashboard-container .purchase-item .purchase-info .license-badge,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 12px;
   font-weight: 700;
   padding: 6px 14px;
@@ -1688,18 +1830,46 @@
 }
 #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.multisite,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.multisite {
-  background-color: #9575CD;
+  background-color: #8266f2;
   color: white;
 }
 #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited {
-  background-color: #01579B;
   color: white;
+  position: relative;
+  background: transparent;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:before,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background: linear-gradient(90deg, #00D1FF 0%, #FF00E6 33.33%, #FF003D 66.66%, #00D1FF 100%);
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:hover:before,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:hover:before {
+  background-position: 150% 0;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited {
+  background-color: #011e45;
+}
+#squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:before,
+.squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.unlimited:before {
+  border-radius: 50px;
 }
 #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.gifted,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .license-badge.gifted {
-  background-color: #E91E63;
+  background-color: #ff003d;
   color: white;
+  order: 2;
 }
 #squarehero-dashboard-container .purchase-item .purchase-info .activations-count,
 .squarehero-dashboard-wrapper #squarehero-dashboard-container .purchase-item .purchase-info .activations-count {
