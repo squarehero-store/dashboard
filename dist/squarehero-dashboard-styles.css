@@ -142,6 +142,7 @@
   flex-direction: column;
   overflow-x: hidden;
   width: 100%;
+  scrollbar-gutter: stable;
 }
 
 .dashboard-container:before {
@@ -4066,6 +4067,21 @@
   float: right;
 }
 
+/* Manage Plugin Button Skeleton */
+.manage-plugin-button-skeleton {
+  width: 100%;
+  height: 36px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.plugin-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
 /* News Item Skeleton */
 .news-item.skeleton-wrapper {
   background-color: white;
@@ -4140,6 +4156,86 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
+}
+
+/* Purchase Item Skeleton */
+.purchase-item.skeleton {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.purchase-item.skeleton .purchase-icon.skeleton-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  margin-right: 15px;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.purchase-item.skeleton .purchase-name.skeleton-box {
+  width: 60%;
+  height: 18px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.purchase-item.skeleton .license-badge.skeleton-box {
+  width: 120px;
+  height: 22px;
+  border-radius: 4px;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.purchase-item.skeleton .purchase-info {
+  flex-grow: 1;
+}
+
+.purchase-item.skeleton .purchase-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.purchase-item.skeleton .activate-button.skeleton-box {
+  width: 100px;
+  height: 36px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.purchase-item.skeleton .activations-count.skeleton-box {
+  width: 80px;
+  height: 14px;
+  border-radius: 4px;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
 }
 
 /* Hide real content while skeleton is showing */
