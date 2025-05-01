@@ -55,6 +55,52 @@
       return true;
     }
 
+    // Function to replace SquareHero Dashboard sidebar icon
+    function replaceSidebarIcon() {
+      // Try to access the sidebar in the preview frame
+      const previewFrame = window.top.document.querySelector('iframe#sqs-site-frame');
+      if (!previewFrame || !previewFrame.contentDocument) {
+        console.log("Preview frame not accessible, will retry replacing sidebar icon later");
+        setTimeout(replaceSidebarIcon, 1000);
+        return;
+      }
+      
+      const sidebarItemList = previewFrame.contentDocument.querySelector('.App-sidebar .rpp-item-list');
+      
+      if (!sidebarItemList) {
+        console.log("Sidebar item list not found, will retry later");
+        setTimeout(replaceSidebarIcon, 1000);
+        return;
+      }
+      
+      const listItems = sidebarItemList.querySelectorAll('[data-test="grouped-list-item"]');
+      
+      for (const listItem of listItems) {
+        const pTag = listItem.querySelector('p');
+        if (pTag && pTag.textContent.trim() === 'SquareHero Dashboard') {
+          const existingSvg = listItem.querySelector('svg');
+          if (existingSvg) {
+            const newSvg = previewFrame.contentDocument.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            newSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            newSvg.setAttribute('width', '18');
+            newSvg.setAttribute('height', '21');
+            newSvg.setAttribute('fill', 'none');
+            newSvg.setAttribute('viewBox', '0 0 18 21');
+            newSvg.innerHTML = '<g clip-path="url(#a)"><path fill="#001E45" d="M16.71 14.418V5.612L9 1.209 1.29 5.612v8.805L9 18.82l7.71-4.402Z"/><path fill="#87C4CC" d="M16.71 14.418V5.612L9 1.209 1.29 5.612v8.805L9 18.82l7.71-4.402Z"/><path fill="#fff" d="M3.8 4.187a5.97 5.97 0 0 0 2.198 2.175 6.053 6.053 0 0 0 6.004 0 5.97 5.97 0 0 0 2.197-2.175l-5.2-2.978L3.798 4.18l.003.007ZM9 12.88a6.077 6.077 0 0 0-3 .8 5.994 5.994 0 0 0-2.2 2.171L9 18.82l5.199-2.969a5.995 5.995 0 0 0-2.2-2.171 6.077 6.077 0 0 0-3-.8Z"/><path fill="#0E0E0E" d="M14.677 4.457a6.52 6.52 0 0 1-2.4 2.374 6.61 6.61 0 0 1-6.555 0 6.52 6.52 0 0 1-2.4-2.374L1.29 5.612v8.805l2.033 1.162a6.52 6.52 0 0 1 2.399-2.375 6.61 6.61 0 0 1 6.556 0 6.52 6.52 0 0 1 2.4 2.375l2.032-1.162V5.612l-2.033-1.155Z"/><path fill="#0E0E0E" stroke="#0E0E0E" stroke-width=".5" d="M9 13.13c-1.01 0-2.004.264-2.878.764-.801.457-1.476 1.1-1.971 1.869L9 18.53l4.848-2.768a5.721 5.721 0 0 0-1.97-1.87A5.803 5.803 0 0 0 9 13.132Zm5.76-8.339a6.77 6.77 0 0 1-2.358 2.256 6.864 6.864 0 0 1-6.804 0 6.77 6.77 0 0 1-2.36-2.256l-1.698.965v8.514l1.698.972a6.773 6.773 0 0 1 2.36-2.256A6.859 6.859 0 0 1 9 12.085c1.194 0 2.367.31 3.402.901a6.77 6.77 0 0 1 2.36 2.256l1.698-.972V5.757l-1.7-.965ZM4.153 4.267a5.721 5.721 0 0 0 1.97 1.87 5.804 5.804 0 0 0 5.756 0 5.722 5.722 0 0 0 1.971-1.87L9 1.495 4.153 4.267Zm13.361 10.61-.127.073-.275.156-1.74.995-.295.168-.478.271-5.2 2.97-.275.157-.124.071-.125-.071-.276-.157L.89 15.106v.001l-.127-.072-.15-.085-.125-.072V5.149l.127-.072.276-.156.01-.006h.002L8.599.518l.276-.158L9 .29l.124.071.275.159V.519l7.707 4.4.281.16.127.071v9.728Z"/><path fill="#fff" d="M15.464 8.463 9.854 9.53l1.87 1.067 3.74-2.135ZM2.536 8.463l5.61 1.068-1.87 1.067-3.74-2.135Z"/><path fill="#0E0E0E" d="m12.741 14.28-5.61 1.068 1.87 1.068 3.74-2.136Z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h18v20.5H0z"/></clipPath></defs>';
+            existingSvg.parentNode.replaceChild(newSvg, existingSvg);
+            console.log("SVG replaced for 'SquareHero Dashboard' with the new SVG.");
+            return; // Stop after finding and replacing the first one
+          } else {
+            console.log("Existing SVG not found within the 'SquareHero Dashboard' item.");
+          }
+        }
+      }
+      
+      // If we didn't find it, retry after a short delay
+      console.log("'SquareHero Dashboard' item not found in the sidebar, will retry later");
+      setTimeout(replaceSidebarIcon, 1000);
+    }
+
     // Remove any existing button to prevent duplicates
     const existingButton = window.top.document.querySelector('.custom-toolbar-button');
     if (existingButton && existingButton.parentNode) {
@@ -220,6 +266,9 @@
     
     // Load the external CSS file
     loadExternalCSS();
+
+    // Start the sidebar icon replacement process
+    setTimeout(replaceSidebarIcon, 1000);
   }
   
   // Start initialization process when script loads
